@@ -24,6 +24,7 @@ const routes: Routes = [
   },
   { path: 'login', component: LogInComponent },
   { path: 'coursedetails/:id', component: CourseDetailsComponent },
+  { path: 'instructor', loadChildren: () => import('./instructor/instructor.module').then(m => m.InstructorModule) },
   { path: '**', component: NotFoundComponent },
 ];
 
