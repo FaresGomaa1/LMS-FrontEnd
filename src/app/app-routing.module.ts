@@ -7,6 +7,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { SharedViewComponent } from './shared-view/shared-view.component';
 import { CourseComponent } from './course/course.component';
+import { CourseDetailsComponent } from './course/course-details/course-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'shared', pathMatch: 'full' },
@@ -21,9 +22,12 @@ const routes: Routes = [
       { path: 'course', component: CourseComponent },
     ]
   },
-  { path: 'login', component: LogInComponent }, 
+  { path: 'login', component: LogInComponent },
+  { path: 'coursedetails/:id', component: CourseDetailsComponent },
+  { path: 'instructor', loadChildren: () => import('./instructor/instructor.module').then(m => m.InstructorModule) },
   { path: '**', component: NotFoundComponent },
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
