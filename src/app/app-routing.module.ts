@@ -6,6 +6,7 @@ import { LogInComponent } from './log-in/log-in.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { SharedViewComponent } from './shared-view/shared-view.component';
+import { CourseComponent } from './course/course.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'shared', pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'exam', component: ExamsComponent },
-      { path: 'event', component: EventsComponent }, 
+      { path: 'event', component: EventsComponent },
+      { path: 'course', component: CourseComponent },
     ]
   },
   { path: 'login', component: LogInComponent }, 

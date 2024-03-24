@@ -9,6 +9,9 @@ import { LogInComponent } from './log-in/log-in.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { SharedViewComponent } from './shared-view/shared-view.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { CourseComponent } from './course/course.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { SharedViewComponent } from './shared-view/shared-view.component';
     LogInComponent,
     NotFoundComponent,
     HomeComponent,
-    SharedViewComponent
+    SharedViewComponent,
+    HeaderComponent,
+    FooterComponent,
+    CourseComponent
   ],
   imports: [
     BrowserModule,
