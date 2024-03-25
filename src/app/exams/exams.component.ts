@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ExamService } from './exam.service';
 import { IExam } from './iexam';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ICourses } from './ICourses';
 
 @Component({
