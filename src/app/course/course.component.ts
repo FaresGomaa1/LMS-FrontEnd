@@ -10,7 +10,7 @@ import { ICourses } from './icourses';
 export class CourseComponent implements OnInit {
   courses: ICourses[] = [];
   selectedCourse: ICourses | null = null;
-  studentCourseIds: number[] = [1];
+  studentCourseIds: number[] = [2];
 
   constructor(private courseService: CourseService) {}
 
@@ -20,7 +20,9 @@ export class CourseComponent implements OnInit {
 
   getAllCourses(): void {
     this.courseService.getAllCourses().subscribe((courses: ICourses[]) => {
-      this.courses = courses.filter(course => this.studentCourseIds.includes(course.id));
+      this.courses = courses.filter((course) =>
+        this.studentCourseIds.includes(course.id)
+      );
     });
   }
 
