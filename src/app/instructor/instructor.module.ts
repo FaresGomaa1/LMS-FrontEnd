@@ -5,6 +5,8 @@ import { TrialComponent } from './trial/trial.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { HomeComponent } from './components/core/home/home.component';
+import { InstructorCoursesComponent } from './components/core/instructor-courses/instructor-courses.component';
+import { ProfileComponent } from './components/core/profile/profile.component';
 
 const instructorRoutes: Routes = [
 {path:'trial', component: TrialComponent}
@@ -16,7 +18,9 @@ const instructorRoutes: Routes = [
     TrialComponent,
     NavbarComponent,
     FooterComponent,
-    HomeComponent
+    HomeComponent,
+    InstructorCoursesComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
