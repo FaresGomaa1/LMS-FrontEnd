@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ExamService } from './exam.service';
 import { IExam } from './iexam';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ICourses } from './ICourses';
 
 @Component({
@@ -30,16 +30,23 @@ export class ExamsComponent implements OnInit {
   }
 
   getCourseNameById(): void {
-
-    console.log(this.exams.length);
-    for (let i = 0; i < this.exams?.length; i++) {
-      this.courseIds.push(this.exams[i].course_ID);
+    // Extract course IDs from exams
+    const courseIds = this.exams.map(exam => exam.course_ID);
+  
+    // Array to store Observable for each HTTP request
+    const observables = [];
+  
+    // Create Observables for each HTTP request
+    for (const courseId of courseIds) {
+      observables.push(this.examService.getById(courseId));
     }
-    for (let i = 0; i < this.courseIds.length; i++) {
-      this.examService.getById(this.courseIds[i]).subscribe((course) => {
-        this.courses.push(course.name);
-      });
-    }
+  
+    // Use forkJoin to make parallel HTTP requests
+    forkJoin(observables).subscribe(
+      (courses: ICourses[]) => {
+        this.courses = courses.map(course => course.name);
+      }
+    );
   }
   
 

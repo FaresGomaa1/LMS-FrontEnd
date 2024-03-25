@@ -7,7 +7,9 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 import { HomeComponent } from './components/core/home/home.component';
 
 const instructorRoutes: Routes = [
-{path:'trial', component: TrialComponent}
+{path:'trial', component: TrialComponent},
+{path: 'home', component: HomeComponent}
+
 
 ];
 
