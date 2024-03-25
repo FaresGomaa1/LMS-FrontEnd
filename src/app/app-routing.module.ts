@@ -24,7 +24,7 @@ const routes: Routes = [
       { path: 'course', component: CourseComponent },
     ],
   },
-  { path: 'login', component: LogInComponent,canActivate: [AuthGuard],  },
+  { path: 'login', component: LogInComponent},
   {
     path: 'coursedetails/:id',
     component: CourseDetailsComponent,
