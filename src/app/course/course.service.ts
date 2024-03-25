@@ -24,4 +24,9 @@ export class CourseService {
       .get<ICourses>(`${this.domainName}/Courses/${ID}`)
       .pipe(retry(2), catchError(this.errorHandlerService.handleError));
   }
+  getCourseByName(courseName: string): Observable<ICourses> {
+    return this.http
+      .get<ICourses>(`${this.domainName}/Courses/${courseName}`)
+      .pipe(retry(2), catchError(this.errorHandlerService.handleError));
+  }
 }

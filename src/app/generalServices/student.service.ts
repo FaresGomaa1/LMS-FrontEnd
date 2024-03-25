@@ -19,4 +19,10 @@ domainName: string = "http://localhost:5050";
       catchError(this.errorHandlerService.handleError)
     );
   }
+  getStudentById(ID: number): Observable<IStudent> {
+    return this.http.get<IStudent>(`${this.domainName}/Student/${ID}`).pipe(
+      retry(2),
+      catchError(this.errorHandlerService.handleError)
+    );
+  }
 }
