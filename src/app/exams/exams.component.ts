@@ -11,7 +11,7 @@ import { ICourses } from './ICourses';
   styleUrls: ['./exams.component.scss'],
 })
 export class ExamsComponent implements OnInit {
-  exams: IExam[]  = [];
+  exams: IExam[] = [];
   courses: string[] = [];
   courseIds: number[] = [];
   constructor(private examService: ExamService) {}
@@ -19,18 +19,17 @@ export class ExamsComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     // this.getAllCourses();
-  
   }
 
   getData() {
     this.examService.getAllData().subscribe((data) => {
       this.exams = data;
-      this.getCourseNameById()
+      console.log(this.exams.length);
+      this.getCourseNameById();
     });
   }
 
   getCourseNameById(): void {
-
     console.log(this.exams.length);
     for (let i = 0; i < this.exams?.length; i++) {
       this.courseIds.push(this.exams[i].course_ID);
@@ -41,7 +40,6 @@ export class ExamsComponent implements OnInit {
       });
     }
   }
-  
 
   // getAllCourses() {
   //   this.examService.getAllCourses().subscribe((data) => {
