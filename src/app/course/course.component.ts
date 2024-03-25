@@ -10,18 +10,17 @@ import { ICourses } from './icourses';
 export class CourseComponent implements OnInit {
   courses: ICourses[] = [];
   selectedCourse: ICourses | null = null;
-  studentCourseIds: number[] = [2];
+  studentCourseIds: string[] = ['math'];
 
   constructor(private courseService: CourseService) {}
 
   ngOnInit(): void {
     this.getAllCourses();
   }
-
   getAllCourses(): void {
     this.courseService.getAllCourses().subscribe((courses: ICourses[]) => {
       this.courses = courses.filter((course) =>
-        this.studentCourseIds.includes(course.id)
+        this.studentCourseIds.includes(course.name)
       );
     });
   }

@@ -8,12 +8,13 @@ import { HomeComponent } from './home/home.component';
 import { SharedViewComponent } from './shared-view/shared-view.component';
 import { CourseComponent } from './course/course.component';
 import { CourseDetailsComponent } from './course/course-details/course-details.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { 
     path: 'shared', 
-    component: SharedViewComponent, 
+    component: SharedViewComponent, canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },

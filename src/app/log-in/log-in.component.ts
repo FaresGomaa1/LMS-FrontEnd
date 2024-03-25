@@ -68,6 +68,7 @@ export class LogInComponent implements OnInit {
           (student) => student.email === email && student.password === password
         );
         if (student) {
+          localStorage.setItem('studentId', student.id.toString());
           this.router.navigate(['/shared/home']);
         } else {
           console.log("student")
@@ -79,6 +80,7 @@ export class LogInComponent implements OnInit {
             instructor.email === email && instructor.password === password
         );
         if (instructor) {
+          localStorage.setItem('studentId', instructor.id.toString());
           this.router.navigate(['/instructor']);
         } else {
           alert('Invalid email or password');
