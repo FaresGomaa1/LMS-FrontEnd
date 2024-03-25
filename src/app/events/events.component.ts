@@ -8,17 +8,18 @@ import { IEvent } from './ievent';
   styleUrls: ['./events.component.scss']
 })
 export class EventsComponent implements OnInit {
-  event!: IEvent;
+  events: IEvent[] = [];
+  studentEventIds: number[] = [1,2];
 
   constructor(private eventService: EventService) { }
 
   ngOnInit(): void {
-    this.loadEventData();
+    this.getAllEvents();
   }
 
-  loadEventData(): void {
-    const eventId = 1; // You need to fetch event ID from somewhere
-    this.eventService.getEventById(eventId)
-      .subscribe(event => this.event = event);
+  getAllEvents(): void {
+    this.eventService.getEvents().subscribe((events: IEvent[]) =>
+      this.events = events.filter(event => this.studentEventIds.includes(event.id))
+    );
   }
 }

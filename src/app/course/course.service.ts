@@ -9,7 +9,6 @@ import { ICourses } from './icourses';
 })
 export class CourseService {
   domainName: string = "http://localhost:5050";
-  
   constructor(
     private http: HttpClient,
     private errorHandlerService: ErrorHandlerService

@@ -3,6 +3,9 @@ export interface IExam {
   name: string;
   duration: number;
   date: Date;
-  courseIds: number[];
-  degree: number;
+  max_Degree: number;
+  min_Degree: number;
+  studentIDs: number[];
+  course_ID: number;
+  numberOfQuestions: number;
 }
