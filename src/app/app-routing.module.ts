@@ -10,7 +10,7 @@ import { CourseComponent } from './course/course.component';
 import { CourseDetailsComponent } from './course/course-details/course-details.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'shared', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { 
     path: 'shared', 
     component: SharedViewComponent, 

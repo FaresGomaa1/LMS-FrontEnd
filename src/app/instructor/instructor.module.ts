@@ -9,6 +9,7 @@ import { InstructorCoursesComponent } from './components/core/instructor-courses
 import { ProfileComponent } from './components/core/profile/profile.component';
 
 const instructorRoutes: Routes = [
+{path: '', redirectTo: 'trial', pathMatch: 'full'},
 {path:'trial', component: TrialComponent},
 {path: 'home', component: HomeComponent}
 
