@@ -1,0 +1,30 @@
+
+<div class="container-fluid mt-5">
+    <h2 class="text-center mb-3">Your Courses</h2>
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="thead-dark">
+        <tr class="text-center">
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="instructorCourses && instructorCourses.length > 0; else noCourses">
+          <tr class="text-center" *ngFor="let course of instructorCourses">
+            <td>{{ course.name }}</td>
+            <td>{{ course.discription }}</td>
+            <td>{{ course.start_Date | date }}</td>
+            <td>{{ course.end_Date | date }}</td>
+          </tr>
+        </ng-container>
+        <ng-template #noCourses>
+          <tr>
+            <td colspan="4" class="text-center">No courses available</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+  

@@ -1,16 +1,24 @@
 <app-header></app-header>
-
-<div class="container mt-4">
+<div class="container">
   <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <div class="event-details-container">
-        <h2>{{ event.name }}</h2>
-        <p><strong>Start Date:</strong> {{ event.start_Date | date }}</p>
-        <p><strong>End Date:</strong> {{ event.end_Date | date }}</p>
-        <p><strong>Description:</strong> {{ event.description }}</p>
+    <div class="col-md-6 offset-md-3">
+      <div class="events-list">
+        <div class="event" *ngFor="let event of events">
+          <div class="event-header">
+            <h3>{{ event.name }}</h3>
+            <span class="event-date">
+              <i class="far fa-calendar-alt"></i> {{ event.start_Date | date: 'mediumDate' }} - {{ event.end_Date | date: 'mediumDate' }}
+            </span>
+          </div>
+          <div class="event-body">
+            <p>{{ event.description }}</p>
+          </div>
+        </div>
+        <div *ngIf="events.length === 0" class="text-center">
+          <p>No events available.</p>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
 <app-footer></app-footer>

@@ -11,34 +11,42 @@ import { ICourses } from './ICourses';
   styleUrls: ['./exams.component.scss'],
 })
 export class ExamsComponent implements OnInit {
-  exams: IExam[] | undefined;
-  courses: ICourses[] = [];
-
+  exams: IExam[]  = [];
+  courses: string[] = [];
+  courseIds: number[] = [];
   constructor(private examService: ExamService) {}
 
   ngOnInit(): void {
     this.getData();
-    this.getAllCourses();
+    // this.getAllCourses();
+  
   }
 
   getData() {
     this.examService.getAllData().subscribe((data) => {
       this.exams = data;
-      console.log(this.exams);
+      this.getCourseNameById()
     });
   }
 
-  getAllCourses() {
-    this.examService.getAllCourses().subscribe((data) => {
-      this.courses = data;
-      console.log(this.courses);
-    });
-  }
+  getCourseNameById(): void {
 
-  // getCourseNameById(courseId: number): string {
-  //   const course = this.courses.find((c) => c.id === courseId);
-  //   console.log('any');
-  //   return course ? course.name : 'No Exam For This Course Now';
+    console.log(this.exams.length);
+    for (let i = 0; i < this.exams?.length; i++) {
+      this.courseIds.push(this.exams[i].course_ID);
+    }
+    for (let i = 0; i < this.courseIds.length; i++) {
+      this.examService.getById(this.courseIds[i]).subscribe((course) => {
+        this.courses.push(course.name);
+      });
+    }
+  }
+  
+
+  // getAllCourses() {
+  //   this.examService.getAllCourses().subscribe((data) => {
+  //     this.courses = data;
+  //   });
   // }
 
   // getCourseByName(courseName: string): string {

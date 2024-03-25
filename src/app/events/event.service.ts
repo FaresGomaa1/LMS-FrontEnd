@@ -14,8 +14,8 @@ export class EventService {
     private http: HttpClient,
     private errorHandlerService: ErrorHandlerService
   ) { }
-  getEventById(ID: number): Observable<IEvent>{
-    return this.http.get<IEvent>(`${this.domainName}/Event/${ID}`).pipe(
+  getEvents(): Observable<IEvent[]>{
+    return this.http.get<IEvent[]>(`${this.domainName}/Event`).pipe(
       retry(2),
       catchError(this.errorHandlerService.handleError)
     );

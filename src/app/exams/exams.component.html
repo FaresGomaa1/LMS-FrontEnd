@@ -5,34 +5,26 @@
 
 <table class="table table-hover table-striped">
       <thead>
-            <tr class="text-center">
-                  <th scope="col">ID</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Duration</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Courses</th>
-            </tr>
+        <tr class="text-center">
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Duration</th>
+          <th scope="col">Date</th>
+          <th scope="col">Course</th>
+        </tr>
       </thead>
       <tbody>
-            <tr class="text-center" *ngFor="let exam of exams">
-                  <th scope="row">{{ exam.id }}</th>
-                  <td>{{ exam.name }}</td>
-                  <td>{{ exam.duration }} Min</td>
-                  <td>{{ exam.date }}</td>
-                  <td>
-                        <!-- <span *ngFor="let courseId of exam.courseIds">
-                              {{ (courseId) }}
-                        </span> -->
-                        <ng-template>
-                              <span *ngFor="let course of courses">
-                                    <span *ngIf="course.id === exam.courseIds[exam.courseIds.length - 1]">
-                                          {{ course.id }}
-                                    </span>
-                              </span>
-                        </ng-template>
-                  </td>
-            </tr>
+        <tr class="text-center" *ngFor="let exam of exams; let i=index">
+          <th scope="row">{{ exam.id }}</th>
+          <td>{{ exam.name }}</td>
+          <td>{{ exam.duration }} Min</td>
+          <td>{{ exam.date }}</td>
+          <td>
+            {{ courses[i] }}
+          </td>
+        </tr>
       </tbody>
-</table>
+    </table>
+    
 
 <app-footer></app-footer>
