@@ -1,30 +1,39 @@
 <!-- Navbar Start -->
 <app-header></app-header>
 <!-- Navbar End -->
-<div class="container">
-  <div class="row">
-    <div class="col-md-4" *ngFor="let course of courses">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{{ course.name }}</h5>
-          <p class="card-text">{{ course.description }}</p>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><i class="far fa-calendar-alt"></i> Start Date: {{ course.start_Date | date }}</li>
-            <li class="list-group-item"><i class="far fa-calendar-alt"></i> End Date: {{ course.end_Date | date }}</li>
-            <li class="list-group-item"><i class="fas fa-tasks"></i> Number of Exams: {{ course.numOfExam }}</li>
-          </ul>
-          <button class="btn btn-primary" (click)="openCourseDetailsInNewTab(course.id)">View Details</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
+<div class="bg-light p-2">
+  <h3 style="margin-left: 50%; margin-top: 50px; color: green;">courses</h3>
 </div>
+
+<table class="table table-hover table-striped">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col"> Start Date</th>
+      <th scope="col">End Date</th>
+      <th scope="col">Number of Exams</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="text-center" *ngFor="let course of courses; let i=index">
+      <th scope="row">{{ course.name }}</th>
+      <td>{{ course.description }}</td>
+
+      <td>{{ course.start_Date }}</td>
+      <td>{{ course.end_Date }}</td>
+      <td>{{ course.numOfExam }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<app-footer></app-footer>
 
 <!-- Footer Start -->
 <app-footer></app-footer>
 <!-- Footer End -->
 
 <!-- Back to Top -->
-<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"
-  ><i class="bi bi-arrow-up"></i
-></a>
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>

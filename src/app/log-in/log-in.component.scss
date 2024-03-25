@@ -1,0 +1,30 @@
+.container {
+    margin-top: 50px;
+    
+    .btn-group {
+      margin-bottom: 20px;
+    }
+    
+    .forgot-password {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #007bff;
+    }
+  }
+  .login-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    animation: slideIn 0.5s ease;
+  }  
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
