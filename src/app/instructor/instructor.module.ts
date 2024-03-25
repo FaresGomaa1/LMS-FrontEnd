@@ -7,6 +7,7 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 import { HomeComponent } from './components/core/home/home.component';
 import { InstructorCoursesComponent } from './components/core/instructor-courses/instructor-courses.component';
 import { ProfileComponent } from './components/core/profile/profile.component';
+import { HeaderComponent } from '../header/header.component';
 
 const instructorRoutes: Routes = [
 {path:'trial', component: TrialComponent}
@@ -20,7 +21,8 @@ const instructorRoutes: Routes = [
     FooterComponent,
     HomeComponent,
     InstructorCoursesComponent,
-    ProfileComponent
+    ProfileComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,

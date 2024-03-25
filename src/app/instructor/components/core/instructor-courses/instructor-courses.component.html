@@ -14,7 +14,7 @@
         <ng-container *ngIf="instructorCourses && instructorCourses.length > 0; else noCourses">
           <tr class="text-center" *ngFor="let course of instructorCourses">
             <td>{{ course.name }}</td>
-            <td>{{ course.discription }}</td>
+            <td>{{ course.description }}</td>
             <td>{{ course.start_Date | date }}</td>
             <td>{{ course.end_Date | date }}</td>
           </tr>

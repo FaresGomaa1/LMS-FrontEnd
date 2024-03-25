@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICourse } from 'src/app/instructor/interface/i-course';
+import { InstructorCourseService } from 'src/app/instructor/service/instructor-course.service';
 import { InstructorService } from 'src/app/instructor/service/instructor.service';
 
 @Component({
@@ -8,17 +9,23 @@ import { InstructorService } from 'src/app/instructor/service/instructor.service
   styleUrls: ['./instructor-courses.component.scss']
 })
 export class InstructorCoursesComponent implements OnInit {
-  instructorCourses: ICourse[] | undefined; // Remove Observable<>
+  instructorCourses: ICourse[] | undefined;
 
-  constructor(private instructorService: InstructorService) { }
+  constructor(private instructorcourseService: InstructorCourseService ) { }
 
   ngOnInit(): void {
     this.loadInstructorCourses();
-    console.log(this.instructorCourses);
-
   }
 
   loadInstructorCourses() {
-    this.instructorCourses = this.instructorService.getInstructorCourses();
+    this.instructorcourseService.getInstructorCourses().subscribe(
+      courses => {
+        this.instructorCourses = courses;
+        console.log(this.instructorCourses);
+      },
+      error => {
+        console.log("erroorrr");
+      }
+    );
   }
 }
