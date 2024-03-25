@@ -15,6 +15,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { CourseComponent } from './course/course.component';
 import { CourseDetailsComponent } from './course/course-details/course-details.component';
+import { StudentExamFormComponent } from './student-exam-form/student-exam-form.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CourseDetailsComponent } from './course/course-details/course-details.c
     FooterComponent,
     CourseComponent,
     CourseDetailsComponent,
+    StudentExamFormComponent,
   ],
   imports: [
     BrowserModule,

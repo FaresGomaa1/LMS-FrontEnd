@@ -8,29 +8,36 @@ import { HomeComponent } from './home/home.component';
 import { SharedViewComponent } from './shared-view/shared-view.component';
 import { CourseComponent } from './course/course.component';
 import { CourseDetailsComponent } from './course/course-details/course-details.component';
-import { AuthGuard } from './guard/auth.guard';
+import { StudentExamFormComponent } from './student-exam-form/student-exam-form.component';
+// import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { 
-    path: 'shared', 
-    component: SharedViewComponent, canActivate: [AuthGuard],
+  {
+    path: 'shared',
+    component: SharedViewComponent,
+    // canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'exam', component: ExamsComponent },
       { path: 'event', component: EventsComponent },
       { path: 'course', component: CourseComponent },
-    ]
+    ],
   },
   { path: 'login', component: LogInComponent },
   { path: 'coursedetails/:id', component: CourseDetailsComponent },
-  { path: 'instructor', loadChildren: () => import('./instructor/instructor.module').then(m => m.InstructorModule) },
+  {
+    path: 'instructor',
+    loadChildren: () =>
+      import('./instructor/instructor.module').then((m) => m.InstructorModule),
+  },
+  { path: 'studentexamform', component: StudentExamFormComponent },
   { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

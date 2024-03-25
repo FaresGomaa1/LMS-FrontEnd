@@ -1,0 +1,79 @@
+<div class="container">
+      <h2 class="mt-5">Exam Form</h2>
+      <form id="examForm">
+            <div class="form-group">
+                  <label for="name">Name of Student:</label>
+                  <input type="text" class="form-control" id="name" name="name" ng-model="formData.name"
+                        ng-required="true">
+                  <div class="invalid-feedback" ng-show="examForm.name.$error.required">Please enter your name.</div>
+            </div>
+            <div class="form-group">
+                  <label for="email">Email:</label>
+                  <input type="email" class="form-control" id="email" name="email" ng-model="formData.email"
+                        ng-required="true">
+                  <div class="invalid-feedback" ng-show="examForm.email.$error.required || examForm.email.$error.email">
+                        Please enter a valid email address.</div>
+            </div>
+            <div class="form-group">
+                  <label for="phone">Phone Number:</label>
+                  <input type="tel" class="form-control" id="phone" name="phone" ng-model="formData.phone"
+                        ng-required="true">
+                  <div class="invalid-feedback" ng-show="examForm.phone.$error.required">Please enter your phone number.
+                  </div>
+            </div>
+            <div class="form-group">
+                  <div *ngFor="let quest of examquestion">
+                        <p>{{quest.question}} </p>
+                        <div class="custom-control custom-radio">
+                              <input type="radio" id="paris" name="capital" value="paris" class="custom-control-input"
+                                    required>
+                              <label class="custom-control-label" for="paris">Paris</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                              <input type="radio" id="london" name="capital" value="london" class="custom-control-input"
+                                    required>
+                              <label class="custom-control-label" for="london">London</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                              <input type="radio" id="berlin" name="capital" value="berlin" class="custom-control-input"
+                                    required>
+                              <label class="custom-control-label" for="berlin">Berlin</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                              <input type="radio" id="rome" name="capital" value="rome" class="custom-control-input"
+                                    required>
+                              <label class="custom-control-label" for="rome">Rome</label>
+                        </div>
+                  </div>
+
+            </div>
+            <div class="form-group">
+                  <div *ngFor="let quest of examquestion " , let ques=index>
+                        <p>{{quest.question}} </p>
+                        <div class="custom-control custom-radio">
+                              <input type="radio" id="tokyo" name="capital_japan" value="tokyo"
+                                    class="custom-control-input" required>
+                              <label class="custom-control-label" for="tokyo"></label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                              <input type="radio" id="seoul" name="capital_japan" value="seoul"
+                                    class="custom-control-input" required>
+                              <label class="custom-control-label" for="seoul">Seoul</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                              <input type="radio" id="beijing" name="capital_japan" value="beijing"
+                                    class="custom-control-input" required>
+                              <label class="custom-control-label" for="beijing">Beijing</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                              <input type="radio" id="hanoi" name="capital_japan" value="hanoi"
+                                    class="custom-control-input" required>
+                              <label class="custom-control-label" for="hanoi">Hanoi</label>
+                        </div>
+                  </div>
+
+                  <div class="invalid-feedback">Please select an answer.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
