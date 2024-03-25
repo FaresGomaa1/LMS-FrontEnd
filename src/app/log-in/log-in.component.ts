@@ -13,8 +13,6 @@ import { IInstructor } from '../instructor/interface/i-instructor';
 })
 export class LogInComponent implements OnInit {
   loginForm!: FormGroup;
-  allStudents: IStudent[] = [];
-  allInstructors: IInstructor[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -22,15 +20,11 @@ export class LogInComponent implements OnInit {
     private instructorService: InstructorService,
     private router: Router
   ) {
-    this.instructorService.getAllInstructors().subscribe((data)=>{
-      this.allInstructors = data;
-    })
-    console.log(this.allInstructors)
+
   }
 
   ngOnInit(): void {
     this.initForm();
-    this.loadUsers();
   }
 
   initForm(): void {
@@ -40,56 +34,8 @@ export class LogInComponent implements OnInit {
       password: ['', Validators.required],
     });
   }
-
-  loadUsers(): void {
-    const userType = this.loginForm.value.userType;
-    if (userType === 'student') {
-      this.studentService.getAllStudents().subscribe((students: IStudent[]) => {
-        this.allStudents = students;
-      });
-    } else {
-      this.instructorService
-        .getAllInstructors()
-        .subscribe((instructors: IInstructor[]) => {
-          this.allInstructors = instructors;
-          console.log(this.allInstructors);
-        });
-    }
-  }
-
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const userType = this.loginForm.value.userType;
-      const email = this.loginForm.value.email;
-      const password = this.loginForm.value.password;
-
-      if (userType === 'student') {
-        const student = this.allStudents.find(
-          (student) => student.email === email && student.password === password
-        );
-        if (student) {
-          localStorage.setItem('userId', student.id.toString());
-          localStorage.setItem('userType', this.loginForm.value.userType.toString());
-          this.router.navigate(['/shared/home']);
-        } else {
-          console.log("student")
-          alert('Invalid email or password');
-        }
-      } else {
-        const instructor = this.allInstructors.find(
-          (instructor) =>
-            instructor.email === email && instructor.password === password
-        );
-        if (instructor) {
-          localStorage.setItem('userId', instructor.id.toString());
-          localStorage.setItem('userType', this.loginForm.value.userType.toString());
-          this.router.navigate(['/instructor']);
-        } else {
-          alert('Invalid email or password');
-        }
-      }
-    } else {
-      this.loginForm.markAllAsTouched();
     }
   }
 }
