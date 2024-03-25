@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- <div class="container login-container">
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -7,19 +8,91 @@
             <label class="btn btn-outline-primary" for="btnradio1">Student</label>
             <input type="radio" class="btn-check" formControlName="userType" value="instrxuctor" id="btnradio3" autocomplete="off">
             <label class="btn btn-outline-primary" for="btnradio3">Instructor</label>
+=======
+<div class="container login-container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic radio toggle button group"
+        >
+          <input
+            type="radio"
+            class="btn-check"
+            formControlName="userType"
+            value="student"
+            id="btnradio1"
+            autocomplete="off"
+            checked
+          />
+          <label class="btn btn-outline-primary" for="btnradio1">Student</label>
+          <input
+            type="radio"
+            class="btn-check"
+            formControlName="userType"
+            value="instructor"
+            id="btnradio3"
+            autocomplete="off"
+          />
+          <label class="btn btn-outline-primary" for="btnradio3"
+            >Instructor</label
+          >
+        </div>
+        <div class="form-group">
+          <label for="email">Enter Your Email</label>
+          <input
+            type="email"
+            class="form-control"
+            formControlName="email"
+            id="email"
+          />
+          <div
+            *ngIf="
+              loginForm.get('email')?.errors &&
+              (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
+            "
+            class="alert alert-danger"
+          >
+            <i class="fas fa-exclamation-circle"></i> Please enter a valid
+            email.
+>>>>>>> 10982a15a856117093fe29a76ece16742c6b7b7c
           </div>
-          <div class="form-group">
-            <label for="email">Enter Your Email</label>
-            <input type="email" class="form-control" formControlName="email" id="email">
+        </div>
+        <div class="form-group">
+          <label for="password">Enter Your Password</label>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="password"
+            id="password"
+          />
+          <div
+            *ngIf="
+              loginForm.get('password')?.errors &&
+              (loginForm.get('password')?.dirty ||
+                loginForm.get('password')?.touched)
+            "
+            class="alert alert-danger"
+          >
+            <i class="fas fa-exclamation-circle"></i> Please enter your
+            password.
           </div>
-          <div class="form-group">
-            <label for="password">Enter Your Password</label>
-            <input type="password" class="form-control" formControlName="password" id="password">
-          </div>
-          <button type="submit" class="btn btn-primary">Log-in</button>
-          <a href="#" class="forgot-password">Forgot password?</a>
-        </form>
-      </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loginForm.invalid"
+        >
+          Log-in
+        </button>
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </form>
     </div>
   </div>
+<<<<<<< HEAD
    -->
+=======
+</div>
+>>>>>>> 10982a15a856117093fe29a76ece16742c6b7b7c

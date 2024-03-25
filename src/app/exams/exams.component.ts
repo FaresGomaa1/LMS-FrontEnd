@@ -1,4 +1,4 @@
-// exams.component.ts
+import { StudentService } from './../generalServices/student.service';
 import { Component, OnInit } from '@angular/core';
 import { ExamService } from './exam.service';
 import { IExam } from './iexam';
@@ -14,20 +14,28 @@ export class ExamsComponent implements OnInit {
   exams: IExam[] = [];
   courses: string[] = [];
   courseIds: number[] = [];
-  constructor(private examService: ExamService) {}
+  constructor(
+    private examService: ExamService,
+    private StudentService: StudentService
+  ) {}
 
   ngOnInit(): void {
     this.getData();
-    // this.getAllCourses();
   }
 
   getData() {
-    this.examService.getAllData().subscribe((data) => {
-      this.exams = data;
-      console.log(this.exams.length);
-      this.getCourseNameById();
-    });
+    const studentId = localStorage.getItem("userId");
+    if (studentId) {
+      this.StudentService.getStudentById(parseInt(studentId)).subscribe((student) => {
+        const examNames = student.examName;
+        this.examService.getAllData().subscribe((data) => {
+          this.exams = data.filter((exam) => examNames.includes(exam.name));
+          this.getCourseNameById();
+        });
+      });
+    }
   }
+  
 
   getCourseNameById(): void {
     console.log(this.exams.length);
@@ -40,16 +48,4 @@ export class ExamsComponent implements OnInit {
       });
     }
   }
-
-  // getAllCourses() {
-  //   this.examService.getAllCourses().subscribe((data) => {
-  //     this.courses = data;
-  //   });
-  // }
-
-  // getCourseByName(courseName: string): string {
-  //   const course = this.courses.find((c) => c.name === courseName);
-
-  //   return course ? course.name : 'Unknown';
-  // }
 }
