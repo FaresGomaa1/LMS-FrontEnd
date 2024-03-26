@@ -18,6 +18,10 @@ export class ExamService {
     return this.http.get<IExam[]>(this.baseUrl);
   }
 
+  getExamById(ID: number): Observable<IExam> {
+    return this.http.get<IExam>(`${this.baseUrl}/${ID}`);
+  }
+
   getById(id: number): Observable<ICourses> {
     return this.http.get<ICourses>(`${this.baseUrl2}/${id}`);
   }

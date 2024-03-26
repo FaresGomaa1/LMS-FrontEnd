@@ -9,6 +9,8 @@ export interface IStudent {
     password: string;
     photo: string;
     courseName: string[];
+    courseIDs: number[];
     groupName: string[];
     examName: string[];
+    examIDs: number[];
 }

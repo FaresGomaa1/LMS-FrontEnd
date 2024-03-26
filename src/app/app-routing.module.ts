@@ -27,11 +27,16 @@ const routes: Routes = [
     ],
   },
   { path: 'login', component: LogInComponent },
-  { path: 'coursedetails/:id', component: CourseDetailsComponent },
+  {
+    path: 'coursedetails/:id',
+    component: CourseDetailsComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'instructor',
     loadChildren: () =>
       import('./instructor/instructor.module').then((m) => m.InstructorModule),
+    canActivate: [AuthGuard],
   },
   { path: 'studentexamform', component: StudentExamFormComponent },
   { path: '**', component: NotFoundComponent },

@@ -4,6 +4,8 @@ import { ExamService } from './exam.service';
 import { IExam } from './iexam';
 import { Observable, forkJoin } from 'rxjs';
 import { ICourses } from './ICourses';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-exams',
@@ -11,12 +13,13 @@ import { ICourses } from './ICourses';
   styleUrls: ['./exams.component.scss'],
 })
 export class ExamsComponent implements OnInit {
+  tokenKey = 'auth_token';
   exams: IExam[] = [];
   courses: string[] = [];
-  courseIds: number[] = [];
+
   constructor(
     private examService: ExamService,
-    private StudentService: StudentService
+    private studentService: StudentService
   ) {}
 
   ngOnInit(): void {
@@ -24,28 +27,41 @@ export class ExamsComponent implements OnInit {
   }
 
   getData() {
-    const studentId = localStorage.getItem("userId");
-    if (studentId) {
-      this.StudentService.getStudentById(parseInt(studentId)).subscribe((student) => {
-        const examNames = student.examName;
-        this.examService.getAllData().subscribe((data) => {
-          this.exams = data.filter((exam) => examNames.includes(exam.name));
-          this.getCourseNameById();
-        });
-      });
+    const token = localStorage.getItem(this.tokenKey);
+    if (token) {
+      const helper = new JwtHelperService();
+      const decodedToken = helper.decodeToken(token);
+      const userId = decodedToken.nameid;
+      if (userId) {
+        this.studentService.getStudentById(parseInt(userId, 10)).pipe(
+          switchMap(student => {
+            const examObservables: Observable<IExam>[] = student.examIDs.map(examId =>
+              this.examService.getExamById(examId)
+            );
+            return forkJoin(examObservables);
+          })
+        ).subscribe(
+          exams => {
+            this.exams = exams;
+            this.getCourseNames();
+          },
+          error => {
+            console.error('Error fetching exams:', error);
+          }
+        );
+      }
     }
   }
-  
 
-  getCourseNameById(): void {
-    console.log(this.exams.length);
-    for (let i = 0; i < this.exams?.length; i++) {
-      this.courseIds.push(this.exams[i].course_ID);
-    }
-    for (let i = 0; i < this.courseIds.length; i++) {
-      this.examService.getById(this.courseIds[i]).subscribe((course) => {
-        this.courses.push(course.name);
-      });
-    }
+  getCourseNames(): void {
+    const courseIds = this.exams.map(exam => exam.course_ID);
+    const courseObservables: Observable<ICourses>[] = courseIds.map(courseId =>
+      this.examService.getById(courseId)
+    );
+    forkJoin(courseObservables).subscribe(
+      courses => {
+        this.courses = courses.map(course => course.name);
+      }
+    );
   }
 }

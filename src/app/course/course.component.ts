@@ -1,7 +1,8 @@
+import { Component, OnInit } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { ICourses } from './icourses';
 import { StudentService } from './../generalServices/student.service';
 import { CourseService } from './course.service';
-import { Component, OnInit } from '@angular/core';
-import { ICourses } from './icourses';
 
 @Component({
   selector: 'app-course',
@@ -9,40 +10,53 @@ import { ICourses } from './icourses';
   styleUrls: ['./course.component.scss'],
 })
 export class CourseComponent implements OnInit {
+  tokenKey = 'auth_token';
   courses: ICourses[] = [];
-  selectedCourse: ICourses | null = null;
-  studentCourseNames: string[] = [];
+  studentCourseIds: number[] = [];
 
   constructor(
     private courseService: CourseService,
-    private StudentService: StudentService
+    private studentService: StudentService
   ) {}
 
   ngOnInit(): void {
-    this.getAllCourses();
-    this.getStudentCourse();
+    this.getStudentCourseIds();
   }
-  getAllCourses(): void {
-    this.courseService.getAllCourses().subscribe((courses: ICourses[]) => {
-      this.courses = courses.filter((course) =>
-        this.studentCourseNames.includes(course.name)
-      );
-    });
-  }
-  getStudentCourse() {
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      this.StudentService.getStudentById(parseInt(userId, 10)).subscribe(
-        (student) => {
-          this.studentCourseNames = student.courseName;
-          console.log(student);
-          console.log(this.studentCourseNames)
-        }
-      );
+
+  getStudentCourseIds(): void {
+    const token = localStorage.getItem(this.tokenKey);
+    if (token) {
+      const helper = new JwtHelperService();
+      const decodedToken = helper.decodeToken(token);
+      const userId = decodedToken.nameid;
+      if (userId) {
+        this.studentService.getStudentById(parseInt(userId, 10)).subscribe(
+          (student) => {
+            this.studentCourseIds = student.courseIDs;
+            this.getAllStudentCourses();
+          }
+        );
+      } else {
+        console.error('User ID not found in decoded token');
+      }
     } else {
-      console.error('userId not found in local storage');
+      console.error('Token not found in local storage');
     }
   }
+
+  getAllStudentCourses(): void {
+    this.courseService.getAllCourses().subscribe(
+      (courses) => {
+        this.courses = courses.filter((course) =>
+          this.studentCourseIds.includes(course.id)
+        );
+      },
+      (error) => {
+        console.error('Failed to fetch courses:', error);
+      }
+    );
+  }
+
   openCourseDetailsInNewTab(courseId: number): void {
     const url = `http://localhost:4200/coursedetails/${courseId}`;
     window.open(url, '_blank');

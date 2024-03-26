@@ -2,80 +2,45 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <div
-          class="btn-group"
-          role="group"
-          aria-label="Basic radio toggle button group"
-        >
-          <input
-            type="radio"
-            class="btn-check"
-            formControlName="userType"
-            value="student"
-            id="btnradio1"
-            autocomplete="off"
-            checked
-          />
+        <!-- User type selection -->
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <input type="radio" class="btn-check" formControlName="userType" value="student" id="btnradio1" autocomplete="off" checked />
           <label class="btn btn-outline-primary" for="btnradio1">Student</label>
-          <input
-            type="radio"
-            class="btn-check"
-            formControlName="userType"
-            value="instructor"
-            id="btnradio3"
-            autocomplete="off"
-          />
-          <label class="btn btn-outline-primary" for="btnradio3"
-            >Instructor</label
-          >
+          <input type="radio" class="btn-check" formControlName="userType" value="instructor" id="btnradio3" autocomplete="off" />
+          <label class="btn btn-outline-primary" for="btnradio3">Instructor</label>
         </div>
+        
+        <!-- Email input -->
         <div class="form-group">
           <label for="email">Enter Your Email</label>
-          <input
-            type="email"
-            class="form-control"
-            formControlName="email"
-            id="email"
-          />
-          <div
-            *ngIf="
-              loginForm.get('email')?.errors &&
-              (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
-            "
-            class="alert alert-danger"
-          >
-            <i class="fas fa-exclamation-circle"></i> Please enter a valid
-            email.
+          <input type="email" class="form-control" formControlName="email" id="email" />
+          <div *ngIf="loginForm.get('email')?.errors && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> Please enter a valid email.
           </div>
         </div>
+        
+        <!-- Password input -->
         <div class="form-group">
           <label for="password">Enter Your Password</label>
-          <input
-            type="password"
-            class="form-control"
-            formControlName="password"
-            id="password"
-          />
-          <div
-            *ngIf="
-              loginForm.get('password')?.errors &&
-              (loginForm.get('password')?.dirty ||
-                loginForm.get('password')?.touched)
-            "
-            class="alert alert-danger"
-          >
-            <i class="fas fa-exclamation-circle"></i> Please enter your
-            password.
+          <input type="password" class="form-control" formControlName="password" id="password" />
+          <div *ngIf="loginForm.get('password')?.errors && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> Please enter your password.
           </div>
         </div>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="loginForm.invalid"
-        >
-          Log-in
+        
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid || loading">
+          <span *ngIf="!loading">Log-in</span>
+          <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>
+        
+        <!-- Forgot password link -->
         <a href="#" class="forgot-password">Forgot password?</a>
+        
+        <!-- Error message -->
+        <div *ngIf="error" class="alert alert-danger mt-3">
+          <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
       </form>
     </div>
   </div>
