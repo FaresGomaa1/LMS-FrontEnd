@@ -10,6 +10,7 @@ import { ProfileComponent } from './components/core/profile/profile.component';
 import { AddExamComponent } from './components/core/add-exam/add-exam.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddQuestionComponent } from './components/core/add-question/add-question.component';
+import { CoursesExamComponent } from './components/core/courses-exam/courses-exam.component';
 
 const instructorRoutes: Routes = [
   {path: '', redirectTo: 'shared', pathMatch: 'full'},
@@ -18,7 +19,13 @@ const instructorRoutes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'addExam/:courseId', component: AddExamComponent },
     { path: 'addExam/addQuestion/:exam_Id', component: AddQuestionComponent },
-    { path: 'InstructorCourse', component: InstructorCoursesComponent },
+    { path: 'InstructorCourses', component: InstructorCoursesComponent },
+    { path: 'CoursesExam/:courseId', component: CoursesExamComponent },
+    { path: 'profile', component: ProfileComponent },
+
+
+   // {path: '', redirectTo: 'InstructorCourses', pathMatch: 'full'},
+    
   ]},
 
  
@@ -33,7 +40,8 @@ const instructorRoutes: Routes = [
     InstructorCoursesComponent,
     ProfileComponent,
     AddExamComponent,
-    AddQuestionComponent
+    AddQuestionComponent,
+    CoursesExamComponent
   ],
   imports: [
     CommonModule,

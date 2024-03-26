@@ -18,8 +18,11 @@
             <td>{{ course.description }}</td>
             <td>{{ course.start_Date | date }}</td>
             <td>{{ course.end_Date | date }}</td>
-            <button class="btn btn-primary" [routerLink]="['/instructor/instructor/addExam' , course.id]">Add Exam</button>
-
+            <td><button class="btn btn-primary" [routerLink]="['shared/addExam' , course.id]">Add Exam</button>
+            
+              <button class="btn btn-danger" [routerLink]="['CoursesExam' , course.id]">View Exams</button></td>
+          
+            
         
           </tr>
         </ng-container>

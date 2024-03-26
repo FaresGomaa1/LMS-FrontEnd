@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { IExam } from '../interface/i-exam';
 import { IQuestion } from '../interface/iquestion';
 
@@ -8,7 +8,7 @@ import { IQuestion } from '../interface/iquestion';
   providedIn: 'root'
 })
 export class ExamService {
-  private baseURL: string = 'http://localhost:5050/exams';
+   baseURL: string = 'http://localhost:5050/Exam';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -20,10 +20,11 @@ export class ExamService {
     return this.httpClient.get<IExam>(`${this.baseURL}/${id}`);
   }
 
-  addExam(courseId: number, examData: any): Observable<IExam> {
-    return this.httpClient.post<IExam>(`${this.baseURL}/courses/${courseId}`, examData);
+  addExam(examData: any) {
+    return this.httpClient.post(this.baseURL, examData);
   }
 
+  
   updateExam(id: number, exam: IExam): Observable<IExam> {
     return this.httpClient.put<IExam>(`${this.baseURL}/${id}`, exam);
   }
@@ -32,5 +33,9 @@ export class ExamService {
     return this.httpClient.delete<void>(`${this.baseURL}/${id}`);
   }
 
-  
+  getExamsByCourseId(courseId: number): Observable<IExam[]> {
+    return this.httpClient.get<IExam[]>(this.baseURL).pipe(
+      map((exams: IExam[]) => exams.filter(exam => exam.course_ID == courseId))
+    );
+  }
 }

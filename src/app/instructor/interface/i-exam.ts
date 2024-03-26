@@ -7,7 +7,7 @@ export interface IExam {
   date: Date;
   max_Degree: number;
   min_Degree: number;
-  studentIDs?: number[]; 
-  course_ID: number;
+  studentIDs: number[];
   numberOfQuestions: number;
+  course_ID:number;
 }

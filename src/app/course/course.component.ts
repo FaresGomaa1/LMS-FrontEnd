@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Component, OnInit } from '@angular/core';
 import { ICourses } from './icourses';
 import { StudentService } from './../generalServices/student.service';
 import { CourseService } from './course.service';
