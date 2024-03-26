@@ -11,16 +11,22 @@ import { Subscription } from "rxjs";
   templateUrl: './add-exam.component.html'
 })
 export class AddExamComponent implements OnInit , OnDestroy{
- 
- 
+
+  Exam: IExam | undefined;
+  course_Id: number = 0;
+
+  formSubmitted = false;
+
   ExamForm: FormGroup = new FormGroup({
     numberOfQuestions: new FormControl( '',[Validators.required , Validators.min(1) ]),
-    name: new FormControl('',[Validators.required ,Validators.maxLength(3)]),
+    name: new FormControl('',[Validators.required ,Validators.minLength(3)]),
     duration: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required]),
     max_Degree: new FormControl('', [Validators.required]),
     min_Degree: new FormControl('', [Validators.required]),
-   
+    course_ID: new FormControl(''),
+
+
   });
 
  
@@ -60,10 +66,12 @@ export class AddExamComponent implements OnInit , OnDestroy{
   }
 
   ngOnInit(): void {
-    this.act.params.subscribe(params => {
-      const course_Id = params['course_ID']; 
-      console.log('Course ID:', course_Id);
-  })
+
+  this.course_Id = this.act.snapshot.params['courseId'];
+  this.ExamForm.controls['course_ID'].setValue(this.course_Id);
+    console.log(this.course_Id);
+
+ 
   }
 
   numberOfQuestions: number = 0;
@@ -79,26 +87,28 @@ export class AddExamComponent implements OnInit , OnDestroy{
     this.selectedTab = index;
   }
 
-  onSubmit(e: Event) {
-    e.preventDefault();
-    const course_Id = this.act.snapshot.params['course_ID'];
-    if (!course_Id) {
+  onSubmit(event: Event) {
+    event.preventDefault();
+    if (!this.course_Id) {
       this.myRoute.navigate(['instructorCourses']);
       return;
     }
-  
-    this.myActionSub = this.ExamService.addExam(this.ExamForm.value, course_Id)
-      .subscribe(
+    if (this.ExamForm.valid && !this.formSubmitted) { 
+      this.formSubmitted = true; 
+      this.ExamService.addExam(this.ExamForm.value).subscribe(
         () => {
           console.log('Exam added successfully.');
-          this.myRoute.navigate(['instructorCourses']);
+          alert('Now you can add ' + this.ExamForm.get('numberOfQuestions')?.value + ' Questions');
+
         },
         error => {
           console.error('Failed to add exam:', error);
-        }
+ 
+        },
+        
       );
-  }
+    }
   
   
   }
-  
+}
