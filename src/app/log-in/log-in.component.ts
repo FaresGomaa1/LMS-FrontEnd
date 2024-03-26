@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserLogInService } from '../generalServices/user-log-in.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LogInComponent implements OnInit {
   loginForm!: FormGroup;
   loading = false;
   error = '';
-
+  tokenKey = 'auth_token';
   constructor(
     private fb: FormBuilder,
     private userLoginService: UserLogInService,
@@ -25,7 +26,6 @@ export class LogInComponent implements OnInit {
 
   initForm(): void {
     this.loginForm = this.fb.group({
-      userType: ['student', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
@@ -33,20 +33,26 @@ export class LogInComponent implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.valid);
       this.loading = true;
-      const { userType, email, password } = this.loginForm.value;
+      const { email, password } = this.loginForm.value;
       this.userLoginService.signIn(email, password).subscribe(
         response => {
           this.loading = false;
-          if (userType === 'student') {
-            console.log("student logged");
-            this.router.navigate(['/shared']);
-          } else if (userType === 'instructor') {
-            this.router.navigate(['/instructor']);
+          const token = response.token;
+          if (token) {
+            const helper = new JwtHelperService();
+            const decodedToken = helper.decodeToken(token);
+            const userRole = decodedToken.role;
+            const userType = userRole === 'student' ? 'student' : 'instructor';
+            if (userType === 'student') {
+              this.router.navigate(['/shared']);
+            } else if (userType === 'instructor') {
+              this.router.navigate(['/instructor']);
+            }
           }
         }
       );
     }
   }
+  
 }

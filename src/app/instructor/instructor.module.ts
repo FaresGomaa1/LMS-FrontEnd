@@ -12,8 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddQuestionComponent } from './components/core/add-question/add-question.component';
 
 const instructorRoutes: Routes = [
-  {path: '', redirectTo: 'trial', pathMatch: 'full'},
-  {path:'trial', component: TrialComponent,
+  {path: '', redirectTo: 'shared', pathMatch: 'full'},
+  {path:'shared', component: TrialComponent,
   children: [
     { path: 'home', component: HomeComponent },
     { path: 'addExam/:courseId', component: AddExamComponent },
