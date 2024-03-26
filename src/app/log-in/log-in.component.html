@@ -1,7 +1,7 @@
 <div class="container login-container">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">        
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         <!-- Email input -->
         <div class="form-group">
           <label for="email">Enter Your Email</label>
@@ -28,7 +28,6 @@
         
         <!-- Forgot password link -->
         <a href="#" class="forgot-password">Forgot password?</a>
-        
         <!-- Error message -->
         <div *ngIf="error" class="alert alert-danger mt-3">
           <i class="fas fa-exclamation-circle"></i> {{ error }}
