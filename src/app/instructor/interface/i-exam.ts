@@ -10,5 +10,4 @@ export interface IExam {
   studentIDs?: number[]; 
   course_ID: number;
   numberOfQuestions: number;
-  questions: IQuestion[];
 }

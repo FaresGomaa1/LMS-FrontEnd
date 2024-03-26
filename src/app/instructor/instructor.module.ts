@@ -15,13 +15,13 @@ const instructorRoutes: Routes = [
   {path: '', redirectTo: 'trial', pathMatch: 'full'},
   {path:'trial', component: TrialComponent,
   children: [
-    { path: '', redirectTo: 'InstructorCourse', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'addExam/:courseId', component: AddExamComponent },
     { path: 'addExam/addQuestion/:exam_Id', component: AddQuestionComponent },
+    { path: 'InstructorCourse', component: InstructorCoursesComponent },
   ]},
 
-  { path: 'addExam/:courseId', component: InstructorCoursesComponent },
+ 
 ];
 
 @NgModule({

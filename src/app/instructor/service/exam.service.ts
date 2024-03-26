@@ -32,7 +32,5 @@ export class ExamService {
     return this.httpClient.delete<void>(`${this.baseURL}/${id}`);
   }
 
-  addExamWithQuestions(exam: IExam, questions: IQuestion[]): Observable<IExam> {
-    return this.httpClient.post<IExam>(`${this.baseURL}/create-with-questions`, { exam, questions });
-  }
+  
 }

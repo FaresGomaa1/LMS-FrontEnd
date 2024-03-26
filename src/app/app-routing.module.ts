@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'shared',
     component: SharedViewComponent,
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
 
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
