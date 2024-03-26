@@ -12,7 +12,11 @@ import { StudentExamFormComponent } from './student-exam-form/student-exam-form.
 import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
+<<<<<<< HEAD
  // { path: '', redirectTo: 'login', pathMatch: 'full' },
+=======
+  { path: '', redirectTo: 'shared', pathMatch: 'full' },
+>>>>>>> 141bc0baa990e0efb2a4311b7f9e481658c0d790
   {
     path: 'shared',
     component: SharedViewComponent,

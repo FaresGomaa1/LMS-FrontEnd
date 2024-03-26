@@ -6,32 +6,28 @@
 <table class="table table-hover table-striped">
   <thead>
     <tr class="text-center">
-      <th scope="col">ID</th>
       <th scope="col">Name</th>
       <th scope="col">Duration</th>
       <th scope="col">Date</th>
+      <th scope="col">Time</th>
       <th scope="col">Course</th>
       <th scope="col">Action</th>
-
     </tr>
   </thead>
   <tbody>
     <tr class="text-center" *ngFor="let exam of exams; let i=index">
-      <th scope="row">{{ exam.id }}</th>
       <td>{{ exam.name }}</td>
       <td>{{ exam.duration }} Min</td>
-      <td>{{ exam.date }}</td>
+      <td>{{ exam.date | date:'mediumDate' }}</td>
+      <td>{{ exam.date | date:'shortTime' }}</td>
+      <td>{{ courses[i] }}</td>
       <td>
-        {{ courses[i] }}
-      </td>
-      <td><button class="btn btn-primary">
+        <button class="btn btn-primary">
           Start Exam
         </button>
       </td>
-
     </tr>
   </tbody>
 </table>
-
 
 <app-footer></app-footer>

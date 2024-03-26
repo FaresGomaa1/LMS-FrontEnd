@@ -11,29 +11,28 @@
     <tr class="text-center">
       <th scope="col">Name</th>
       <th scope="col">Description</th>
-      <th scope="col"> Start Date</th>
+      <th scope="col">Start Date</th>
       <th scope="col">End Date</th>
       <th scope="col">Number of Exams</th>
+      <th scope="col">View Details</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="text-center" *ngFor="let course of courses; let i=index">
+    <tr class="text-center" *ngFor="let course of courses; let i = index">
       <th scope="row">{{ course.name }}</th>
       <td>{{ course.description }}</td>
-
-      <td>{{ course.start_Date }}</td>
-      <td>{{ course.end_Date }}</td>
+      <td>{{ course.start_Date | date }}</td>
+      <td>{{ course.end_Date | date }}</td>
       <td>{{ course.numOfExam }}</td>
     </tr>
   </tbody>
 </table>
-
-
-<app-footer></app-footer>
 
 <!-- Footer Start -->
 <app-footer></app-footer>
 <!-- Footer End -->
 
 <!-- Back to Top -->
-<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top">
+  <i class="bi bi-arrow-up"></i>
+</a>

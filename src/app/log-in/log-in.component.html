@@ -1,15 +1,7 @@
 <div class="container login-container">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <!-- User type selection -->
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-          <input type="radio" class="btn-check" formControlName="userType" value="student" id="btnradio1" autocomplete="off" checked />
-          <label class="btn btn-outline-primary" for="btnradio1">Student</label>
-          <input type="radio" class="btn-check" formControlName="userType" value="instructor" id="btnradio3" autocomplete="off" />
-          <label class="btn btn-outline-primary" for="btnradio3">Instructor</label>
-        </div>
-        
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">        
         <!-- Email input -->
         <div class="form-group">
           <label for="email">Enter Your Email</label>
