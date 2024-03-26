@@ -1,5 +1,5 @@
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -11,37 +11,23 @@ import { QuestionService } from 'src/app/instructor/service/question.service';
   styleUrls: ['./add-question.component.scss']
 })
 export class AddQuestionComponent implements OnInit , OnDestroy {
-
+  @Input() exam_ID: number | null = null;
+  
   questionForm: FormGroup = new FormGroup({
-    question: new FormControl( '',[Validators.required , Validators.minLength(20) ,this.questionWithChoicesValidator ]),
+    question: new FormControl( '',[Validators.required , Validators.minLength(20) ]),
     correctAnswer: new FormControl('',[Validators.required , Validators.pattern(/^[1234abcd]$/i) , Validators.maxLength(1)]),
-    questionType: new FormControl('', [Validators.required, Validators.minLength(11),Validators.maxLength(11)]),
-   
+    questionType: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    chooseOne: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    chooseTwo: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    chooseThree: new FormControl('', [ Validators.minLength(3)]),
+    chooseFour: new FormControl('', [ Validators.minLength(3)]),
+
   });
 
-  questionWithChoicesValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const questionWithChoices = control.value;
-      
-      if (!questionWithChoices || !(/[1234abcd]/i.test(questionWithChoices))) {
-        return { 'invalidQuestionWithChoices': true }; 
-      }
-  
-      return null; 
-    };
-  }
-  
-
-  exam_ID: number | null = null; // Initialize exam_ID as null initially
+ 
 
   constructor(private QuestionService: QuestionService, private myRoute: Router, private act: ActivatedRoute) {
-    const examIdParam = this.act.snapshot.paramMap.get('exam_Id');
-    if (examIdParam !== null) {
-      this.exam_ID = +examIdParam!; // Convert to number if not null, with non-null assertion operator
-    } else {
-      // Handle the case where exam_ID is null
-      console.error('Exam ID is null.');
-    }
+   
   }
   
   ngOnDestroy(): void {
@@ -65,7 +51,19 @@ export class AddQuestionComponent implements OnInit , OnDestroy {
   get typeControl() {
     return this.questionForm.controls['questionType'];
   }
+  get oneControl() {
+    return this.questionForm.controls['chooseOne'];
+  }
 
+  get TwoControl() {
+    return this.questionForm.controls['chooseTwo'];
+  }
+  get ThreeControl() {
+    return this.questionForm.controls['chooseThree'];
+  }
+  get FourControl() {
+    return this.questionForm.controls['chooseFour'];
+  }
 
   onSubmit(e: Event) {
     e.preventDefault();
