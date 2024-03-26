@@ -12,11 +12,11 @@ import { StudentExamFormComponent } from './student-exam-form/student-exam-form.
 import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+ // { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'shared',
     component: SharedViewComponent,
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
 
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -30,13 +30,13 @@ const routes: Routes = [
   {
     path: 'coursedetails/:id',
     component: CourseDetailsComponent,
-    canActivate: [AuthGuard],
+   // canActivate: [AuthGuard],
   },
   {
     path: 'instructor',
     loadChildren: () =>
       import('./instructor/instructor.module').then((m) => m.InstructorModule),
-    canActivate: [AuthGuard],
+   // canActivate: [AuthGuard],
   },
   { path: 'studentexamform', component: StudentExamFormComponent },
   { path: '**', component: NotFoundComponent },

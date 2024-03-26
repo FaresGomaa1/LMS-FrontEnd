@@ -29,16 +29,7 @@
         </div>
     
 
-        <ul class="nav nav-tabs" *ngIf="tabs.length > 0">
-          <li class="nav-item" *ngFor="let tab of tabs; let i = index">
-            <a class="nav-link" (click)="openTab(i)" [class.active]="selectedTab === i">{{ tab }}</a>
-          </li>
-        </ul>
-        <div class="tab-content" style="cursor:pointer;">
-          <div class="tab-pane fade show active" *ngFor="let tab of tabs; let i = index" [id]="'questionTab' + i">
-            <app-add-question *ngIf="selectedTab === i" [exam_ID]="examId"></app-add-question>
-          </div>
-        </div>
+     
     </div>
   
     <div class="form-group">
@@ -96,3 +87,13 @@
 
 
 
+  <ul class="nav nav-tabs" *ngIf="tabs.length > 0">
+    <li class="nav-item" *ngFor="let tab of tabs; let i = index">
+      <a class="nav-link" (click)="openTab(i)" [class.active]="selectedTab === i">{{ tab }}</a>
+    </li>
+  </ul>
+  <div class="tab-content" style="cursor:pointer;">
+    <div class="tab-pane fade show active" *ngFor="let tab of tabs; let i = index" [id]="'questionTab' + i">
+      <app-add-question *ngIf="selectedTab === i" [exam_ID]="examId"></app-add-question>
+    </div>
+  </div>
