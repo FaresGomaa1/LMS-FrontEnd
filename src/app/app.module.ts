@@ -16,6 +16,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CourseComponent } from './course/course.component';
 import { CourseDetailsComponent } from './course/course-details/course-details.component';
 import { StudentExamFormComponent } from './student-exam-form/student-exam-form.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { StudentExamFormComponent } from './student-exam-form/student-exam-form.
     CourseComponent,
     CourseDetailsComponent,
     StudentExamFormComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,20 +10,13 @@
   <thead>
     <tr class="text-center">
       <th scope="col">Name</th>
-      <th scope="col">Description</th>
-      <th scope="col">Start Date</th>
-      <th scope="col">End Date</th>
-      <th scope="col">Number of Exams</th>
       <th scope="col">View Details</th>
     </tr>
   </thead>
   <tbody>
     <tr class="text-center" *ngFor="let course of courses; let i = index">
       <th scope="row">{{ course.name }}</th>
-      <td>{{ course.description }}</td>
-      <td>{{ course.start_Date | date }}</td>
-      <td>{{ course.end_Date | date }}</td>
-      <td>{{ course.numOfExam }}</td>
+      <td><button class="btn btn-primary" (click)="openCourseDetailsInNewTab(course.id)">View Details</button></td>
     </tr>
   </tbody>
 </table>

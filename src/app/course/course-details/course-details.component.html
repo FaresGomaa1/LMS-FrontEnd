@@ -1,17 +1,21 @@
 <app-header></app-header>
 
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <div class="course-details-container">
-        <h2>{{ selectedCourse.name }}</h2>
-        <p><strong>Description:</strong> {{ selectedCourse.description }}</p>
-        <p><strong>Start Date:</strong> {{ selectedCourse.start_Date | date }}</p>
-        <p><strong>End Date:</strong> {{ selectedCourse.end_Date | date }}</p>
-        <p><strong>Number of Exams:</strong> {{ selectedCourse.numOfExam }}</p>
+<section class="course-details">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="course-details-container">
+          <h2 class="course-details__title">{{ selectedCourse.name }}</h2>
+          <div class="course-details__info">
+            <p class="course-details__info-item"><strong>Description:</strong> {{ selectedCourse.description }}</p>
+            <p class="course-details__info-item"><strong>Start Date:</strong> {{ selectedCourse.start_Date | date }}</p>
+            <p class="course-details__info-item"><strong>End Date:</strong> {{ selectedCourse.end_Date | date }}</p>
+            <p class="course-details__info-item"><strong>Number of Exams:</strong> {{ selectedCourse.numOfExam }}</p>
+            <p class="course-details__info-item"><strong>Instructor:</strong> {{ instructor?.name }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
+</section>
 <app-footer></app-footer>
