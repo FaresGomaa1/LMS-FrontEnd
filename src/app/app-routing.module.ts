@@ -10,6 +10,7 @@ import { CourseComponent } from './course/course.component';
 import { CourseDetailsComponent } from './course/course-details/course-details.component';
 import { StudentExamFormComponent } from './student-exam-form/student-exam-form.component';
 import { AuthGuard } from './guard/auth.guard';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'shared', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'exam', component: ExamsComponent },
       { path: 'event', component: EventsComponent },
       { path: 'course', component: CourseComponent },
+      { path: 'profile', component: ProfileComponent },
     ],
   },
   { path: 'login', component: LogInComponent },
