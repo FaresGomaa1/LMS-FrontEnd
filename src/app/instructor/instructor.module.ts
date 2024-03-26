@@ -12,15 +12,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddQuestionComponent } from './components/core/add-question/add-question.component';
 
 const instructorRoutes: Routes = [
-  {path:'trial', component: TrialComponent,
+  {path:'instructor', component: TrialComponent,
   children: [
-    { path: '', redirectTo: 'InstructorCourse', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'addExam/:courseId', component: AddExamComponent },
     { path: 'addExam/addQuestion/:exam_Id', component: AddQuestionComponent },
+    { path: 'InstructorCourse', component: InstructorCoursesComponent },
   ]},
 
-  { path: 'addExam/:courseId', component: InstructorCoursesComponent },
+ 
 ];
 
 @NgModule({
