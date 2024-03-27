@@ -12,104 +12,74 @@ import { IExam } from 'src/app/instructor/interface/i-exam';
   templateUrl: './add-question.component.html',
   styleUrls: ['./add-question.component.scss']
 })
-export class AddQuestionComponent implements OnInit, OnDestroy {
-  exam: IExam | undefined;
-  questionForm: FormGroup;
-  examId: number | null = null; // Changed to nullable
-  myGetSub: Subscription | undefined;
-  myActionSub: Subscription | undefined;
+export class AddQuestionComponent implements OnInit {
+  questionForm!: FormGroup;
+  examId: number | null = null; 
 
-  constructor(
+  constructor(private formBuilder: FormBuilder, private questionService: QuestionService,
     private examService: ExamService,
-    private questionService: QuestionService,
-    private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute
-  ) {
-    this.questionForm = this.formBuilder.group({
-      question: ['', [Validators.required]],
-      correctAnswer: ['', [Validators.required]],
-      questionType: ['', [Validators.required, Validators.minLength(3)]],
-      exam_ID: [''],
-      choosesName: this.formBuilder.array([this.createChoiceFormControl()])
-    });
-  }
-
-  createChoiceFormControl(defaultValue: string = ''): FormControl {
-    return this.formBuilder.control(defaultValue);
-  }
-
-  get choicesFormArray(): FormArray {
-    return this.questionForm.get('choosesName') as FormArray;
-  }
-
-  addChoice(defaultValue: string = ''): void {
-    this.choicesFormArray.push(this.createChoiceFormControl(defaultValue));
-  }
-  
-
-  removeChoice(index: number): void {
-    if (this.choicesFormArray.length > 1) {
-      this.choicesFormArray.removeAt(index);
-    } else {
-      alert('At least one choice is required.');
-    }
-  }
+  ) { }
 
   ngOnInit(): void {
-
-    this.examId = +this.route.snapshot.params['examId'] ; 
-    this.questionForm.controls['exam_ID'].setValue(this.examId);
-    
-    this.myGetSub = this.examService.getExamById(this.examId).subscribe(
-      (exam: IExam) => {
-        this.exam = exam;
-      },
-      error => {
-        console.error('Failed to fetch exam:', error);
+    this.initializeForm();
+    this.examId = +this.route.snapshot.params['examId'];
+    this.questionForm.get('exam_ID')?.setValue(this.examId); 
+  }
+  correctAnswerValidator(): ValidatorFn {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const choices = formGroup.get('choices')?.value.split(',');
+      const correctAnswer = formGroup.get('correctAnswer')?.value;
+      
+      if (choices && correctAnswer) {
+        if (choices.indexOf(correctAnswer) == -1) {
+          return { 'incorrectAnswer': true };
+        }
       }
-    );
+      return null;
+    };
   }
-
-  ngOnDestroy(): void {
-    this.myGetSub?.unsubscribe();
-    this.myActionSub?.unsubscribe();
-  }
-
-  resetForm(): void {
-    this.questionForm.reset();
-    this.choicesFormArray.clear();
-    this.addChoice(); // Add one choice by default
+  
+  initializeForm(): void {
+    this.questionForm = this.formBuilder.group({
+      question: ['', Validators.required],
+      choices: ['', Validators.required],
+      correctAnswer: ['', Validators.required],
+      questionType: ['', Validators.required],
+      exam_ID: [null, Validators.required] 
+    }, { validator: this.correctAnswerValidator() }); 
   }
 
   onSubmit(): void {
+
     if (this.examId === null) { 
-      console.error('Exam ID not found.'); 
-      return;
-    }
-
-    console.log(this.questionForm.value)
+          console.error('Exam ID not found.'); 
+          return;
+        }
     if (this.questionForm.valid) {
-      const questionData = this.questionForm.value;
+      const questionData: IQuestion = {
+        id: 0, 
+        question: this.questionForm.value.question,
+        exam_ID: this.questionForm.value.exam_ID,
+        choosesName: this.questionForm.value.choices.split(','),
+        correctAnswer: this.questionForm.value.correctAnswer,
+        questionType: this.questionForm.value.questionType
+      };
 
+      this.questionService.addQuestion(questionData , this.examId).subscribe(
+        (response) => {
+          console.log('Question added successfully:', response);
+          
+          this.router.navigate(['/instructor/shared/viewQuestions' ,this.examId]);
       
-    questionData.choosesName = questionData.choosesName.map((choice: any) => choice.choosesName);
-      this.myActionSub = this.questionService.addQuestion(questionData, this.examId)
-        .subscribe(
-          () => {
-            alert('Question added successfully, Here is the form to add another one');
-            this.resetForm();
-          },
-          error => {
-            console.error('Failed to add question:', error);
-          }
-        );
+        },
+        (error) => {
+          console.error('Error adding question:', error);
+        }
+      );
     } else {
-      console.error('Invalid question form.');
+      this.questionForm.markAllAsTouched();
     }
-  }
-  
-  get questionFormControl(): { [key: string]: AbstractControl } {
-    return this.questionForm.controls;
   }
 }

@@ -17,7 +17,6 @@
               <div class="col-md-6">
                 <p class="card-text">Max Degree: {{ exam.max_Degree }}</p>
                 <p class="card-text">Min Degree: {{ exam.min_Degree }} </p>
-                <p class="card-text">Students:  {{ exam.studentIDs }} </p>
               </div>
             </div>
             <a [routerLink]="['/instructor/shared/editExam' ,exam.id]" class="btn btn-primary m-3">Edit Exam</a>

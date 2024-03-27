@@ -3,7 +3,7 @@
     <div class="form-group">
       <label for="examName">Exam Name</label>
       <span class="p-float-label">
-        <input pInputText type="text" [disabled]="formSubmitted"  id="examName" formControlName="name" class="form-control"
+        <input pInputText type="text"  id="examName" formControlName="name" class="form-control"
           placeholder="Enter exam name" required [ngClass]="{
             'is-valid': nameControl.valid,
             'is-invalid': nameControl.invalid && nameControl.touched
@@ -33,7 +33,7 @@
   
     <div class="form-group">
       <label for="examDuration">Duration (in minutes)</label>
-      <input [disabled]="formSubmitted"  pInputText type="number" id="examDuration" formControlName="duration" class="form-control"
+      <input  pInputText type="number" id="examDuration" formControlName="duration" class="form-control"
         placeholder="Enter exam duration" required [ngClass]="{
           'is-valid': durationControl.valid,
           'is-invalid': durationControl.invalid && durationControl.touched
@@ -58,7 +58,7 @@
   
     <div class="form-group">
       <label for="examDate">Exam Date</label>
-      <input [disabled]="formSubmitted"  pInputText type="date" id="examDate" formControlName="date" class="form-control"
+      <input  pInputText type="date" id="examDate" formControlName="date" class="form-control"
         placeholder="Select exam date" required [ngClass]="{
           'is-valid': dateControl.valid,
           'is-invalid': dateControl.invalid && dateControl.touched
@@ -71,7 +71,7 @@
   
     <div class="form-group">
       <label for="examMaxDegree">Max Degree</label>
-      <input [disabled]="formSubmitted"  pInputText type="number" id="examMaxDegree" formControlName="max_Degree" class="form-control"
+      <input   pInputText type="number" id="examMaxDegree" formControlName="max_Degree" class="form-control"
         placeholder="Enter max degree" required [ngClass]="{
           'is-valid': maxControl.valid,
           'is-invalid': maxControl.invalid && maxControl.touched

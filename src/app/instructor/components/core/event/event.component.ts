@@ -8,18 +8,25 @@ import { EventService } from 'src/app/instructor/service/event.service';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent {
-  events: IEvent[] = [];
-  studentEventIds: number[] = [1,2];
+ 
 
   constructor(private eventService: EventService) { }
 
   ngOnInit(): void {
-    this.getAllEvents();
+    this.loadEvents(); // Corrected method name
   }
 
-  getAllEvents(): void {
-    this.eventService.getEvents().subscribe((events: IEvent[]) =>
-      this.events = events.filter(event => this.studentEventIds.includes(event.id))
+  events: IEvent[] | undefined; // Corrected property name
+
+  loadEvents() { // Corrected method name
+    this.eventService.getEvents().subscribe(
+      events => { // Corrected variable name
+        this.events = events; // Corrected variable name
+        console.log(this.events);
+      },
+      error => {
+        console.log("error");
+      }
     );
   }
 }
