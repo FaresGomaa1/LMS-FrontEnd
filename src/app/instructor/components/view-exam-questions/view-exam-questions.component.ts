@@ -24,6 +24,20 @@ export class ViewExamQuestionsComponent {
     this.loadQuestions();
   }
 
+
+  deleteQuestion(id: number) {
+    if (confirm('Are you sure you want to delete this question?')) {
+      this.QuestionService.deleteQuestion(id)
+        .subscribe(() => {
+          console.log(`Question with ID ${id} deleted successfully.`);
+          // Refresh the list of questions after deletion
+          this.loadQuestions();
+        }, error => {
+          console.error('Error deleting question:', error);
+        });
+    }}
+  
+
   loadQuestions() {
     this.QuestionService.getQuestionbyExamId(this.exam_Id).subscribe(
       questions => {
