@@ -5,7 +5,7 @@ export interface IExam {
   id: number;
   name: string;
   duration: number;
-  time:Time;
+ // time:Time;
   date: Date;
   max_Degree: number;
   min_Degree: number;

@@ -22,7 +22,7 @@ export class AddExamComponent implements OnInit , OnDestroy{
     numberOfQuestions: new FormControl('0'),
     name: new FormControl('',[Validators.required ,Validators.minLength(3)]),
     duration: new FormControl('', [Validators.required]),
-    time: new FormControl('', [Validators.required]),
+   // time: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required , this.minDateValidator.bind(this, this.today)]),
     max_Degree: new FormControl('', [Validators.required]),
     min_Degree: new FormControl('', [Validators.required]),

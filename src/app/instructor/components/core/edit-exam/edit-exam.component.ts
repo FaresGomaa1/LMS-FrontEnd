@@ -23,7 +23,7 @@ export class EditExamComponent implements OnInit , OnDestroy{
     name: new FormControl('',[Validators.required ,Validators.minLength(3)]),
     duration: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required , this.minDateValidator.bind(this, this.today)]),
-    time: new FormControl('', [Validators.required]),
+  //  time: new FormControl('', [Validators.required]),
     max_Degree: new FormControl('', [Validators.required]),
     min_Degree: new FormControl('', [Validators.required]),
     course_ID: new FormControl(''),
@@ -84,7 +84,7 @@ export class EditExamComponent implements OnInit , OnDestroy{
       this.ExamForm.controls['max_Degree'].setValue(data.max_Degree);
       this.ExamForm.controls['duration'].setValue(data.duration);
       this.ExamForm.controls['course_ID'].setValue(data.course_ID);
-      this.ExamForm.controls['time'].setValue(data.time);
+     // this.ExamForm.controls['time'].setValue(data.time);
 
   });
   }
@@ -111,7 +111,7 @@ export class EditExamComponent implements OnInit , OnDestroy{
         max_Degree: this.ExamForm.get('max_Degree')?.value,
         min_Degree: this.ExamForm.get('min_Degree')?.value,
         course_ID: this.ExamForm.get('course_ID')?.value,
-        time: this.ExamForm.get('time')?.value,
+     //   time: this.ExamForm.get('time')?.value,
         id:this.id
       };
       this.ExamService.updateExam( this.id, examData ).subscribe(

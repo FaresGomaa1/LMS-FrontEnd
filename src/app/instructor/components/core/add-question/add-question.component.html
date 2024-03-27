@@ -52,9 +52,7 @@
           <div *ngFor="let choice of choicesFormArray.controls; let i = index" [formGroupName]="i">
             <div class="input-group mb-3">
               <input type="text" class="form-control" formControlName="choosesName" placeholder="Choice {{ i + 1 }}" #choiceInput>
-              <div class="invalid-feedback error-message" *ngIf="questionFormControl['choosesName'].errors && questionFormControl['choosesName'].touched">
-                <ng-container *ngIf="questionFormControl['choosesName'].hasError('invalidCorrectAnswer')">Type is required</ng-container>
-              </div> 
+              
               <button class="btn btn-outline-danger" type="button" (click)="addChoice(choiceInput.value)">Add</button>
               <button class="btn btn-outline-danger" type="button" (click)="removeChoice(i)">Remove</button>
             </div>
@@ -62,7 +60,25 @@
         </div>
         
         
+<!-- 
+        <div formArrayName="choices">
+         <div *ngFor="let choice of choicesFormArray.controls; let i = index">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" formControlName="choiceText" placeholder="Choice {{ i + 1 }}"
+        [ngClass]="{
+          'is-valid': choice.valid && choice.touched && choice.get('choiceText')?.valid,
+          'is-invalid': choice.invalid && choice.touched && choice.get('choiceText')?.invalid
+        }">
+      <button class="btn btn-outline-danger" type="button" (click)="removeChoice(i)">Remove</button> -->
+      <!-- <div class="invalid-feedback" *ngIf="choice.get('choiceText')?.invalid && choice.get('choiceText')?.touched">
+        <ng-container *ngIf="choice.get('choiceText').errors?.minlength">Choice must be at least 3 characters long</ng-container>
+      </div> -->
+<!--       
+    </div>
+  </div>
+</div> -->
 
+        <!-- <button class="btn btn-primary" type="button" (click)="addChoice()">Add Choice</button> -->
 
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>

@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="events-list">
+          <div class="event" *ngFor="let event of events">
+            <div class="event-header">
+              <h3>{{ event.name }} </h3>
+              <span class="event-date">
+                <i class="far fa-calendar-alt"></i> {{ event.start_Date | date: 'mediumDate' }} - {{ event.end_Date | date: 'mediumDate' }}
+              </span>
+            </div>
+            <div class="event-body">
+              <p>{{ event.discription }}</p>
+            </div>
+          </div>
+          <div *ngIf="events.length === 0" class="text-center">
+            <p>No events available.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

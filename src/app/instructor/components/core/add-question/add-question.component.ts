@@ -32,19 +32,7 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
       questionType: ['', [Validators.required, Validators.minLength(3)]],
       exam_ID: [''],
       choosesName: this.formBuilder.array([this.createChoiceFormControl()])
-    }, { validators: this.validateChoices });
-  }
-
-
-
-  validateChoices(control: AbstractControl): { [key: string]: any } | null {
-    const correctAnswer = control.get('correctAnswer')?.value;
-    const choosesName = control.get('choosesName') as FormArray;
-
-    if (choosesName.controls.map(control => control.value).indexOf(correctAnswer) == -1) {
-      return { 'invalidCorrectAnswer': true };
-    }
-    return null;
+    });
   }
 
   createChoiceFormControl(defaultValue: string = ''): FormControl {
@@ -117,8 +105,7 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
           }
         );
     } else {
-
-      alert('Please Fill The Form Correctly');
+      console.error('Invalid question form.');
     }
   }
   
