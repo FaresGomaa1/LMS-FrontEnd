@@ -1,22 +1,23 @@
+
 <div class="container">
-    <div class="row mb-5">
-      <div class="col-md-6 offset-md-3">
-        <div class="events-list">
-          <div class="event" *ngFor="let event of events">
-            <div class="event-header">
-              <h1>{{ event.name }} </h1>
-              <span class="event-date">
-                <i class="far fa-calendar-alt"></i> {{ event.start_Date | date: 'mediumDate' }} - {{ event.end_Date | date: 'mediumDate' }}
-              </span>
-            </div>
-            <div class="event-body text-center">
-              <h2 >{{ event.description }} </h2>
-            </div>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="events-list">
+        <div class="event" *ngFor="let event of events">
+          <div class="event-header">
+            <h3>{{ event.name }} </h3>
+            <span class="event-date">
+              <i class="far fa-calendar-alt"></i> {{ event.start_Date |date : 'mediumDate' }} - {{ event.end_Date | date: 'mediumDate' }}
+            </span>
           </div>
-          <div *ngIf="events?.length == 0" class="text-center">
-            <p>No events available.</p>
+          <div class="event-body">
+            <p>{{ event.description }}</p>
           </div>
+        </div>
+        <div *ngIf="events?.length === 0" class="text-center">
+          <p>No events available.</p>
         </div>
       </div>
     </div>
   </div>
+</div>

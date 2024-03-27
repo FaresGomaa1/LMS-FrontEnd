@@ -13,15 +13,14 @@ export class EventComponent {
   constructor(private eventService: EventService) { }
 
   ngOnInit(): void {
-    this.loadEvents(); // Corrected method name
+    this.loadEvents();
   }
 
-  events: IEvent[] | undefined; // Corrected property name
-
-  loadEvents() { // Corrected method name
+  events: IEvent[] | undefined; 
+  loadEvents() {  
     this.eventService.getEvents().subscribe(
-      events => { // Corrected variable name
-        this.events = events; // Corrected variable name
+      events => {  
+        this.events = events;  
         console.log(this.events);
       },
       error => {
