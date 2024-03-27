@@ -32,25 +32,33 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
       questionType: ['', [Validators.required, Validators.minLength(3)]],
       exam_ID: [''],
       choosesName: this.formBuilder.array([this.createChoiceFormControl()])
-    });
+    }, { validators: this.validateChoices });
   }
 
-  createChoiceFormControl(): FormControl {
-    return this.formBuilder.control('');
+
+
+  validateChoices(control: AbstractControl): { [key: string]: any } | null {
+    const correctAnswer = control.get('correctAnswer')?.value;
+    const choosesName = control.get('choosesName') as FormArray;
+
+    if (choosesName.controls.map(control => control.value).indexOf(correctAnswer) == -1) {
+      return { 'invalidCorrectAnswer': true };
+    }
+    return null;
   }
-  // createChoiceFormGroup(): FormGroup {
-  //   return this.formBuilder.group({
-  //     choiceText: ['']
-  //   });
-  // }
+
+  createChoiceFormControl(defaultValue: string = ''): FormControl {
+    return this.formBuilder.control(defaultValue);
+  }
 
   get choicesFormArray(): FormArray {
     return this.questionForm.get('choosesName') as FormArray;
   }
 
-  addChoice(): void {
-    this.choicesFormArray.push(this.createChoiceFormControl());
+  addChoice(defaultValue: string = ''): void {
+    this.choicesFormArray.push(this.createChoiceFormControl(defaultValue));
   }
+  
 
   removeChoice(index: number): void {
     if (this.choicesFormArray.length > 1) {
@@ -64,6 +72,7 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
 
     this.examId = +this.route.snapshot.params['examId'] ; 
     this.questionForm.controls['exam_ID'].setValue(this.examId);
+    
     this.myGetSub = this.examService.getExamById(this.examId).subscribe(
       (exam: IExam) => {
         this.exam = exam;
@@ -95,6 +104,8 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
     if (this.questionForm.valid) {
       const questionData = this.questionForm.value;
 
+      
+    questionData.choosesName = questionData.choosesName.map((choice: any) => choice.choosesName);
       this.myActionSub = this.questionService.addQuestion(questionData, this.examId)
         .subscribe(
           () => {
@@ -106,7 +117,8 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
           }
         );
     } else {
-      console.error('Invalid question form.');
+
+      alert('Please Fill The Form Correctly');
     }
   }
   

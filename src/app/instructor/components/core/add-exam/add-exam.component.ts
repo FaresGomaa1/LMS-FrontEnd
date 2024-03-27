@@ -92,6 +92,13 @@ export class AddExamComponent implements OnInit , OnDestroy{
 
   ngOnInit(): void {
 
+    // this.ExamForm.valueChanges.subscribe((value: string) => {
+    //   // Check if the value is not empty and does not contain seconds
+    //   if (value && !value.includes(':')) {
+    //     // Add seconds to the time value
+    //     this.timeControl.setValue(value + ':00', { emitEvent: false }); // Emitting event is set to false to prevent infinite loop
+    //   }
+    // });
   this.course_Id = this.act.snapshot.params['courseId'];
   this.ExamForm.controls['course_ID'].setValue(this.course_Id);
     console.log(this.course_Id);

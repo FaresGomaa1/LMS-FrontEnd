@@ -43,9 +43,10 @@
       </div>
     </div>
 
+
     <div class="form-group">
       <label for="examtime">Exam time</label>
-      <input [disabled]="formSubmitted"  pInputText type="time" id="examtime" formControlName="time" class="form-control"
+      <input [disabled]="formSubmitted"  type="time" id="examtime" formControlName="time" class="form-control"
         placeholder="Select exam time" required [ngClass]="{
           'is-valid': timeControl.valid,
           'is-invalid': timeControl.invalid && timeControl.touched
