@@ -15,8 +15,10 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { CourseComponent } from './course/course.component';
 import { CourseDetailsComponent } from './course/course-details/course-details.component';
-import { StudentExamFormComponent } from './student-exam-form/student-exam-form.component';
 import { ProfileComponent } from './profile/profile.component';
+import { DurationToMinutesPipe } from './exams/duration-to-minutes.pipe';
+import { SolveExamComponent } from './exams/solve-exam/solve-exam.component';
+import { QuestionsComponent } from './exams/solve-exam/questions/questions.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +33,10 @@ import { ProfileComponent } from './profile/profile.component';
     FooterComponent,
     CourseComponent,
     CourseDetailsComponent,
-    StudentExamFormComponent,
     ProfileComponent,
+    DurationToMinutesPipe,
+    SolveExamComponent,
+    QuestionsComponent,
   ],
   imports: [
     BrowserModule,

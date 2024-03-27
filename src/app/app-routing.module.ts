@@ -8,9 +8,10 @@ import { HomeComponent } from './home/home.component';
 import { SharedViewComponent } from './shared-view/shared-view.component';
 import { CourseComponent } from './course/course.component';
 import { CourseDetailsComponent } from './course/course-details/course-details.component';
-import { StudentExamFormComponent } from './student-exam-form/student-exam-form.component';
 import { AuthGuard } from './guard/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
+import { SolveExamComponent } from './exams/solve-exam/solve-exam.component';
+import { QuestionsComponent } from './exams/solve-exam/questions/questions.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'shared', pathMatch: 'full' },
@@ -29,6 +30,8 @@ const routes: Routes = [
     ],
   },
   { path: 'login', component: LogInComponent },
+  { path: 'instructions/:id', component: SolveExamComponent },
+  { path: 'startExam/:id', component: QuestionsComponent },
   {
     path: 'coursedetails/:id',
     component: CourseDetailsComponent,
@@ -40,7 +43,6 @@ const routes: Routes = [
       import('./instructor/instructor.module').then((m) => m.InstructorModule),
     canActivate: [AuthGuard],
   },
-  { path: 'studentexamform', component: StudentExamFormComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

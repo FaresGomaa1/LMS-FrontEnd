@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="bg-light p-2">
-  <h3 style="margin-left: 50%; margin-top: 50px; color: green;">Exams</h3>
+  <h3 style="margin-left: 50%; margin-top: 50px; color: green">Exams</h3>
 </div>
 
 <table class="table table-hover table-striped">
@@ -16,19 +16,23 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="text-center" *ngFor="let exam of exams; let i=index">
+    <tr class="text-center" *ngFor="let exam of exams; let i = index">
       <td>{{ exam.name }}</td>
-      <td>{{ exam.duration }} Min</td>
-      <td>{{ exam.date | date:'mediumDate' }}</td>
-      <td>{{ exam.date | date:'shortTime' }}</td>
+      <td>{{ exam.duration | durationToMinutes }} Min</td>
+      <td>{{ exam.date | date : "mediumDate" }}</td>
+      <td>{{ exam.date | date : "shortTime" }}</td>
       <td>{{ courses[i] }}</td>
       <td>
-        <button id="examButton_{{i}}" class="btn btn-primary" [disabled]="!checkTodayDate(i)">
+        <button
+        (click)="startExam(i)"
+          id="examButton_{{ i }}"
+          class="btn btn-primary"
+          [disabled]="!checkTodayDate(i)"
+        >
           Start Exam
-        </button>          
+        </button>
       </td>
     </tr>
-       
   </tbody>
 </table>
 

@@ -1,11 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ExamService } from './exam.service';
 import { StudentService } from './../generalServices/student.service';
 import { IExam } from './iexam';
@@ -13,6 +6,7 @@ import { ICourses } from './ICourses';
 import { Observable, forkJoin } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { switchMap } from 'rxjs/operators';
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
   selector: 'app-exams',
@@ -23,16 +17,17 @@ export class ExamsComponent implements OnInit {
   tokenKey = 'auth_token';
   exams: IExam[] = [];
   courses: string[] = [];
-  isToday: boolean = false;
 
   constructor(
     private examService: ExamService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private router: Router // Inject Router
   ) {}
 
   ngOnInit(): void {
     this.getData();
   }
+
   getData() {
     const token = localStorage.getItem(this.tokenKey);
     if (token) {
@@ -72,16 +67,24 @@ export class ExamsComponent implements OnInit {
       this.courses = courses.map((course) => course.name);
     });
   }
+
   checkTodayDate(index: number): boolean {
     const currentDate = new Date();
-    const examDate = new Date(this.exams[index].date);
-    if (currentDate.getTime() > examDate.getTime()) {
-      this.exams.splice(index, 1);
-      return false;
-    } else if (currentDate.getTime() === examDate.getTime()) {
-      return true;
-    } else {
-      return false;
+    const exam = this.exams[index];
+    if (!exam) {
+      return false; 
     }
+
+    const examDate = new Date(exam.date);
+    const currentDateString = currentDate.toDateString();
+    const examDateString = examDate.toDateString();
+
+    return currentDateString === examDateString;
+    return true;
+  }
+
+  startExam(index: number): void {
+    const examId: number = this.exams[index].id;
+    this.router.navigate(['/instructions', examId]);
   }
 }
