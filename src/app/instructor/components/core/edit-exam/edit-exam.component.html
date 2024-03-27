@@ -17,22 +17,6 @@
       </span>
     </div>
 
-    <div class="container">
-        <h3>Enter Number of Questions:</h3>
-        <input  type="number" [(ngModel)]="numberOfQuestions" formControlName="numberOfQuestions" class="form-control"
-        placeholder="Enter exam name" required [ngClass]="{
-            'is-valid': numberquestionControl.valid,
-            'is-invalid': numberquestionControl.invalid && numberquestionControl.touched
-          }" 
-        (input)="generateTabs()">
-        <div class="invalid-feedback error-message" *ngIf="numberquestionControl.errors && numberquestionControl.touched">
-            <ng-container *ngIf="numberquestionControl.hasError('required')">Number of questions is required</ng-container>
-            <ng-container *ngIf="numberquestionControl.hasError('min')">Number of questions must be at least 1</ng-container>
-        </div>
-    
-
-     
-    </div>
   
     <div class="form-group">
       <label for="examDuration">Duration (in minutes)</label>
@@ -45,6 +29,18 @@
         <ng-container *ngIf="durationControl.hasError('required')">Duration is required</ng-container>
       </div>
     </div>
+
+    <div class="form-group">
+      <label for="examtime">Exam time</label>
+      <input [disabled]="formSubmitted"  pInputText type="time" id="examtime" formControlName="time" class="form-control"
+        placeholder="Select exam time" required [ngClass]="{
+          'is-valid': timeControl.valid,
+          'is-invalid': timeControl.invalid && timeControl.touched
+        }" />
+      <div class="invalid-feedback error-message" *ngIf="timeControl.errors && timeControl.touched">
+        <ng-container *ngIf="timeControl.hasError('required')">Exam time is required</ng-container>
+      </div>
+    </div>
   
     <div class="form-group">
       <label for="examDate">Exam Date</label>
@@ -55,6 +51,7 @@
         }" />
       <div class="invalid-feedback error-message" *ngIf="dateControl.errors && dateControl.touched">
         <ng-container *ngIf="dateControl.hasError('required')">Exam date is required</ng-container>
+        <ng-container *ngIf="dateControl.hasError('minDate')">Exam date must be in the future</ng-container>
       </div>
     </div>
   

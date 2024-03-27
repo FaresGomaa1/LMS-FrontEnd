@@ -13,6 +13,7 @@ import { AddQuestionComponent } from './components/core/add-question/add-questio
 import { CoursesExamComponent } from './components/core/courses-exam/courses-exam.component';
 import { EditExamComponent } from './components/core/edit-exam/edit-exam.component';
 import { ViewExamQuestionsComponent } from './components/view-exam-questions/view-exam-questions.component';
+import { EditQuestionComponent } from './components/edit-question/edit-question.component';
 
 const instructorRoutes: Routes = [
   {path: '', redirectTo: 'shared', pathMatch: 'full'},
@@ -26,9 +27,9 @@ const instructorRoutes: Routes = [
     { path: 'profile', component: ProfileComponent },
     {path:'editExam/:examId',component:EditExamComponent},
     {path:'addQuestion/:examId',component:AddQuestionComponent},
+    {path:'editQuestion/:questionId',component:EditQuestionComponent},
     {path:'viewQuestions/:examId',component:ViewExamQuestionsComponent}
 
-   // {path: '', redirectTo: 'InstructorCourses', pathMatch: 'full'},
     
   ]},
 
@@ -47,7 +48,8 @@ const instructorRoutes: Routes = [
     AddQuestionComponent,
     CoursesExamComponent,
     EditExamComponent,
-    ViewExamQuestionsComponent
+    ViewExamQuestionsComponent,
+    EditQuestionComponent
   ],
   imports: [
     CommonModule,

@@ -1,20 +1,26 @@
-<div *ngIf="questions && questions.length > 0">
-    <h2>Exam Questions</h2>
-    <ul>
-      <li *ngFor="let question of questions">
-        <h3>{{ question.question }}</h3>
-        <p>Question Type: {{ question.questionType }}</p>
-        <p>Correct Answer: {{ question.correctAnswer }}</p>
-        <p>Choices:</p>
-        <ul>
-          <li *ngFor="let choice of question.choosesName">
-            {{ choice }}
-          </li>
-        </ul>
-      </li>
-    </ul>
+
+  <div *ngIf="questions && questions.length > 0" class="container mt-5">
+    <h2>Exam Questions  
+        <a [routerLink]="['/instructor/shared/addQuestion' ,exam_Id]" class="btn btn-primary">Add Question</a></h2>
+  <div class="card bg-light mb-3 col-10 mt-4"  *ngFor="let question of questions">
+    <div class="card-header">{{ question.question }}</div>
+    <div class="card-body">
+      <h5 class="card-title">Choices:</h5>
+      <ul>
+        <li *ngFor="let choice of question.choosesName">
+          {{ choice }}
+        </li>
+      </ul>
+      <p class="card-text">Correct Answer: {{ question.correctAnswer }}</p>
+     
+     <p> 
+      <button class="btn btn-success" [routerLink]="['/instructor/shared/editQuestion' ,question.id]" >Edit Question</button> 
+      <button class="btn btn-danger m-3" (click)="deleteQuestion(question.id)"> Delete Question</button> 
+    </p>
+
+    </div>
   </div>
   <div *ngIf="questions && questions.length === 0">
     <p>No questions found for this exam.</p>
   </div>
-  
+</div>
