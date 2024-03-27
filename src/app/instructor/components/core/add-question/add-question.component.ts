@@ -35,18 +35,22 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
     });
   }
 
-  createChoiceFormControl(defaultValue: string = ''): FormControl {
-    return this.formBuilder.control(defaultValue);
+  createChoiceFormControl(): FormControl {
+    return this.formBuilder.control('');
   }
+  // createChoiceFormGroup(): FormGroup {
+  //   return this.formBuilder.group({
+  //     choiceText: ['']
+  //   });
+  // }
 
   get choicesFormArray(): FormArray {
     return this.questionForm.get('choosesName') as FormArray;
   }
 
-  addChoice(defaultValue: string = ''): void {
-    this.choicesFormArray.push(this.createChoiceFormControl(defaultValue));
+  addChoice(): void {
+    this.choicesFormArray.push(this.createChoiceFormControl());
   }
-  
 
   removeChoice(index: number): void {
     if (this.choicesFormArray.length > 1) {
@@ -60,7 +64,6 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
 
     this.examId = +this.route.snapshot.params['examId'] ; 
     this.questionForm.controls['exam_ID'].setValue(this.examId);
-    
     this.myGetSub = this.examService.getExamById(this.examId).subscribe(
       (exam: IExam) => {
         this.exam = exam;
@@ -92,8 +95,6 @@ export class AddQuestionComponent implements OnInit, OnDestroy {
     if (this.questionForm.valid) {
       const questionData = this.questionForm.value;
 
-      
-    questionData.choosesName = questionData.choosesName.map((choice: any) => choice.choosesName);
       this.myActionSub = this.questionService.addQuestion(questionData, this.examId)
         .subscribe(
           () => {

@@ -18,7 +18,7 @@
   <tbody>
     <tr class="text-center" *ngFor="let exam of exams; let i = index">
       <td>{{ exam.name }}</td>
-      <td>{{ exam.duration | durationToMinutes }} Min</td>
+      <td>{{ exam.duration }} Min</td>
       <td>{{ exam.date | date : "mediumDate" }}</td>
       <td>{{ exam.date | date : "shortTime" }}</td>
       <td>{{ courses[i] }}</td>

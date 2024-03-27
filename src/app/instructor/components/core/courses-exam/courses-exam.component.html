@@ -20,10 +20,10 @@
                 <p class="card-text">Students:  {{ exam.studentIDs }} </p>
               </div>
             </div>
-            <a [routerLink]="['/instructor/shared/editExam' ,exam.id]" class="btn btn-primary m-3">Edit Exam</a>
-            <a [routerLink]="['/instructor/shared/viewQuestions' ,exam.id]" class="btn btn-primary m-3">View Exam Questions</a>
-            <button class="btn btn-danger m-3" (click)="deleteExam(exam.id)"> Delete Exam</button> 
-            <a [routerLink]="['/instructor/shared/addQuestion' ,exam.id]" class="btn btn-primary m-3">Add Question</a>
+            <a [routerLink]="['/instructor/shared/editExam' ,exam.id]" class="btn btn-primary">Edit Exam</a>
+            <a [routerLink]="['/instructor/shared/viewQuestions' ,exam.id]" class="btn btn-primary">View Exam Questions</a>
+
+            <a [routerLink]="['/instructor/shared/addQuestion' ,exam.id]" class="btn btn-primary">Add Question</a>
 
           </div>
         </div>
