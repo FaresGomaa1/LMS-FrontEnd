@@ -1,90 +1,116 @@
-
+import { ExamService } from 'src/app/instructor/service/exam.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { QuestionService } from 'src/app/instructor/service/question.service';
+import { IQuestion } from 'src/app/instructor/interface/iquestion';
+import { IExam } from 'src/app/instructor/interface/i-exam';
 
 @Component({
   selector: 'app-add-question',
   templateUrl: './add-question.component.html',
   styleUrls: ['./add-question.component.scss']
 })
-export class AddQuestionComponent implements OnInit , OnDestroy {
-  @Input() exam_ID: number | null = null;
-  
-  questionForm: FormGroup = new FormGroup({
-    question: new FormControl( '',[Validators.required , Validators.minLength(20) ]),
-    correctAnswer: new FormControl('',[Validators.required , Validators.pattern(/^[1234abcd]$/i) , Validators.maxLength(1)]),
-    questionType: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    chooseOne: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    chooseTwo: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    chooseThree: new FormControl('', [ Validators.minLength(3)]),
-    chooseFour: new FormControl('', [ Validators.minLength(3)]),
+export class AddQuestionComponent implements OnInit, OnDestroy {
+  exam: IExam | undefined;
+  questionForm: FormGroup;
+  examId: number | null = null; // Changed to nullable
+  myGetSub: Subscription | undefined;
+  myActionSub: Subscription | undefined;
 
-  });
-
- 
-
-  constructor(private QuestionService: QuestionService, private myRoute: Router, private act: ActivatedRoute) {
-   
+  constructor(
+    private examService: ExamService,
+    private questionService: QuestionService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.questionForm = this.formBuilder.group({
+      question: ['', [Validators.required]],
+      correctAnswer: ['', [Validators.required]],
+      questionType: ['', [Validators.required, Validators.minLength(3)]],
+      exam_ID: [''],
+      choosesName: this.formBuilder.array([this.createChoiceFormControl()])
+    });
   }
-  
+
+  createChoiceFormControl(): FormControl {
+    return this.formBuilder.control('');
+  }
+  // createChoiceFormGroup(): FormGroup {
+  //   return this.formBuilder.group({
+  //     choiceText: ['']
+  //   });
+  // }
+
+  get choicesFormArray(): FormArray {
+    return this.questionForm.get('choosesName') as FormArray;
+  }
+
+  addChoice(): void {
+    this.choicesFormArray.push(this.createChoiceFormControl());
+  }
+
+  removeChoice(index: number): void {
+    if (this.choicesFormArray.length > 1) {
+      this.choicesFormArray.removeAt(index);
+    } else {
+      alert('At least one choice is required.');
+    }
+  }
+
+  ngOnInit(): void {
+
+    this.examId = +this.route.snapshot.params['examId'] ; 
+    this.questionForm.controls['exam_ID'].setValue(this.examId);
+    this.myGetSub = this.examService.getExamById(this.examId).subscribe(
+      (exam: IExam) => {
+        this.exam = exam;
+      },
+      error => {
+        console.error('Failed to fetch exam:', error);
+      }
+    );
+  }
+
   ngOnDestroy(): void {
     this.myGetSub?.unsubscribe();
     this.myActionSub?.unsubscribe();
   }
 
-  myGetSub: Subscription | undefined;
-  myActionSub: Subscription | undefined;
-
-  ngOnInit(): void {
-
+  resetForm(): void {
+    this.questionForm.reset();
+    this.choicesFormArray.clear();
+    this.addChoice(); // Add one choice by default
   }
 
-  get questionControl() {
-    return this.questionForm.controls['question'];
-  }
-  get correctAnswerControl() {
-    return this.questionForm.controls['correctAnswer'];
-  }
-  get typeControl() {
-    return this.questionForm.controls['questionType'];
-  }
-  get oneControl() {
-    return this.questionForm.controls['chooseOne'];
-  }
-
-  get TwoControl() {
-    return this.questionForm.controls['chooseTwo'];
-  }
-  get ThreeControl() {
-    return this.questionForm.controls['chooseThree'];
-  }
-  get FourControl() {
-    return this.questionForm.controls['chooseFour'];
-  }
-
-  onSubmit(e: Event) {
-    e.preventDefault();
-    if (this.exam_ID === null) {
-      this.myRoute.navigate(['instructorCourses']);
-      return; 
+  onSubmit(): void {
+    if (this.examId === null) { 
+      console.error('Exam ID not found.'); 
+      return;
     }
-  
-    this.myActionSub = this.QuestionService.addQuestion(this.questionForm.value, this.exam_ID)
-      .subscribe(
-        () => {
-          console.log('Question added successfully.');
-          this.myRoute.navigate(['addExam']);
-        },
-        error => {
-          console.error('Failed to add question:', error);
-        }
-      );
+
+    console.log(this.questionForm.value)
+    if (this.questionForm.valid) {
+      const questionData = this.questionForm.value;
+
+      this.myActionSub = this.questionService.addQuestion(questionData, this.examId)
+        .subscribe(
+          () => {
+            alert('Question added successfully, Here is the form to add another one');
+            this.resetForm();
+          },
+          error => {
+            console.error('Failed to add question:', error);
+          }
+        );
+    } else {
+      console.error('Invalid question form.');
+    }
   }
   
-  
-
+  get questionFormControl(): { [key: string]: AbstractControl } {
+    return this.questionForm.controls;
+  }
 }
-

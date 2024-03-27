@@ -3,10 +3,6 @@ export interface IQuestion {
   question: string;       
   questionType: string;     
   correctAnswer: string;    
-  exam_ID: number;        
-  examName?: string;       
-  chooseOne: string;       
-  chooseTwo: string;       
-  chooseThree: string;     
-  chooseFour: string;      
+  exam_ID: number;       
+  choosesName: string[] ;   
 }

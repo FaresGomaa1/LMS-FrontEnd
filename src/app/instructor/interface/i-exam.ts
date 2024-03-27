@@ -1,3 +1,4 @@
+import { Time } from "@angular/common";
 import { IQuestion } from "./iquestion";
 
 export interface IExam {
@@ -7,7 +8,7 @@ export interface IExam {
   date: Date;
   max_Degree: number;
   min_Degree: number;
-  studentIDs: number[];
+  studentIDs?: number[];
   numberOfQuestions: number;
   course_ID:number;
 }
