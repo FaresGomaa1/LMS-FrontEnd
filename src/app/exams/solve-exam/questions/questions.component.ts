@@ -14,7 +14,8 @@ export class QuestionsComponent implements OnInit {
   id: number | undefined;
   allQuestions: IQuestion[] = [];
   questionForm: FormGroup;
-  duration!: number;
+  correctedAnswers: string[] = [];
+  result: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +30,6 @@ export class QuestionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getIdFromUrl();
-    this.autoSubmitAfterDuration();
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -40,9 +40,6 @@ export class QuestionsComponent implements OnInit {
   getIdFromUrl(): void {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
-      this.examService.getExamById(this.id).subscribe((exam) => {
-        this.duration = +exam.duration;
-      })
       if (!isNaN(this.id)) {
         this.filterQuestions();
       } else {
@@ -54,7 +51,6 @@ export class QuestionsComponent implements OnInit {
   filterQuestions(): void {
     this.questionService.getAllQuestions().subscribe(
       (questions) => {
-        console.log(questions)
         this.allQuestions = questions.filter(question => question.exam_ID === this.id);
         this.initializeForm();
       }
@@ -70,13 +66,22 @@ export class QuestionsComponent implements OnInit {
 
   submitForm(): void {
     if (this.questionForm.valid) {
-      console.log(this.questionForm.value);
-    }
-  }
+      this.correctedAnswers = []; // Clear previous answers
+      this.result = 0; // Reset result count
 
-  autoSubmitAfterDuration(): void {
-    setTimeout(() => {
-      this.submitForm();
-    }, this.duration * 60 * 1000);
+      this.questionService.getAllQuestions().subscribe((questions) => {
+        questions.forEach(question => {
+          this.correctedAnswers.push(question.correctAnswer);
+        });
+
+        const userAnswers = this.questionForm.value.answers;
+        for (let i = 0; i < this.correctedAnswers.length; i++) {
+          if (this.correctedAnswers[i] === userAnswers[i]) {
+            this.result++;
+          }
+        }
+        console.log('Result:', this.result);
+      });
+    }
   }
 }

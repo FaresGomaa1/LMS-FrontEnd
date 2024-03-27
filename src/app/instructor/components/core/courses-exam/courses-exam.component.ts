@@ -31,27 +31,4 @@ export class CoursesExamComponent {
       }
     );
   }
-
-
-  deleteExam(DeleteExamId:number): void {
-    if (!DeleteExamId) {
-      console.error('Exam ID not found.');
-      return;
-    }
-  
-    const confirmDelete = window.confirm('Are you sure you want to delete this Exam?');
-    if (!confirmDelete) {
-      return; 
-    }
-  
-    this.examService.deleteExam(DeleteExamId).subscribe(
-      () => {
-        alert('Exam deleted successfully.');
-        this.loadExams();
-      },
-      error => {
-        console.error('Failed to delete Exam:', error);
-      }
-    );
-  }
 }

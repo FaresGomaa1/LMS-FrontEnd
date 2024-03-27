@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ExamService } from 'src/app/instructor/service/exam.service';
@@ -14,7 +14,6 @@ export class EditExamComponent implements OnInit , OnDestroy{
 
   Exam: IExam | undefined;
   id: number = 0;
-  today :Date = new Date();
 
   formSubmitted = false;
   
@@ -22,24 +21,17 @@ export class EditExamComponent implements OnInit , OnDestroy{
     numberOfQuestions: new FormControl( '',[Validators.required , Validators.min(1) ]),
     name: new FormControl('',[Validators.required ,Validators.minLength(3)]),
     duration: new FormControl('', [Validators.required]),
-    date: new FormControl('', [Validators.required , this.minDateValidator.bind(this, this.today)]),
-  //  time: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
     max_Degree: new FormControl('', [Validators.required]),
     min_Degree: new FormControl('', [Validators.required]),
     course_ID: new FormControl(''),
   });
 
  
-  minDateValidator(day: Date): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const selectedDate: Date = new Date(control.value);
-      if (selectedDate < day) {
-        return { 'minDate': true };
-      }
-      return null;
-    };
+
+  constructor(private ExamService: ExamService, private myRoute: Router, private act: ActivatedRoute) {
+   
   }
-  constructor(private ExamService: ExamService, private myRoute: Router, private act: ActivatedRoute) {}
   
   ngOnDestroy(): void {
     this.myGetSub?.unsubscribe();
@@ -48,10 +40,9 @@ export class EditExamComponent implements OnInit , OnDestroy{
 
   myGetSub: Subscription | undefined;
   myActionSub: Subscription | undefined;
- 
-  get timeControl() {
-    return this.ExamForm.controls['time'];
-  }
+
+
+
   get numberquestionControl() {
     return this.ExamForm.controls['numberOfQuestions'];
   }
@@ -80,12 +71,11 @@ export class EditExamComponent implements OnInit , OnDestroy{
 
       this.ExamForm.controls['name'].setValue(data.name);
       this.ExamForm.controls['date'].setValue(data.date);
+      this.ExamForm.controls['numberOfQuestions'].setValue(data.numberOfQuestions);
       this.ExamForm.controls['min_Degree'].setValue(data.min_Degree);
       this.ExamForm.controls['max_Degree'].setValue(data.max_Degree);
       this.ExamForm.controls['duration'].setValue(data.duration);
       this.ExamForm.controls['course_ID'].setValue(data.course_ID);
-     // this.ExamForm.controls['time'].setValue(data.time);
-
   });
   }
 
@@ -106,7 +96,6 @@ export class EditExamComponent implements OnInit , OnDestroy{
         max_Degree: this.ExamForm.get('max_Degree')?.value,
         min_Degree: this.ExamForm.get('min_Degree')?.value,
         course_ID: this.ExamForm.get('course_ID')?.value,
-     //   time: this.ExamForm.get('time')?.value,
         id:this.id
       };
       this.ExamService.updateExam( this.id, examData ).subscribe(

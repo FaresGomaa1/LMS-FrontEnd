@@ -175,9 +175,7 @@
          <div formArrayName="choosesName">
           <div *ngFor="let choice of choicesFormArray.controls; let i = index" [formGroupName]="i">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" formControlName="choosesName" placeholder="Choice {{ i + 1 }}" #choiceInput>
-              
-              <button class="btn btn-outline-danger" type="button" (click)="addChoice(choiceInput.value)">Add</button>
+              <input type="text" class="form-control" formControlName="choosesName" placeholder="Choice {{ i + 1 }}">
               <button class="btn btn-outline-danger" type="button" (click)="removeChoice(i)">Remove</button>
             </div>
           </div>

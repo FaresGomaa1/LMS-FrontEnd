@@ -13,10 +13,6 @@ import { AddQuestionComponent } from './components/core/add-question/add-questio
 import { CoursesExamComponent } from './components/core/courses-exam/courses-exam.component';
 import { EditExamComponent } from './components/core/edit-exam/edit-exam.component';
 import { ViewExamQuestionsComponent } from './components/view-exam-questions/view-exam-questions.component';
-import { EditQuestionComponent } from './components/edit-question/edit-question.component';
-import { NotFoundComponent } from './components/shared/not-found/not-found.component';
-import { EventComponent } from './components/core/event/event.component';
-
 
 const instructorRoutes: Routes = [
   {path: '', redirectTo: 'shared', pathMatch: 'full'},
@@ -30,13 +26,9 @@ const instructorRoutes: Routes = [
     { path: 'profile', component: ProfileComponent },
     {path:'editExam/:examId',component:EditExamComponent},
     {path:'addQuestion/:examId',component:AddQuestionComponent},
-    {path:'editQuestion/:questionId',component:EditQuestionComponent},
-    {path:'viewQuestions/:examId',component:ViewExamQuestionsComponent},
-    {path:'Events',component:EventComponent},
+    {path:'viewQuestions/:examId',component:ViewExamQuestionsComponent}
 
-    {path:'notFound',component:NotFoundComponent},
-    {path: '', redirectTo: 'home', pathMatch: 'full'},
-
+   // {path: '', redirectTo: 'InstructorCourses', pathMatch: 'full'},
     
   ]},
 
@@ -55,16 +47,11 @@ const instructorRoutes: Routes = [
     AddQuestionComponent,
     CoursesExamComponent,
     EditExamComponent,
-    ViewExamQuestionsComponent,
-    EditQuestionComponent,
-    NotFoundComponent,
-    EventComponent,
-    
+    ViewExamQuestionsComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
-    
     ReactiveFormsModule,
     RouterModule.forChild(instructorRoutes),
   ]
