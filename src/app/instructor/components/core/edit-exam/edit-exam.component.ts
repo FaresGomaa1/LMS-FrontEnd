@@ -79,26 +79,15 @@ export class EditExamComponent implements OnInit , OnDestroy{
   });
   }
 
-  numberOfQuestions: number = 0;
-  tabs: string[] = [];
-  selectedTab: number = 0;
-  examIdQuestion: number = 1; 
 
-  generateTabs() {
-    this.tabs = Array.from({ length: this.numberOfQuestions }, (_, i) => `Question ${i + 1}`);
-    this.selectedTab = 0; 
-  }
+  
 
-  openTab(index: number) {
-    this.selectedTab = index;
-  }
 
   onSubmit(event: Event) {
     event.preventDefault();
-   
-    if (this.ExamForm.valid  && !this.formSubmitted) { 
-      this.formSubmitted = true; 
-      console.log('hi');
+    console.log(this.ExamForm.value);
+    if (this.ExamForm.valid  ) { 
+      console.log(this.ExamForm.value);
       const examData: IExam = {
         numberOfQuestions: this.ExamForm.get('numberOfQuestions')?.value,
         name: this.ExamForm.get('name')?.value,
@@ -112,8 +101,8 @@ export class EditExamComponent implements OnInit , OnDestroy{
       this.ExamService.updateExam( this.id, examData ).subscribe(
         () => {
           console.log('Exam Edited successfully.');
-          alert('Now you can Edit ' + this.ExamForm.get('numberOfQuestions')?.value + ' Questions');
-
+          
+          this.myRoute.navigate(['/instructor/shared/CoursesExam' ,this.ExamForm.get('course_ID')?.value]);
         },
         error => {
           console.error('Failed to Edit exam:', error);
@@ -126,4 +115,6 @@ export class EditExamComponent implements OnInit , OnDestroy{
   
   }
 }
+
+
 

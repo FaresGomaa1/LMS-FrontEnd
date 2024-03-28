@@ -21,6 +21,18 @@ export class CoursesExamComponent {
     this.loadExams();
   }
 
+  deleteExam(id: number) {
+    if (confirm('Are you sure you want to delete this question?')) {
+    this.examService.deleteExam(id)
+      .subscribe(() => {
+        console.log(`Exam with ID ${id} deleted successfully.`);
+        
+        this.loadExams();
+      }, error => {
+        console.error('Error deleting question:', error);
+      });}
+  }
+
   loadExams() {
     this.examService.getExamsByCourseId(this.course_Id).subscribe(
       exams => {

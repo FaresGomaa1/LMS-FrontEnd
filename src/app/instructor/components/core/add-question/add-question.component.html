@@ -1,4 +1,70 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Add Question</h5>
+      <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="question" class="form-label">Question</label>
+          <textarea class="form-control" id="question" formControlName="question" rows="3"
+            required [ngClass]="{
+            'is-valid': questionForm.get('question')?.valid,
+            'is-invalid': questionForm.get('question')?.invalid && questionForm.get('question')?.touched
+          }"></textarea>
+          <div class="invalid-feedback error-message" *ngIf="questionForm.get('question')?.errors && questionForm.get('question')?.touched">
+            <ng-container *ngIf="questionForm.get('question')?.hasError('required')">Question is required</ng-container>
+          </div>
+        </div>
 
+        <!-- Add four choices with text inputs and buttons beside radio buttons -->
+        <div class="mb-3">
+          <label class="form-label">Choices</label>
+          <div class="form-check" *ngFor="let i of [0, 1, 2, 3]">
+            <div class="input-group mb-3">
+              <!-- Commented out radio button as it wasn't being used -->
+              <!-- <input class="form-check-input" type="radio" [id]="'choice' + i" [value]="i" formControlName="selectedChoice" name="choices"> -->
+              <input type="text" class="form-control" [id]="'choiceText' + i" [placeholder]="'Choice ' + (i + 1)" formControlName="choices">
+              <button class="btn btn-outline-danger" type="button">Add</button>
+            </div>
+          </div>
+          <div class="invalid-feedback error-message" *ngIf="questionForm.get('choices')?.errors && questionForm.get('choices')?.touched">
+            <ng-container *ngIf="questionForm.get('choices')?.hasError('required')">Please select a choice</ng-container>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="correctAnswer" class="form-label">Correct Answer</label>
+          <input type="text" class="form-control" id="correctAnswer" formControlName="correctAnswer"
+            required [ngClass]="{
+            'is-valid': questionForm.get('correctAnswer')?.valid,
+            'is-invalid': questionForm.get('correctAnswer')?.invalid && questionForm.get('correctAnswer')?.touched
+          }">
+          <div class="invalid-feedback error-message" *ngIf="questionForm.get('correctAnswer')?.errors && questionForm.get('correctAnswer')?.touched">
+            <ng-container *ngIf="questionForm.get('correctAnswer')?.hasError('required')">Correct Answer is required</ng-container>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="questionType" class="form-label">Question Type</label>
+          <input type="text" class="form-control" id="questionType" formControlName="questionType" required [ngClass]="{
+            'is-valid': questionForm.get('questionType')?.valid,
+            'is-invalid': questionForm.get('questionType')?.invalid && questionForm.get('questionType')?.touched
+          }">
+          <div class="invalid-feedback error-message" *ngIf="questionForm.get('questionType')?.errors && questionForm.get('questionType')?.touched">
+            <ng-container *ngIf="questionForm.get('questionType')?.hasError('required')">Type is required</ng-container>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- 
 <div class="container mt-5">
   <div class="card">
     <div class="card-body">
@@ -17,10 +83,67 @@
             <ng-container *ngIf="questionFormControl['question'].hasError('required')">Question is required</ng-container>
           </div>   
          </div>
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Add Question</h5>
+      <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="question" class="form-label">Question</label>
+          <textarea class="form-control" id="question" formControlName="question" rows="3"
+            required [ngClass]="{
+            'is-valid': questionFormControl['question'].valid,
+            'is-invalid': questionFormControl['question'].invalid && questionFormControl['question'].touched
+          }"></textarea>
+          <div class="invalid-feedback error-message" *ngIf="questionFormControl['question'].errors && questionFormControl['question'].touched">
+            <ng-container *ngIf="questionFormControl['question'].hasError('required')">Question is required</ng-container>
+          </div>
+        </div>
 
-
+        <!-- Add four choices with text inputs beside radio buttons -->
+        <!-- <div class="mb-3">
+          <label class="form-label">Choices</label>
+          <div class="form-check" *ngFor="let i of [0, 1, 2, 3]">
+            <input class="form-check-input" type="radio" [id]="'choice' + i" [value]="i" formControlName="selectedChoice" name="choices">
+            <input type="text" class="form-control" [id]="'choiceText' + i" [placeholder]="'Choice ' + (i + 1)" formControlName="choices">
+          </div>
+          <div class="invalid-feedback error-message" *ngIf="questionFormControl['choices'].errors && questionFormControl['choices'].touched">
+            <ng-container *ngIf="questionFormControl['choices'].hasError('required')">Please select a choice</ng-container>
+          </div>
+        </div>
 
         <div class="mb-3">
+          <label for="correctAnswer" class="form-label">Correct Answer</label>
+          <input type="text" class="form-control" id="correctAnswer" formControlName="correctAnswer"
+            required [ngClass]="{
+            'is-valid': questionFormControl['correctAnswer'].valid,
+            'is-invalid': questionFormControl['correctAnswer'].invalid && questionFormControl['correctAnswer'].touched
+          }">
+          <div class="invalid-feedback error-message" *ngIf="questionFormControl['correctAnswer'].errors && questionFormControl['correctAnswer'].touched">
+            <ng-container *ngIf="questionFormControl['correctAnswer'].hasError('required')">Correct Answer is required</ng-container>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="questionType" class="form-label">Question Type</label>
+          <input type="text" class="form-control" id="questionType" formControlName="questionType" required [ngClass]="{
+            'is-valid': questionFormControl['questionType'].valid,
+            'is-invalid': questionFormControl['questionType'].invalid && questionFormControl['questionType'].touched
+          }">
+          <div class="invalid-feedback error-message" *ngIf="questionFormControl['questionType'].errors && questionFormControl['questionType'].touched">
+            <ng-container *ngIf="questionFormControl['questionType'].hasError('required')">Type is required</ng-container>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+ -->
+
+
+        <!-- <div class="mb-3">
           <label for="correctAnswer" class="form-label">Correct Answer</label>
           <input type="text" class="form-control" id="correctAnswer" formControlName="correctAnswer"
           required [ngClass]="{
@@ -44,9 +167,12 @@
           <div class="invalid-feedback error-message" *ngIf="questionFormControl['questionType'].errors && questionFormControl['questionType'].touched">
             <ng-container *ngIf="questionFormControl['questionType'].hasError('required')">Type is required</ng-container>
           </div>   
-         </div>
+         </div> -->
      
-         <div formControlName="choosesName">
+         
+<!-- 
+
+         <div formArrayName="choosesName">
           <div *ngFor="let choice of choicesFormArray.controls; let i = index" [formGroupName]="i">
             <div class="input-group mb-3">
               <input type="text" class="form-control" formControlName="choosesName" placeholder="Choice {{ i + 1 }}">
@@ -54,30 +180,10 @@
             </div>
           </div>
         </div>
-        
-        
-<!-- 
-        <div formArrayName="choices">
-         <div *ngFor="let choice of choicesFormArray.controls; let i = index">
-    <div class="input-group mb-3">
-      <input type="text" class="form-control" formControlName="choiceText" placeholder="Choice {{ i + 1 }}"
-        [ngClass]="{
-          'is-valid': choice.valid && choice.touched && choice.get('choiceText')?.valid,
-          'is-invalid': choice.invalid && choice.touched && choice.get('choiceText')?.invalid
-        }">
-      <button class="btn btn-outline-danger" type="button" (click)="removeChoice(i)">Remove</button> -->
-      <!-- <div class="invalid-feedback" *ngIf="choice.get('choiceText')?.invalid && choice.get('choiceText')?.touched">
-        <ng-container *ngIf="choice.get('choiceText').errors?.minlength">Choice must be at least 3 characters long</ng-container>
-      </div> -->
-<!--       
-    </div>
-  </div>
-</div> -->
-
-        <button class="btn btn-primary" type="button" (click)="addChoice()">Add Choice</button>
-
+         -->
+<!--         
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
   </div>
-</div>
+</div> --> -->
