@@ -6,7 +6,7 @@ import { ICourses } from './ICourses';
 import { Observable, forkJoin } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { switchMap } from 'rxjs/operators';
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-exams',
