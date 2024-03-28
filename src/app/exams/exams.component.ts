@@ -80,7 +80,6 @@ export class ExamsComponent implements OnInit {
     const examDateString = examDate.toDateString();
 
     return currentDateString === examDateString;
-    return true;
   }
 
   startExam(index: number): void {
