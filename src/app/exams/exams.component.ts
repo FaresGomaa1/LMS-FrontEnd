@@ -21,7 +21,7 @@ export class ExamsComponent implements OnInit {
   constructor(
     private examService: ExamService,
     private studentService: StudentService,
-    private router: Router // Inject Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {

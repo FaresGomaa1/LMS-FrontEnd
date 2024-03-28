@@ -67,6 +67,7 @@ export class AddExamComponent implements OnInit , OnDestroy{
 
   ngOnInit(): void {
 
+  
   this.course_Id = this.act.snapshot.params['courseId'];
   this.ExamForm.controls['course_ID'].setValue(this.course_Id);
     console.log(this.course_Id);
@@ -98,8 +99,7 @@ export class AddExamComponent implements OnInit , OnDestroy{
       this.ExamService.addExam(this.ExamForm.value).subscribe(
         () => {
           console.log('Exam added successfully.');
-          alert('Now you can add ' + this.ExamForm.get('numberOfQuestions')?.value + ' Questions');
-
+          this.myRoute.navigate(['/instructor/shared/CoursesExam' ,this.course_Id]);
         },
         error => {
           console.error('Failed to add exam:', error);

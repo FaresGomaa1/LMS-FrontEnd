@@ -12,8 +12,8 @@ export class InstructorCourseService {
 
   constructor(private instservice: InstructorService, private courseService: CourseService) { }
 
-  getInstructorCourses(): Observable<ICourse[]> {
-    return this.instservice.getById(this.loggedInInstructorId)
+  getInstructorCourses(id:number): Observable<ICourse[]> {
+    return this.instservice.getById(id)
       .pipe(
         switchMap(instructor => {
           if (instructor) {

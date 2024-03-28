@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { IQuestion } from '../interface/iquestion';
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionService {
-  private baseURL: string = 'http://localhost:5050/questions';
+  private baseURL: string = 'http://localhost:5050/Question';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -20,7 +20,7 @@ export class QuestionService {
   }
 
   addQuestion(questionData: IQuestion , examId :number): Observable<IQuestion> {
-    return this.httpClient.post<IQuestion>(`${this.baseURL}/exams/${examId}`, questionData);
+    return this.httpClient.post<IQuestion>(`${this.baseURL}`, questionData);
   }
 
   updateQuestion(id: number, question: IQuestion): Observable<IQuestion> {
@@ -29,5 +29,11 @@ export class QuestionService {
 
   deleteQuestion(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.baseURL}/${id}`);
+  }
+
+  getQuestionbyExamId(examId: number): Observable<IQuestion[]> {
+    return this.httpClient.get<IQuestion[]>(this.baseURL).pipe(
+      map((question: IQuestion[]) => question.filter(que => que.exam_ID == examId))
+    );
   }
 }

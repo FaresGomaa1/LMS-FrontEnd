@@ -11,6 +11,10 @@ import { AddExamComponent } from './components/core/add-exam/add-exam.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddQuestionComponent } from './components/core/add-question/add-question.component';
 import { CoursesExamComponent } from './components/core/courses-exam/courses-exam.component';
+import { EditExamComponent } from './components/core/edit-exam/edit-exam.component';
+import { ViewExamQuestionsComponent } from './components/view-exam-questions/view-exam-questions.component';
+import { EventComponent } from './components/core/event/event.component';
+import { EditQuestionComponent } from './components/edit-question/edit-question.component';
 
 const instructorRoutes: Routes = [
   {path: '', redirectTo: 'shared', pathMatch: 'full'},
@@ -22,6 +26,11 @@ const instructorRoutes: Routes = [
     { path: 'InstructorCourses', component: InstructorCoursesComponent },
     { path: 'CoursesExam/:courseId', component: CoursesExamComponent },
     { path: 'profile', component: ProfileComponent },
+    {path:'editExam/:examId',component:EditExamComponent},
+    {path:'addQuestion/:examId',component:AddQuestionComponent},
+    {path:'viewQuestions/:examId',component:ViewExamQuestionsComponent},
+    {path:'editQuestions/:examId',component:EditQuestionComponent},
+    {path:'Events',component:EventComponent}
 
 
    // {path: '', redirectTo: 'InstructorCourses', pathMatch: 'full'},
@@ -41,7 +50,11 @@ const instructorRoutes: Routes = [
     ProfileComponent,
     AddExamComponent,
     AddQuestionComponent,
-    CoursesExamComponent
+    CoursesExamComponent,
+    EditExamComponent,
+    ViewExamQuestionsComponent,
+    EditQuestionComponent,
+    EventComponent
   ],
   imports: [
     CommonModule,

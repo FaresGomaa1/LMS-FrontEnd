@@ -1,11 +1,11 @@
 <div *ngIf="exams && exams.length > 0; else noExams">
     <h2>Exams for Course {{ course_Id }}</h2>
   
-    <div class="row">
+    <div class="row ">
       <div class="col-md-6" *ngFor="let exam of exams">
         <div class="card mb-3">
           <div class="card-header">
-            <h5 class="mb-0">{{ exam.name }}</h5>
+            <h5 class="m-3">{{ exam.name }}</h5>
           </div>
           <div class="card-body">
             <div class="row">
@@ -17,10 +17,15 @@
               <div class="col-md-6">
                 <p class="card-text">Max Degree: {{ exam.max_Degree }}</p>
                 <p class="card-text">Min Degree: {{ exam.min_Degree }} </p>
-                <p class="card-text">Students:  {{ exam.studentIDs }} </p>
               </div>
             </div>
-            <a href="#" class="btn btn-primary">Edit Exam</a>
+            <a [routerLink]="['/instructor/shared/editExam' ,exam.id]" class="btn btn-primary m-3">Edit Exam</a>
+            <a [routerLink]="['/instructor/shared/viewQuestions' ,exam.id]" class="btn btn-primary m-3">View Exam Questions</a>
+
+            <a [routerLink]="['/instructor/shared/addQuestion' ,exam.id]" class="btn btn-primary m-3">Add Question</a>
+            <a (click)="deleteExam(exam.id)"   class="btn btn-primary m-3">Delete Exam</a>
+
+
           </div>
         </div>
       </div>
