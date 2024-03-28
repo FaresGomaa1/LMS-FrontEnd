@@ -22,57 +22,78 @@ export class AddQuestionComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
+  
+
   ngOnInit(): void {
     this.initializeForm();
     this.examId = +this.route.snapshot.params['examId'];
     this.questionForm.get('exam_ID')?.setValue(this.examId); 
   }
-  correctAnswerValidator(): ValidatorFn {
-    return (formGroup: AbstractControl): { [key: string]: any } | null => {
-      const choices = formGroup.get('choices')?.value.split(',');
-      const correctAnswer = formGroup.get('correctAnswer')?.value;
-      
-      if (choices && correctAnswer) {
-        if (choices.indexOf(correctAnswer) == -1) {
-          return { 'incorrectAnswer': true };
-        }
+  getChoiceControl(index: number): FormControl {
+    return (this.questionForm.get('choices') as FormArray).controls[index] as FormControl;
+  }
+
+  
+  isChoiceInvalid(): boolean {
+    const choicesArray = this.questionForm.get('choices') as FormArray;
+    return choicesArray.controls.slice(0, 2).some(control => control.invalid && control.touched);
+  }
+  initializeForm(): void {
+    const choicesArray = this.formBuilder.array([
+      this.formBuilder.control('', Validators.required),
+      this.formBuilder.control('', Validators.required),
+      this.formBuilder.control(''),
+      this.formBuilder.control('')
+    ]);
+  
+    this.questionForm = this.formBuilder.group({
+      question: ['', Validators.required],
+      choices: choicesArray,
+      correctAnswer: ['', [Validators.required, this.correctAnswerValidator(choicesArray)]],
+      questionType: ['', Validators.required],
+      exam_ID: [null, Validators.required] 
+    }); 
+  }
+   correctAnswerValidator(choicesArray: FormArray): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const correctAnswer = control.value;
+      if (!correctAnswer || choicesArray.value.indexOf(correctAnswer) === -1) {
+        return { incorrectAnswer: true };
       }
       return null;
     };
   }
-  
-  initializeForm(): void {
-    this.questionForm = this.formBuilder.group({
-      question: ['', Validators.required],
-      choices: ['', Validators.required],
-      correctAnswer: ['', Validators.required],
-      questionType: ['', Validators.required],
-      exam_ID: [null, Validators.required] 
-    }, { validator: this.correctAnswerValidator() }); 
-  }
 
   onSubmit(): void {
-
     if (this.examId === null) { 
-          console.error('Exam ID not found.'); 
-          return;
-        }
+      console.error('Exam ID not found.'); 
+      return;
+    }
+  console.log(this.questionForm.value)
     if (this.questionForm.valid) {
+      const choicesArray = this.questionForm.get('choices') as FormArray;
+      const choices: string[] = [];
+      
+      choicesArray.controls.forEach(control => {
+        const choiceValue = control.value.trim(); 
+        if (choiceValue !== '') {
+          choices.push(choiceValue);
+        }
+      });
+  
       const questionData: IQuestion = {
         id: 0, 
         question: this.questionForm.value.question,
         exam_ID: this.questionForm.value.exam_ID,
-        choosesName: this.questionForm.value.choices.split(','),
+        choosesName: choices,
         correctAnswer: this.questionForm.value.correctAnswer,
         questionType: this.questionForm.value.questionType
       };
-
-      this.questionService.addQuestion(questionData , this.examId).subscribe(
+  
+      this.questionService.addQuestion(questionData, this.examId).subscribe(
         (response) => {
           console.log('Question added successfully:', response);
-          
-          this.router.navigate(['/instructor/shared/viewQuestions' ,this.examId]);
-      
+          this.router.navigate(['/instructor/shared/viewQuestions', this.examId]);
         },
         (error) => {
           console.error('Error adding question:', error);
@@ -82,4 +103,5 @@ export class AddQuestionComponent implements OnInit {
       this.questionForm.markAllAsTouched();
     }
   }
+  
 }
