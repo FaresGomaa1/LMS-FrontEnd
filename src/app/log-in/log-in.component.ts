@@ -35,24 +35,22 @@ export class LogInComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loading = true;
       const { email, password } = this.loginForm.value;
-      this.userLoginService.signIn(email, password).subscribe(
-        response => {
-          this.loading = false;
-          const token = response.token;
-          if (token) {
-            const helper = new JwtHelperService();
-            const decodedToken = helper.decodeToken(token);
-            const userRole = decodedToken.role;
-            const userType = userRole === 'student' ? 'student' : 'instructor';
-            if (userType === 'student') {
-              this.router.navigate(['/shared']);
-            } else if (userType === 'instructor') {
-              this.router.navigate(['/instructor']);
-            }
+      this.userLoginService.signIn(email, password).subscribe((response) => {
+        this.loading = false;
+        const token = response.token;
+        if (token) {
+          const helper = new JwtHelperService();
+          const decodedToken = helper.decodeToken(token);
+          const userRole = decodedToken.role;
+          const userType = userRole === 'student' ? 'student' : 'instructor';
+          if (userType === 'student') {
+            this.router.navigate(['/shared']);
+          } else if (userType === 'instructor') {
+            this.router.navigate(['/instructor']);
           }
+          this.loginForm.reset();
         }
-      );
+      });
     }
   }
-  
 }
