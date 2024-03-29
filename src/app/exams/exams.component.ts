@@ -85,7 +85,8 @@ getStudentId(){
     const currentDate1 = currentDate.getDate().toString();
     // Get the exam object at the specified index
     const exam = this.exams[index];
-    const examDate = new Date(exam.date).getDate().toString();
+    const examD = new Date(exam.date)
+    const examDate = examD.getDate().toString();
     // Convert current date and exam date to timestamps
     const currentTimestamp: number = currentDate.getTime(); // can't compare
     const examTimestamp: number = new Date(exam.date).getTime(); // can't compare
@@ -94,55 +95,70 @@ getStudentId(){
     const examTime: string = exam.time;
     const duration: number = exam.duration;
     // Check if current timestamp matches exam timestamp
-    if (currentDate1 === examDate) {
-      // Get the DOM element for the exam action
-      const row = document.getElementById('action' + index);
-      // Get current time in HH:MM:SS format
-      const currentTime: string = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
-      const [hours1, minutes1, seconds1] = currentTime.split(':');
-      const currentTimeInMins = this.ConverTimeService.convertTimeToMin(
-        +hours1,
-        +minutes1,
-        +seconds1
-      );
-
-      // Split exam time into hours, minutes, and seconds
-      const [hours, minutes, seconds] = examTime.split(':');
-      // Convert exam time to minutes
-      const examTimeInMins: number = this.ConverTimeService.convertTimeToMin(
-        +hours,
-        +minutes,
-        +seconds
-      );
-      // Calculate exam end time based on duration
-      const examEndTime = duration + examTimeInMins;
-      // Check if current time matches exam start time
-      if (currentTimeInMins === examTimeInMins) {
-        return true;
-      } else if (currentTimeInMins < examTimeInMins) {
-        return false;
-      } else if (
-        currentTimeInMins > examTimeInMins &&
-        examEndTime > currentTimeInMins
-      ) {
-        let examId = this.exams[index].id;
-        if (`${examId}` === localStorage.getItem(`exam${examId}`)) {
+    if ((currentDate.getMonth()+1) === (examD.getMonth()+1)){
+      if (currentDate1 === examDate) {
+        // Get the DOM element for the exam action
+        const row = document.getElementById('action' + index);
+        // Get current time in HH:MM:SS format
+        const currentTime: string = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
+        const [hours1, minutes1, seconds1] = currentTime.split(':');
+        const currentTimeInMins = this.ConverTimeService.convertTimeToMin(
+          +hours1,
+          +minutes1,
+          +seconds1
+        );
+  
+        // Split exam time into hours, minutes, and seconds
+        const [hours, minutes, seconds] = examTime.split(':');
+        // Convert exam time to minutes
+        const examTimeInMins: number = this.ConverTimeService.convertTimeToMin(
+          +hours,
+          +minutes,
+          +seconds
+        );
+        // Calculate exam end time based on duration
+        const examEndTime = duration + examTimeInMins;
+        // Check if current time matches exam start time
+        if (currentTimeInMins === examTimeInMins) {
+          return true;
+        } else if (currentTimeInMins < examTimeInMins) {
+          return false;
+        } else if (
+          currentTimeInMins > examTimeInMins &&
+          examEndTime > currentTimeInMins
+        ) {
+          let examId = this.exams[index].id;
+          if (`${examId}` === localStorage.getItem(`exam${examId}`)) {
+            if (row) {
+              if (
+                this.examService.checkIfResultExist() ||
+                this.examService.checkIfResultExist() === 0
+              ) {
+                row.innerHTML = `${localStorage.getItem(`result${this.getStudentId()}:${examId}`)}`;
+                return;
+              }
+              row.innerHTML = `You Missed The Exam`;
+              return;
+            }
+          } else {
+            return true;
+          }
+        } else {
+          // Display message if exam end time has passed
           if (row) {
-            if (
-              this.examService.checkIfResultExist() ||
-              this.examService.checkIfResultExist() === 0
-            ) {
-              row.innerHTML = `${localStorage.getItem(`result${this.getStudentId()}:${examId}`)}`;
+            if (this.examService.checkIfResultExist()) {
+              row.innerHTML = `${this.examService.checkIfResultExist()}`;
               return;
             }
             row.innerHTML = `You Missed The Exam`;
-            return;
           }
-        } else {
-          return true;
         }
+      } else if (currentDate1 > examDate) {
+        // Current timestamp is after exam timestamp, exam has passed
+        return false;
       } else {
-        // Display message if exam end time has passed
+        // Current timestamp is before exam timestamp, exam hasn't started yet
+        const row = document.getElementById('action' + index);
         if (row) {
           if (this.examService.checkIfResultExist()) {
             row.innerHTML = `${this.examService.checkIfResultExist()}`;
@@ -151,11 +167,9 @@ getStudentId(){
           row.innerHTML = `You Missed The Exam`;
         }
       }
-    } else if (currentDate1 < examDate) {
-      // Current timestamp is after exam timestamp, exam has passed
+    } else if ((currentDate.getMonth()+1) < (examD.getMonth()+1)) {
       return false;
     } else {
-      // Current timestamp is before exam timestamp, exam hasn't started yet
       const row = document.getElementById('action' + index);
       if (row) {
         if (this.examService.checkIfResultExist()) {
@@ -165,6 +179,7 @@ getStudentId(){
         row.innerHTML = `You Missed The Exam`;
       }
     }
+
   }
 
   startExam(index: number): void {
