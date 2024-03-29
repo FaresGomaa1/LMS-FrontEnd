@@ -50,6 +50,7 @@
         }" />
       <div class="invalid-feedback error-message" *ngIf="durationControl.errors && durationControl.touched">
         <ng-container *ngIf="durationControl.hasError('required')">Duration is required</ng-container>
+        <ng-container *ngIf="durationControl.hasError('min')">Duration must be more than 0</ng-container>
       </div>
     </div>
   
@@ -62,10 +63,8 @@
         }" />
       <div class="invalid-feedback error-message" *ngIf="dateControl.errors && dateControl.touched">
         <ng-container *ngIf="dateControl.hasError('required')">Exam date is required</ng-container>
-        <div  *ngIf="dateControl.get('date')?.hasError('startDateInvalid')"> 
-                       
-          Start date must be after today.
-        </div>
+  
+        <ng-container *ngIf="dateControl.hasError('startDateInvalid')"> Start date must be after today.</ng-container>
       </div>
     </div>
     <div class="form-group">
