@@ -1,0 +1,48 @@
+address
+: 
+"egypt"
+age
+: 
+"24"
+courseName
+: 
+['Math']
+email
+: 
+"faresdawda9@gmail.com"
+name
+: 
+"Ahmed"
+password
+: 
+"Fares1234"
+phone
+: 
+"01033944028"
+photo
+: 
+"../../assets/png-transparent-person-computer-icons-personal-miscellaneous-company-logo-thumbnail"
+title
+: 
+"any title"
+[[Prototype]]
+: 
+Object
+==================================================================
+{
+  "id": 0,
+  "name": "string",
+  "age": 0,
+  "title": "string",
+  "phone": "string",
+  "address": "string",
+  "email": "string",
+  "password": "string",
+  "photo": "string",
+  "courseName": [
+    "string"
+  ],
+  "instructorIDs": [
+    0
+  ]
+}

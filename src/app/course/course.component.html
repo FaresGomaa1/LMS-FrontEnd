@@ -6,12 +6,12 @@
   <h3 style="margin-left: 50%; margin-top: 50px; color: green;">courses</h3>
 </div>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Enroll In New Courses
-</button>
+</button> -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -21,11 +21,8 @@
       <div class="modal-body">
         <div *ngFor="let course of enrollInNewCourses">
           <h5>{{ course.name }}</h5>
-          <!-- View Details Link -->
           <a class="btn btn-primary me-2" href="{{ 'http://localhost:4200/coursedetails/' + course.id }}" target="_blank">View Details</a>
-          <!-- Enroll Link -->
           <button class="btn btn-success" (click)="enroll(course.id)">Enroll</button>
-          <hr> <!-- Horizontal line to separate courses -->
         </div>
       </div>
       <div class="modal-footer">
@@ -33,7 +30,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <table class="table table-hover table-striped">
   <thead>
     <tr class="text-center">

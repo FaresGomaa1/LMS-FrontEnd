@@ -5,6 +5,7 @@ import { ICourses } from './icourses';
 import { StudentService } from './../generalServices/student.service';
 import { CourseService } from './course.service';
 import { ICourse } from '../instructor/interface/i-course';
+import { InstructorService } from './../generalServices/instructor.service';
 
 @Component({
   selector: 'app-course',
@@ -16,10 +17,12 @@ export class CourseComponent implements OnInit {
   courses: ICourses[] = [];
   studentCourseIds: number[] = [];
   enrollInNewCourses: ICourses[] = [];
+  instructorId!: number
 
   constructor(
     private courseService: CourseService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private instructorService :InstructorService
   ) {
     this.courseService.getAllCourses().subscribe((courses) => {
       this.enrollInNewCourses = courses;
@@ -73,7 +76,7 @@ export class CourseComponent implements OnInit {
       const userId = decodedToken.nameid;
 
       // Retrieve the student by ID
-      this.studentService.getStudentById(userId).subscribe((student: IStudent) => {
+      this.studentService.getStudentById(userId).subscribe((student) => {
         // Retrieve the course by ID
         this.courseService.getCourseById(courseId).subscribe((course: ICourse) => {
           // Add the course to the student's courseName array
@@ -81,6 +84,15 @@ export class CourseComponent implements OnInit {
             student.courseName = []; // Initialize the array if it doesn't exist
           }
           student.courseName.push(course.name);
+          this.instructorService.getAllInstructors().subscribe((ins)=>{
+            for (let  i = 0; i < ins.length ; i++){
+              for (let  j = 0; j < ins[i].courseName.length ; j++){
+                if (ins[i].courseName[j] === student.courseName[0]){
+                    this.instructorId = ins[i].id;
+                }
+              }
+            }
+          })
 
           // Update the student's information
           this.studentService.updateStudent(student).subscribe((updatedStudent: IStudent) => {
