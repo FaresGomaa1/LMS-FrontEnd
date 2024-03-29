@@ -18,22 +18,34 @@
     </div>
 
     <div class="container">
-        <!-- <h3>Enter Number of Questions:</h3>
-        <input  type="number" [(ngModel)]="numberOfQuestions" formControlName="numberOfQuestions" class="form-control"
+        <h3>Enter Number of Questions:</h3>
+        <input  type="number"  formControlName="numberOfQuestions" class="form-control"
         placeholder="Enter exam name" required [ngClass]="{
             'is-valid': numberquestionControl.valid,
             'is-invalid': numberquestionControl.invalid && numberquestionControl.touched
-          }" 
-        (input)="generateTabs()">
+          }"  >
         <div class="invalid-feedback error-message" *ngIf="numberquestionControl.errors && numberquestionControl.touched">
             <ng-container *ngIf="numberquestionControl.hasError('required')">Number of questions is required</ng-container>
             <ng-container *ngIf="numberquestionControl.hasError('min')">Number of questions must be at least 1</ng-container>
-        </div> -->
+        </div>
     
 
      
     </div>
   
+    <div class="form-group">
+      <h3>Enter Time</h3>
+      <input type="time" formControlName="time" class="form-control"
+        placeholder="Enter exam time" required [ngClass]="{
+              'is-valid': timeControl.valid,
+              'is-invalid': timeControl.invalid && timeControl.touched
+            }">
+      <div class="invalid-feedback error-message" *ngIf="timeControl.errors && timeControl.touched">
+        <ng-container *ngIf="timeControl.hasError('required')">Time is required</ng-container>
+      </div>
+    </div>
+
+
     <div class="form-group">
       <label for="examDuration">Duration (in minutes)</label>
       <input  pInputText type="number" id="examDuration" formControlName="duration" class="form-control"
@@ -87,13 +99,4 @@
   </form>
   
 </div>
-  <!-- <ul class="nav nav-tabs" *ngIf="tabs.length > 0 && formSubmitted">
-    <li class="nav-item" *ngFor="let tab of tabs; let i = index">
-        <a class="nav-link" (click)="openTab(i)" [class.active]="selectedTab == i">{{ tab }}</a>
-    </li>
-</ul>
-<div class="tab-content" style="cursor:pointer;" *ngIf="tabs.length > 0 && formSubmitted">
-    <div class="tab-pane fade show active" *ngFor="let tab of tabs; let i = index" [id]="'questionTab' + i">
-        <app-add-question *ngIf="selectedTab == i" [exam_ID]="id"></app-add-question>
-    </div>
-</div> -->
+ 

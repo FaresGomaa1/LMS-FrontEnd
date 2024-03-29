@@ -1,3 +1,5 @@
+import { ICourse } from "./i-course";
+
 export interface IInstructor {
   id: number;
   name: string;

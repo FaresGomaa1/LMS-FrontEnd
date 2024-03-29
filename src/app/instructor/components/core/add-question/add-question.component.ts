@@ -1,3 +1,4 @@
+
 import { ExamService } from 'src/app/instructor/service/exam.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -15,20 +16,34 @@ import { IExam } from 'src/app/instructor/interface/i-exam';
 export class AddQuestionComponent implements OnInit {
   questionForm!: FormGroup;
   examId: number | null = null; 
-
+  numberOfQuestions:number |undefined ;
   constructor(private formBuilder: FormBuilder, private questionService: QuestionService,
     private examService: ExamService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
 
-  
-
+  exam : IExam | undefined;
+  questionCount: number = 0;
   ngOnInit(): void {
-    this.initializeForm();
     this.examId = +this.route.snapshot.params['examId'];
-    this.questionForm.get('exam_ID')?.setValue(this.examId); 
-  }
+    if (this.examId) {
+        this.examService.getExamById(this.examId).subscribe(
+            (exam: IExam) => {
+                this.exam = exam;
+                console.log('Exam Details:', exam);
+                this.initializeForm();
+                this.checkQuestionCount();
+            },
+            error => {
+                console.error('Failed to fetch exam:', error);
+            }
+        );
+    }
+ 
+    this.initializeForm();
+}
+
   getChoiceControl(index: number): FormControl {
     return (this.questionForm.get('choices') as FormArray).controls[index] as FormControl;
   }
@@ -53,6 +68,10 @@ export class AddQuestionComponent implements OnInit {
       questionType: ['', Validators.required],
       exam_ID: [null, Validators.required] 
     }); 
+
+    this.numberOfQuestions = this.exam?.numberOfQuestions;
+    console.log(this.numberOfQuestions);
+
   }
    correctAnswerValidator(choicesArray: FormArray): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -64,6 +83,22 @@ export class AddQuestionComponent implements OnInit {
     };
   }
 
+
+  checkQuestionCount(): void {
+    if (this.examId) {
+      this.questionService.getQuestionbyExamId(this.examId).subscribe(
+        (questions: IQuestion[]) => {
+          this.questionCount = questions.length;
+          console.log('Question Count:', this.questionCount);
+        },
+        error => {
+          console.error('Failed to fetch questions:', error);
+        }
+      );
+    }
+  }
+  
+
   onSubmit(): void {
     if (this.examId === null) { 
       console.error('Exam ID not found.'); 
@@ -71,6 +106,7 @@ export class AddQuestionComponent implements OnInit {
     }
   console.log(this.questionForm.value)
     if (this.questionForm.valid) {
+      this.checkQuestionCount();
       const choicesArray = this.questionForm.get('choices') as FormArray;
       const choices: string[] = [];
       
@@ -92,9 +128,22 @@ export class AddQuestionComponent implements OnInit {
   
       this.questionService.addQuestion(questionData, this.examId).subscribe(
         (response) => {
-          console.log('Question added successfully:', response);
-          this.router.navigate(['/instructor/shared/viewQuestions', this.examId]);
-        },
+          console.log('Question added successfully:', response); 
+          if (this.numberOfQuestions !== undefined && this.questionCount !== undefined) {
+            // Calculate remaining number of questions
+            const remainingQuestions = this.numberOfQuestions - this.questionCount;
+      
+            // Show JavaScript alert with remaining questions
+            alert(`Question added successfully. You can add ${remainingQuestions} more questions.`);
+          } else {
+            console.error('numberOfQuestions or questionCount is undefined.');
+            return;
+          }
+      
+          // Reset form
+          this.questionForm.reset();
+        } ,
+        
         (error) => {
           console.error('Error adding question:', error);
         }
@@ -104,4 +153,6 @@ export class AddQuestionComponent implements OnInit {
     }
   }
   
+
+   
 }

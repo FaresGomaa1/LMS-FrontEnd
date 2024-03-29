@@ -5,10 +5,12 @@ export interface IExam {
   id: number;
   name: string;
   duration: number;
+  time:string;
   date: Date;
   max_Degree: number;
   min_Degree: number;
   studentIDs?: number[];
   numberOfQuestions: number;
   course_ID:number;
+  
 }

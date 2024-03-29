@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICourse } from '../interface/i-course';
-import { IInstructor } from '../interface/i-instructor'; // Import the instructor interface
+import { IInstructor } from '../interface/i-instructor'; 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { ICourses } from 'src/app/exams/ICourses';
@@ -23,7 +23,17 @@ export class InstructorService {
   getById(id: number): Observable<IInstructor> {
     return this.HttpClient.get<IInstructor>(`${this.baseURL}/${id}`);
   }
-
+  Update(id: number,instructor:IInstructor ): Observable<IInstructor> {
+    return this.HttpClient.put<IInstructor>(`${this.baseURL}/${id}`, instructor);
+  }
 
   
+
+  addCourseToInstructor(instructorId: number, course: ICourse): Observable<IInstructor> {
+    return this.HttpClient.post<IInstructor>(`${this.baseURL}/${instructorId}/Courses`, course);
+  }
+
+  updateInstructorCourses(instructorId: number, courseName: string): Observable<IInstructor> {
+    return this.HttpClient.put<IInstructor>(`${this.baseURL}/${instructorId}/Courses`, { courseName });
+  }
 }

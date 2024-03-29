@@ -1,49 +1,71 @@
-<div class="container-fluid mt-5">
-  <h2 class="text-center mb-3">Your Courses</h2>
-  <table class="table table-bordered table-striped table-hover">
-    <thead class="thead-dark">
-      <tr class="text-center">
-        <th scope="col">Name</th>
-        <th scope="col">Description</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container
-        *ngIf="
-          instructorCourses && instructorCourses.length > 0;
-          else noCourses
-        "
-      >
-        <tr class="text-center" *ngFor="let course of instructorCourses">
-          <td>{{ course.name }}</td>
-          <td>{{ course.description }}</td>
-          <td>{{ course.start_Date | date }}</td>
-          <td>{{ course.end_Date | date }}</td>
-          <td>
-            <button
-              class="btn btn-primary"
-              [routerLink]="['/instructor/shared/addExam', course.id]"
-            >
-              Add Exam
-            </button>
 
-            <button
-              class="btn btn-danger"
-              [routerLink]="['/instructor/shared/CoursesExam', course.id]"
-            >
-              View Exams
-            </button>
-          </td>
-        </tr>
-      </ng-container>
-      <ng-template #noCourses>
+<div class="panel">
+  <div class="panel-heading">
+      <div class="row">
+          <div class="col-sm-12 col-xs-12">
+              <h4 class="title pull-left">Courses</h4>
+              <a [routerLink]="['/instructor/shared/AddCourse']"class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus"></i> Add New</a>
+          </div>
+      </div>
+  </div>
+  <div class="panel-body table-responsive">
+      <table class="table">
+          <thead>
+              <tr>
+                 
+                  <th>Name</th>
+                  <th>description</th>
+                  <th>start date</th>
+                  <th>end date</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let user of instructorCourses">
+                
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.description }}</td>
+                  <td>{{ user.start_Date }}</td>
+                  <td>{{ user.end_Date }}</td>
+                  <td>
+                    <button class="btn btn-danger" [routerLink]="['/instructor/shared/CoursesExam', user.id]">
+                      View Exams
+                    </button>
+                    </td>
+                  <td>
+                     
+                      <ul class="action-list">
+                          <li><a href="#" class="btn btn-success"><i class="fa fa-search"></i></a></li>
+                          <li><a href="#" class="btn btn-primary"><i class="fa fa-pencil-alt"></i></a></li>
+                          <li><a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a></li>
+                      </ul>
+                  </td>
+              </tr>
+               <ng-template #noCourses>
         <tr>
-          <td colspan="4" class="text-center">No courses available</td>
+          <td colspan="5" class="text-center">No courses available</td>
         </tr>
       </ng-template>
-    </tbody>
-  </table>
+          </tbody>
+      </table>
+  </div>
+  <div class="panel-footer">
+      <div class="row">
+          <div class="col-sm-6 col-xs-6">showing <b>{{ instructorCourses?.length }}</b> out of <b>{{ instructor }}</b> entries</div>
+          <div class="col-sm-6 col-xs-6">
+              <ul class="pagination hidden-xs pull-right">
+                  <li><a href="#">«</a></li>
+                  <li class="active"><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">4</a></li>
+                  <li><a href="#">5</a></li>
+                  <li><a href="#">»</a></li>
+              </ul>
+              <ul class="pagination visible-xs pull-right">
+                  <li><a href="#">«</a></li>
+                  <li><a href="#">»</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
 </div>

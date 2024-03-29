@@ -1,0 +1,76 @@
+<div id="booking" class="section">
+    <div class="section-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7 col-md-push-5">
+            <div class="booking-cta">
+              <h1> Add Your Course</h1>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi facere, soluta magnam consectetur molestias itaque
+                ad sint fugit architecto incidunt iste culpa perspiciatis possimus voluptates aliquid consequuntur cumque quasi.
+                Perspiciatis.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4 col-md-pull-7">
+            <div class="booking-form">
+              <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <span class="form-label">Your Course Name</span>
+                  <input class="form-control" type="text" formControlName="name" placeholder="Enter a Course name">
+                  <div *ngIf="courseForm.get('name')?.invalid && (courseForm.get('name')?.dirty || courseForm.get('name')?.touched)"
+                    class="text-danger">
+                    <div *ngIf="courseForm.get('name')?.hasError('required')">Course name is required.</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <span class="form-label">Start Date</span>
+                      <input class="form-control" type="date" formControlName="start_Date">
+                      <div *ngIf="courseForm.get('start_Date')?.invalid && (courseForm.get('start_Date')?.dirty || courseForm.get('start_Date')?.touched)"
+                        class="text-danger">
+                        <div *ngIf="courseForm.get('start_Date')?.hasError('required')">Start date is required.</div>
+                        <div  *ngIf="courseForm.get('start_Date')?.hasError('startDateInvalid')"> 
+                       
+                        Start date must be after today.
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <span class="form-label">End Date</span>
+                      <input class="form-control" type="date" formControlName="end_Date">
+                      <div *ngIf="courseForm.get('end_Date')?.invalid && (courseForm.get('end_Date')?.dirty || courseForm.get('end_Date')?.touched)"
+                        class="text-danger">
+                        <div *ngIf="courseForm.get('end_Date')?.hasError('required')">End date is required.</div>
+                        <div *ngIf="courseForm.get('end_Date')?.hasError('endDateInvalid')"
+                       
+                      >
+                        End date must be after start date.
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group">
+                    <span class="form-label">Description</span>
+                    <textarea class="form-control" formControlName="description"></textarea>
+                    <div *ngIf="courseForm.get('description')?.invalid && (courseForm.get('description')?.dirty || courseForm.get('description')?.touched)"
+                      class="text-danger">
+                      <div *ngIf="courseForm.get('description')?.hasError('required')">Description is required.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-btn">
+                  <button class="submit-btn">Add Course</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
