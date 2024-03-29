@@ -172,10 +172,6 @@ getStudentId(){
     } else {
       const row = document.getElementById('action' + index);
       if (row) {
-        if (this.examService.checkIfResultExist()) {
-          row.innerHTML = `${this.examService.checkIfResultExist()}`;
-          return;
-        }
         row.innerHTML = `You Missed The Exam`;
       }
     }
