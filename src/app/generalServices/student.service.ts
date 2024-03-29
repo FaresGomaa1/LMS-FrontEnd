@@ -25,4 +25,9 @@ domainName: string = "http://localhost:5050";
       catchError(this.errorHandlerService.handleError)
     );
   }
+  updateStudent(student: IStudent): Observable<IStudent> {
+    return this.http.put<IStudent>(`${this.domainName}/Student/${student.id}`, student).pipe(
+      catchError(this.errorHandlerService.handleError)
+    );
+  }
 }

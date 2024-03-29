@@ -1,9 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { IQuestion } from './iquestion';
 import { QuestionService } from './question.service';
 import { ExamService } from '../../exam.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-questions',
@@ -11,7 +12,8 @@ import { ExamService } from '../../exam.service';
   styleUrls: ['./questions.component.scss']
 })
 export class QuestionsComponent implements OnInit {
-  id: number | undefined;
+  tokenKey = 'auth_token';
+  id: number = 0;
   allQuestions: IQuestion[] = [];
   questionForm: FormGroup;
   correctedAnswers: string[] = [];
@@ -19,6 +21,7 @@ export class QuestionsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private questionService: QuestionService,
     private examService: ExamService,
     private formBuilder: FormBuilder
@@ -53,21 +56,36 @@ export class QuestionsComponent implements OnInit {
       (questions) => {
         this.allQuestions = questions.filter(question => question.exam_ID === this.id);
         this.initializeForm();
+      },
+      (error) => {
+        console.error('Error fetching questions:', error);
       }
     );
   }
 
   initializeForm(): void {
     const answersArray = this.questionForm.get('answers') as FormArray;
-    this.allQuestions.forEach(question => {
-      answersArray.push(this.formBuilder.control(''));
+    this.allQuestions.forEach((question, index) => {
+      const control = this.formBuilder.control('', Validators.required);
+      answersArray.push(control);
     });
+  }
+  
+
+  getStudentId(): number {
+    const token = localStorage.getItem(this.tokenKey);
+    if (token) {
+      const helper = new JwtHelperService();
+      const decodedToken = helper.decodeToken(token);
+      return decodedToken.nameid; 
+    }
+    return 0;
   }
 
   submitForm(): void {
     if (this.questionForm.valid) {
-      this.correctedAnswers = []; // Clear previous answers
-      this.result = 0; // Reset result count
+      this.correctedAnswers = [];
+      this.result = 0;
 
       this.questionService.getAllQuestions().subscribe((questions) => {
         questions.forEach(question => {
@@ -80,8 +98,12 @@ export class QuestionsComponent implements OnInit {
             this.result++;
           }
         }
-        console.log('Result:', this.result);
+        localStorage.setItem(`result${this.getStudentId()}:${this.id}`, this.result.toString());
+        localStorage.setItem(`exam${this.id}`, this.id?.toString());
+        this.router.navigate(['shared/exam']);
       });
+    } else {
+      alert("You missed some questions");
     }
   }
 }

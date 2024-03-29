@@ -20,9 +20,9 @@
       <td>{{ exam.name }}</td>
       <td>{{ exam.duration }} Min</td>
       <td>{{ exam.date | date : "mediumDate" }}</td>
-      <td>{{ exam.date | date : "shortTime" }}</td>
+      <td>{{ exam.time }}</td>
       <td>{{ courses[i] }}</td>
-      <td>
+      <td id= "action{{i}}">
         <button
         (click)="startExam(i)"
           id="examButton_{{ i }}"
