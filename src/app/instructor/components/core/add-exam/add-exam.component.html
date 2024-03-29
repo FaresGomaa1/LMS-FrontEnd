@@ -18,7 +18,7 @@
     <div class="form-group">
       <h3>Enter Number of Questions:</h3>
       <input type="number" formControlName="numberOfQuestions" class="form-control"
-        placeholder="Enter exam name" required [ngClass]="{
+        placeholder="Enter exam name" id="numberOfQuestions" required [ngClass]="{
             'is-valid': numberquestionControl.valid,
             'is-invalid': numberquestionControl.invalid && numberquestionControl.touched
           }">
@@ -27,7 +27,8 @@
         <ng-container *ngIf="numberquestionControl.hasError('min')">Number of questions must be at least 1</ng-container>
       </div>
     </div>
-    
+    <button type="button" class="btn btn-primary" (click)="onAddQuestions()">Add Questions</button>
+
         <div class="form-group">
           <h3>Enter Time</h3>
           <input type="time" formControlName="time" class="form-control"
@@ -93,8 +94,13 @@
       </div>
     </div>
     
+<!--  
+    <ng-container *ngFor="let question of questionCountArray; let i = index">
+      <app-add-question #questionComponent [questionIndex]="i" [examId]="Exam?.id"></app-add-question>
+    </ng-container> -->
     
-  
-    <button type="submit" class="btn btn-primary" [disabled]="formSubmitted" #submitBtn>Submit</button>
+
+    <button type="submit" class="btn btn-primary" #submitBtn>Submit</button>
   </form>
+
 </div>

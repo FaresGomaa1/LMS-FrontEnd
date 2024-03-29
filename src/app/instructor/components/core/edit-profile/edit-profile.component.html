@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-4 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" src="https://i.imgur.com/0eg0aG0.jpg" width="90">
+                <img class="rounded-circle mt-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqVyiI1XClbT2Ue-7CGVAp8sKoqe_068R9zw&usqp=CAU"  width="90">
                 <span class="font-weight-bold">{{ instructor.name }}</span>
                 <span class="text-black-50">{{ instructor.email }}</span>
                 <span>{{ instructor.address }}</span>
@@ -84,9 +84,7 @@
                             <ng-container *ngIf="profileForm.get('password')?.hasError('required')">
                                 Password is required
                             </ng-container>
-                            <ng-container *ngIf="profileForm.get('password')?.hasError('minlength')">
-                                Password must be at least 8 characters
-                            </ng-container>
+                          
                             <ng-container *ngIf="profileForm.get('password')?.hasError('pattern')">
                                 Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character
                             </ng-container>

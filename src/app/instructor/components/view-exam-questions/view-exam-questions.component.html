@@ -1,43 +1,39 @@
-
 <div *ngIf="questions && questions.length > 0">
   <h2>Exam Questions   
-    <a ngModel="exam_ID" [routerLink]="['/instructor//shared/addQuestion' ,exam_Id]" class="btn btn-primary mt-2 ">Add Questions</a></h2>
+    <a ngModel="exam_ID" [routerLink]="['/instructor//shared/addQuestion', exam_Id]" class="btn btn-primary mt-2">Add Questions</a>
+  </h2>
 
-  <div class="row ">
-    <div class="col-md-6" *ngFor="let question of questions">
-      <div class="card mb-3">
-        <div class="card-header">
-          <h5 class="m-3">{{ question.question }}</h5>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6">
-              <p class="card-text">Question Type: {{ question.questionType }}</p>
-              <p class="card-text">Correct Answer: {{ question.correctAnswer }}</p>
-            </div>
-            <div class="col-md-6">
-              <p class="card-text">Choices:</p>
-              
-                <ul class="card-text">
-                <li *ngFor="let choice of question.choosesName">
-                  {{ choice }}
-                </li>
-              </ul> 
-           
-            </div>
-          </div>
-          <a [routerLink]="['/instructor/shared/editQuestions' ,question.id]" class="btn btn-primary m-3">Edit Question</a>
-
-          <a (click)="deleteQuestion(question.id)"   class="btn btn-primary m-3">Delete Question</a>
-
-        </div>
-      </div>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered custom-table">
+      <thead class="thead-dark text-center">
+        <tr class="h5">
+          <th>Question</th>
+          <th>Question Type</th>
+          <th>Correct Answer</th>
+          <th *ngFor="let choice of getMaxChoices()">Choice {{ choice }}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let question of questions">
+          <td>{{ question.question }}</td>
+          <td>{{ question.questionType }}</td>
+          <td>{{ question.correctAnswer }}</td>
+          <ng-container *ngFor="let choice of question.choosesName; let i = index">
+            <td>{{ choice }}</td>
+          </ng-container>
+          <td class="text-center">
+            <a [routerLink]="['/instructor/shared/editQuestions', question.id]" class="btn btn-info btn-sm mr-1">Edit</a>
+            <button (click)="deleteQuestion(question.id)" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
 </div>
 
 <div *ngIf="questions && questions.length === 0">
   <div class="text-center">
-  <div class="container-fluid mt-5 h2">No Questions available for this Exam.</div>
+    <div class="container-fluid mt-5 h2">No Questions available for this Exam.</div>
+  </div>
 </div>

@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IInstructor } from 'src/app/instructor/interface/i-instructor';
 import { CourseService } from 'src/app/instructor/service/course.service';
+import { ICourse } from 'src/app/instructor/interface/i-course';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-course',
@@ -15,9 +17,11 @@ export class AddCourseComponent implements OnInit {
   courseForm!: FormGroup;
   tokenKey = 'auth_token';
   instructorId: number = 0;  
+
+  
   constructor(private fb: FormBuilder, 
               private courseService: CourseService,
-              private instructorService: InstructorService) { }  
+              private instructorService: InstructorService , private active : Router) { }  
 
   ngOnInit(): void {
     this.courseForm = this.fb.group({
@@ -36,6 +40,7 @@ export class AddCourseComponent implements OnInit {
     }
   }
   
+ 
 
   endDateAfterStartDate(startDateControlName: string, endDateControlName: string) {
     return (formGroup: FormGroup) => {
@@ -72,6 +77,7 @@ export class AddCourseComponent implements OnInit {
           this.instructorService.updateInstructorCourses(this.instructorId, this.courseForm.value.name).subscribe(
             () => {
               console.log('Instructor courses updated successfully.');
+              this.active.navigate(['/instructor/shared/InstructorCourses']); 
               this.courseForm.reset();
             },
             (err) => {
@@ -84,6 +90,7 @@ export class AddCourseComponent implements OnInit {
         }
       );
     } else {
+      alert('Please Enter valid inputs');
       this.courseForm.markAllAsTouched();
     }
   }}

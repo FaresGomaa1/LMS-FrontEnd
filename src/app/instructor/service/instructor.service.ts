@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ICourse } from '../interface/i-course';
 import { IInstructor } from '../interface/i-instructor'; 
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, switchMap } from 'rxjs';
 import { ICourses } from 'src/app/exams/ICourses';
 
 @Injectable({
@@ -34,6 +34,13 @@ export class InstructorService {
   }
 
   updateInstructorCourses(instructorId: number, courseName: string): Observable<IInstructor> {
-    return this.HttpClient.put<IInstructor>(`${this.baseURL}/${instructorId}/Courses`, { courseName });
+    return this.getById(instructorId).pipe(
+      switchMap((instructor: IInstructor) => {
+        instructor.courseName.push(courseName); 
+        return this.Update(instructorId, instructor);  
+      })
+    );
   }
+
+ 
 }

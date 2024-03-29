@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IInstructor } from 'src/app/instructor/interface/i-instructor';
 import { InstructorService } from 'src/app/instructor/service/instructor.service';
 
@@ -14,7 +14,7 @@ export class EditProfileComponent implements OnInit {
   instructorId!: number;
   instructor!: IInstructor;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private instructorService: InstructorService) { }
+  constructor(private fb: FormBuilder, private active : Router, private route: ActivatedRoute, private instructorService: InstructorService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -26,17 +26,18 @@ export class EditProfileComponent implements OnInit {
 
   initForm(): void {
     this.profileForm = this.fb.group({
+      id: [''],
       name: ['', [Validators.required , Validators.minLength(3) , Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)+$')]],
       phone: ['',  [Validators.required, Validators.minLength(11),Validators.maxLength(11),
         Validators.pattern('^01[0152]+[0-9]{8,}$')
         ]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [
-        Validators.required, Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
-       ]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/)]],
+      
       address: ['', [Validators.required,Validators.minLength(5)]],
-      specialization: ['',[Validators.required,Validators.minLength(4)]]
+      specialization: ['',[Validators.required,Validators.minLength(4)]],
+      courseName : [''],
+      photo:['']
     });
   }
 
@@ -66,10 +67,13 @@ export class EditProfileComponent implements OnInit {
     console.log(this.profileForm.value)
     if (this.profileForm.valid) {
       console.log(1)
+      
       const updatedInstructor: IInstructor = { ...this.profileForm.value, id: this.instructorId };
       this.instructorService.Update(this.instructorId, updatedInstructor).subscribe(
         () => {
           console.log('Instructor profile updated successfully'); 
+          
+          this.active.navigate(['/instructor/shared/profile']); 
         },
         error => {
           console.error('Error updating instructor profile:', error);

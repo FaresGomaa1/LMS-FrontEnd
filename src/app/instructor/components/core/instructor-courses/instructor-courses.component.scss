@@ -4,10 +4,10 @@
     border: none;
 }
 .panel .panel-heading{
-    background: #662da3;
+    background: #6a94ad;
     padding: 15px;
     margin: 0 0 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px #6a94ad;
     border-radius: 5px;
 }
 .panel .panel-heading .title{
@@ -19,7 +19,7 @@
     margin: 0 10px 0 0;
 }
 .panel .panel-heading .btn{
-    color: #662da3;
+    color: #a0dc7d;
     background-color: #fff;
     font-size: 14px;
     font-weight: 600;
@@ -52,10 +52,11 @@
     padding: 10px;
     vertical-align: middle;
     border-color: #ddd;
+    font-weight: bold;
 }
 .panel .panel-body .table tbody .form-control:focus{
-    border-color: #662da3;
-    box-shadow: 0 0 4px #662da3;
+    border-color: #86af83;
+    box-shadow: 0 0 4px #9acc84;
 }
 .panel .panel-body .table tbody .user_icon{
     height: 55px;
@@ -84,7 +85,7 @@
 .panel .panel-body .table tbody .action-list li a:hover{ box-shadow: 0 0 5px #ddd; }
 .panel .panel-footer{
     color: #fff;
-    background: #662da3;
+    background: #6a94ad;
     font-size: 16px;
     line-height: 33px;
     padding: 15px;
@@ -95,7 +96,7 @@
 .pagination{ margin: 0; }
 .pagination li a{
     color: #fff;
-    background-color: rgba(255,255,255,0.3);
+    background-color: #6a94ad;
     font-size: 15px;
     font-weight: 700;
     margin: 0 2px;
@@ -106,7 +107,7 @@
 .pagination li a:hover,
 .pagination li a:focus,
 .pagination li.active a{
-    color: #662da3;
+    color: #6a94ad;
     background-color: #fff;
 }
 @media only screen and (max-width:479px){
@@ -116,4 +117,18 @@
         margin: 0 0 10px;
     }
     .panel .panel-heading .btn{ float: none !important; }
+}
+
+.disabled-row {
+    opacity: 0.5; /* or any other style to indicate the row is disabled */
+    pointer-events: none;  
+}
+
+.disabled-link {
+    pointer-events: none;
+    opacity: 0.5;
+}
+.disabled-btn {
+    opacity: 0.5;
+    pointer-events: all; /* Disable pointer events to prevent clicking */
 }

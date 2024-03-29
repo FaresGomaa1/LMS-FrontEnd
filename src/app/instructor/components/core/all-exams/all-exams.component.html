@@ -1,0 +1,65 @@
+
+<div class="container py-3">
+    <div>
+      <h2> All Exams </h2>
+    </div>
+  
+    <div class="text-center">
+      <h1> </h1>
+    </div>
+  
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 col-md-4" *ngFor="let exam of exams">
+          <div class="card mb-3">
+            <a href="#">
+              <img class="card-img-top" src="https://picsum.photos/450/300?image=6" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">{{exam.name}}</h5>
+                <p class="card-text">Duration: {{ exam.duration }} minutes</p>
+                <p class="card-text">Number of Questions: {{ exam.numberOfQuestions }} question(s)</p>
+                <p class="card-text">
+                  <small class="text-muted">
+                    max : {{exam.max_Degree}} 
+                    min : {{exam.min_Degree}} 
+                    <i class="fas fa-calendar-alt"></i> {{exam.date}}  {{exam.time}}
+                  </small>
+                </p>
+                <div class="d-flex justify-content-around">
+                  <a [routerLink]="['/instructor/shared/editExam', exam.id]" class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit fa-xs"></i>
+                  </a>
+                  <a [routerLink]="['/instructor/shared/viewQuestions', exam.id]" class="btn btn-primary btn-sm">
+                    <i class="fas fa-eye fa-xs"></i>
+                  </a>
+                  <a [routerLink]="['/instructor/shared/addQuestion', exam.id]" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus fa-xs"></i>
+                  </a>
+                  <button (click)="deleteExam(exam.id)" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash fa-xs"></i>
+                  </button>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="!(exams && exams.length > 0)" class="container text-center mt-5">
+        <div class="card col-6">
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="card-block">
+                <p>No exams available for this course.</p>
+                <p>Add Exams</p>
+              </div>
+            </div>
+            <div class="col-sm-5">
+              <img class="d-block" src="https://picsum.photos/150?image=380" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

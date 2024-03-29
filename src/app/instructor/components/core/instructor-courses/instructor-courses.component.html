@@ -4,7 +4,10 @@
       <div class="row">
           <div class="col-sm-12 col-xs-12">
               <h4 class="title pull-left">Courses</h4>
-              <a [routerLink]="['/instructor/shared/AddCourse']"class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus"></i> Add New</a>
+              <button class="btn btn-sm btn-primary pull-right m-1" (click)="toggleSortOrder()">
+                {{ sortByEndDateDesc ? 'Sort Oldest First' : 'Sort Newest First' }}
+            </button>
+              <a [routerLink]="['/instructor/shared/AddCourse']"class="btn btn-sm btn-primary pull-right m-1"><i class="fa fa-plus"></i> Add New</a>
           </div>
       </div>
   </div>
@@ -20,23 +23,21 @@
               </tr>
           </thead>
           <tbody>
-              <tr *ngFor="let user of instructorCourses">
+              <tr *ngFor="let course of instructorCourses" [ngClass]="{ 'disabled-row': isCourseEnded(course.end_Date) }">
                 
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.description }}</td>
-                  <td>{{ user.start_Date }}</td>
-                  <td>{{ user.end_Date }}</td>
-                  <td>
-                    <button class="btn btn-danger" [routerLink]="['/instructor/shared/CoursesExam', user.id]">
-                      View Exams
-                    </button>
-                    </td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.description }}</td>
+                  <td>{{ course.start_Date }}</td>
+                  <td>{{ course.end_Date }}</td>
+                 
                   <td>
                      
                       <ul class="action-list">
-                          <li><a href="#" class="btn btn-success"><i class="fa fa-search"></i></a></li>
-                          <li><a href="#" class="btn btn-primary"><i class="fa fa-pencil-alt"></i></a></li>
-                          <li><a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a></li>
+                        <li>
+                            <a [routerLink]="['/instructor/shared/courseDetails', course.id]" class="btn btn-success" [ngClass]="{'disabled-btn': isCourseEnded(course.end_Date)}">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>  
                       </ul>
                   </td>
               </tr>
@@ -50,21 +51,9 @@
   </div>
   <div class="panel-footer">
       <div class="row">
-          <div class="col-sm-6 col-xs-6">showing <b>{{ instructorCourses?.length }}</b> out of <b>{{ instructor }}</b> entries</div>
+          <div class="col-sm-6 col-xs-6">showing <b>{{ instructorCourses?.length }}</b> out of <b>{{ instructorCourses?.length }}</b> entries</div>
           <div class="col-sm-6 col-xs-6">
-              <ul class="pagination hidden-xs pull-right">
-                  <li><a href="#">«</a></li>
-                  <li class="active"><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">5</a></li>
-                  <li><a href="#">»</a></li>
-              </ul>
-              <ul class="pagination visible-xs pull-right">
-                  <li><a href="#">«</a></li>
-                  <li><a href="#">»</a></li>
-              </ul>
+              
           </div>
       </div>
   </div>
