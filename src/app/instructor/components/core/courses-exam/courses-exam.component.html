@@ -1,41 +1,62 @@
-<div *ngIf="exams && exams.length > 0; else noExams">
-    <h2>Exams for Course {{ course_Id }}   <a [routerLink]="['/instructor/shared/addExam' ,course_Id]" class="btn btn-primary m-3">Edit Exam</a></h2>
-  
-    <div class="row ">
-      <div class="col-md-6" *ngFor="let exam of exams">
+
+<div class="container py-3">
+  <div>
+    <h2>Exams for Course {{ courseId }} <a [routerLink]="['/instructor/shared/addExam', courseId]" class="btn btn-primary m-3">ADD Exam</a></h2>
+  </div>
+
+  <div class="text-center">
+    <h1>Bootstrap card tiled layout</h1>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-4" *ngFor="let exam of exams">
         <div class="card mb-3">
-          <div class="card-header">
-            <h5 class="m-3">{{ exam.name }}</h5>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <p class="card-text">Date: {{ exam.date | date }}</p>
-                <p class="card-text">Duration: {{ exam.duration }} minutes</p>
-                <p class="card-text">Number of Questions: {{ exam.numberOfQuestions }} question</p>
-              </div>
-              <div class="col-md-6">
-                <p class="card-text">Max Degree: {{ exam.max_Degree }}</p>
-                <p class="card-text">Min Degree: {{ exam.min_Degree }} </p>
+          <a >
+            <div class="card-body">
+              <h5 class="card-title">{{exam.name}}</h5>
+              <p class="card-text">Duration: {{ exam.duration }} minutes</p>
+              <p class="card-text">Number of Questions: {{ exam.numberOfQuestions }} question(s)</p>
+              <p class="card-text">
+                <small class="text-muted">
+                  max : {{exam.max_Degree}} 
+                  min : {{exam.min_Degree}} 
+                  <i class="fas fa-calendar-alt"></i> {{exam.date}}  {{exam.time}}
+                </small>
+              </p>
+              <div class="d-flex justify-content-around">
+                <a [routerLink]="['/instructor/shared/editExam', exam.id]" class="btn btn-primary btn-sm">
+                  <i class="fas fa-edit fa-xs"></i>
+                </a>
+                <a [routerLink]="['/instructor/shared/viewQuestions', exam.id]" class="btn btn-primary btn-sm">
+                  <i class="fas fa-eye fa-xs"></i>
+                </a>
+                <a [routerLink]="['/instructor/shared/addQuestion', exam.id]" class="btn btn-primary btn-sm">
+                  <i class="fas fa-plus fa-xs"></i>
+                </a>
+                <button (click)="deleteExam(exam.id)" class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash fa-xs"></i>
+                </button>
               </div>
             </div>
-            <a [routerLink]="['/instructor/shared/editExam' ,exam.id]" class="btn btn-primary m-3">Edit Exam</a>
-            <a [routerLink]="['/instructor/shared/viewQuestions' ,exam.id]" class="btn btn-primary m-3">View Exam Questions</a>
+          </a>
+        </div>
+      </div>
+    </div>
 
-            <a [routerLink]="['/instructor/shared/addQuestion' ,exam.id]" class="btn btn-primary m-3">Add Question</a>
-            <a (click)="deleteExam(exam.id)"   class="btn btn-primary m-3">Delete Exam</a>
-
-
+    <div *ngIf="!(exams && exams.length > 0)" class="container text-center mt-5">
+      <div class="card col-6">
+        <div class="row">
+          <div class="col-sm-7">
+            <div class="card-block">
+              <p>No exams available for this course.</p>
+              <p>Add Exams</p>
+            </div>
+          </div>
+          <div class="col-sm-5"> 
           </div>
         </div>
       </div>
     </div>
-  
   </div>
-  
-  <ng-template #noExams>
-    <div class="text-center">
-    <div class="container-fluid mt-5 h2">No exams available for this course.</div>
-    <a ngModel="course_Id" [routerLink]="['/instructor/addExam' ,course_Id]" class="btn btn-primary mt-2 ">Add Exams</a></div>
-  </ng-template>
-  
+</div>

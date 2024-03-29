@@ -14,7 +14,7 @@ import { IQuestion } from '../../interface/iquestion';
 export class ViewExamQuestionsComponent {
   exam_Id: number=0;
   exams: IExam[] | undefined;
-  questions : IQuestion[] | undefined;
+  questions! : IQuestion[]  ;
 
   constructor(private route: ActivatedRoute, private examService: ExamService , private QuestionService : QuestionService) { }
 
@@ -23,7 +23,16 @@ export class ViewExamQuestionsComponent {
     console.log(this.exam_Id);
     this.loadQuestions();
   }
-
+ 
+  getMaxChoices(): number[] {
+    let maxChoices = 0;
+    for (const question of this.questions) {
+      if (question.choosesName.length > maxChoices) {
+        maxChoices = question.choosesName.length;
+      }
+    }
+    return Array(maxChoices).fill(0).map((x, i) => i + 1);
+  }
 
   deleteQuestion(id: number) {
     if (confirm('Are you sure you want to delete this question?')) {

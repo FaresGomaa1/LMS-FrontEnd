@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ExamService } from "src/app/instructor/service/exam.service";
 import { IExam } from "src/app/instructor/interface/i-exam";
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
+import { AddQuestionComponent } from "../add-question/add-question.component";
 
 @Component({
   selector: 'app-add-exam',
@@ -14,9 +15,9 @@ export class AddExamComponent implements OnInit , OnDestroy {
   course_Id: number = 0;
  
   formSubmitted = false;
-
+  questionCountArray: any[];
   ExamForm: FormGroup;
-
+  @ViewChild('questionComponent') questionComponent!: AddQuestionComponent;
   constructor(private ExamService: ExamService, private myRoute: Router, private act: ActivatedRoute) {
     this.ExamForm = new FormGroup({
       numberOfQuestions: new FormControl('', [Validators.required, Validators.min(1)]),
@@ -28,6 +29,15 @@ export class AddExamComponent implements OnInit , OnDestroy {
       min_Degree: new FormControl('', [Validators.required]),
       course_ID: new FormControl(''),
     }, { validators: this.maxGreaterThanMinValidator });
+
+    this.questionCountArray = [];
+  }
+
+  onAddQuestions(): void {
+    const numberOfQuestions = this.ExamForm.get('numberOfQuestions')?.value;
+    if (numberOfQuestions) {
+      this.questionCountArray = Array.from({ length: numberOfQuestions });
+    }
   }
 
   formatTime(time: string): string {
@@ -67,37 +77,32 @@ export class AddExamComponent implements OnInit , OnDestroy {
   get timeControl() {
     return this.ExamForm.controls['time'];
   }
-
+examIdd:number=0;
   ngOnInit(): void {
     this.course_Id = this.act.snapshot.params['courseId'];
     this.ExamForm.controls['course_ID'].setValue(this.course_Id);
     console.log(this.course_Id);
   }
 
-  onSubmit(event: Event) {
+  onSubmit(event: Event ) {
     event.preventDefault();
-    console.log(this.ExamForm.value);
-    
+  
     const formattedTime = this.formatTime(this.ExamForm.get('time')?.value);
     this.ExamForm.get('time')?.setValue(formattedTime);
-    console.log(this.ExamForm.value);
+  
     if (!this.course_Id) {
       this.myRoute.navigate(['instructorCourses']);
-    console.log(2);
-
       return;
     }
-
-    if (this.ExamForm.valid && !this.formSubmitted) { 
-    console.log(3);
-
+  
+    if (this.ExamForm.valid && !this.formSubmitted) {
       this.ExamService.addExam(this.ExamForm.value).subscribe(
-        (response: any) => { 
+        (examId: any) => {
+          this.examIdd= examId;
           console.log('Exam added successfully.');
-          const examId = response.examId;
-          console.log(examId);
+          console.log(examId);  
           const numberOfQuestions = this.ExamForm.get('numberOfQuestions')?.value;
-          this.myRoute.navigate(['instructor/shared/CoursesExam', this.course_Id]);
+          this.questionComponent.onSubmit(event, examId);
         },
         error => {
           console.error('Failed to add exam:', error);
@@ -105,6 +110,7 @@ export class AddExamComponent implements OnInit , OnDestroy {
       );
     }
   }
+  
 
   startDateValidator(control: any) {
     const selectedDate = new Date(control.value);

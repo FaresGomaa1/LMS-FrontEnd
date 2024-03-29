@@ -1,23 +1,44 @@
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="events-list">
-        <div class="event" *ngFor="let event of events">
-          <div class="event-header">
-            <h3>{{ event.name }} </h3>
-            <span class="event-date">
-              <i class="far fa-calendar-alt"></i> {{ event.start_Date |date : 'mediumDate' }} - {{ event.end_Date | date: 'mediumDate' }}
-            </span>
-          </div>
-          <div class="event-body">
-            <p>{{ event.description }}</p>
-          </div>
+<section class="timeline_area section_padding_130">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-8 col-lg-6">
+        <!-- Section Heading-->
+        <div class="section_heading text-center">
+          <h1>Your Events</h1>
+          <h3>Our Upcoming and past Events will be Here</h3>
+          <div class="line"></div>
         </div>
-        <div *ngIf="events?.length === 0" class="text-center">
-          <p>No events available.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <!-- Timeline Area-->
+        <div class="apland-timeline-area">
+          <!-- Single Timeline Content-->
+          <div class="single-timeline-area" *ngFor="let event of sortedEvents">
+            <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s">
+              <p>{{ event.start_Date }}</p>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-12">
+                <div class="single-timeline-content d-flex wow fadeInLeft" [attr.data-wow-delay]="event.name" style="visibility: visible; animation-delay: 3" [ngClass]="{ 'event-past': isEventPast(event) }">
+                  <div class="timeline-icon"><i class="fa {{ event.name }}" aria-hidden="true"></i></div>
+                  <div class="timeline-text">
+                    <h6 style="font-size: 20px">{{ event.name }}</h6>
+                    <h6 style="font-size: 20px">{{ event.description }}</h6>
+                    <small> 
+                      <i class="fas fa-calendar-alt"></i> Ended on {{ event.end_Date }} 
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="events?.length == 0" class="text-center">
+            <p>No events available.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>

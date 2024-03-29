@@ -15,23 +15,25 @@ import { IExam } from 'src/app/instructor/interface/i-exam';
 })
 export class AddQuestionComponent implements OnInit {
   questionForm!: FormGroup;
-  examId: number | null = null; 
+
   numberOfQuestions:number |undefined ;
+  @Input() questionIndex: number;
+  @Input() examId :number |undefined;
   constructor(private formBuilder: FormBuilder, private questionService: QuestionService,
     private examService: ExamService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) { this.questionIndex = 0; this.examId = 0; }
 
   exam : IExam | undefined;
   questionCount: number = 0;
   ngOnInit(): void {
-    this.examId = +this.route.snapshot.params['examId'];
+    console.log('init');
     if (this.examId) {
         this.examService.getExamById(this.examId).subscribe(
             (exam: IExam) => {
                 this.exam = exam;
-                console.log('Exam Details:', exam);
+                console.log( 'init');
                 this.initializeForm();
                 this.checkQuestionCount();
             },
@@ -66,11 +68,13 @@ export class AddQuestionComponent implements OnInit {
       choices: choicesArray,
       correctAnswer: ['', [Validators.required, this.correctAnswerValidator(choicesArray)]],
       questionType: ['', Validators.required],
-      exam_ID: [null, Validators.required] 
+  
     }); 
 
     this.numberOfQuestions = this.exam?.numberOfQuestions;
     console.log(this.numberOfQuestions);
+    console.log(this.examId);
+
 
   }
    correctAnswerValidator(choicesArray: FormArray): ValidatorFn {
@@ -99,8 +103,10 @@ export class AddQuestionComponent implements OnInit {
   }
   
 
-  onSubmit(): void {
-    if (this.examId === null) { 
+  onSubmit(e:Event , examId :number): void {
+    console.log('go')
+    console.log(2222)
+    if (examId == null) { 
       console.error('Exam ID not found.'); 
       return;
     }
@@ -109,6 +115,7 @@ export class AddQuestionComponent implements OnInit {
       this.checkQuestionCount();
       const choicesArray = this.questionForm.get('choices') as FormArray;
       const choices: string[] = [];
+      console.log('go2')
       
       choicesArray.controls.forEach(control => {
         const choiceValue = control.value.trim(); 
@@ -120,27 +127,25 @@ export class AddQuestionComponent implements OnInit {
       const questionData: IQuestion = {
         id: 0, 
         question: this.questionForm.value.question,
-        exam_ID: this.questionForm.value.exam_ID,
+        exam_ID:examId,
         choosesName: choices,
         correctAnswer: this.questionForm.value.correctAnswer,
         questionType: this.questionForm.value.questionType
       };
   
-      this.questionService.addQuestion(questionData, this.examId).subscribe(
+      this.questionService.addQuestion(questionData, examId).subscribe(
         (response) => {
           console.log('Question added successfully:', response); 
           if (this.numberOfQuestions !== undefined && this.questionCount !== undefined) {
-            // Calculate remaining number of questions
+            
             const remainingQuestions = this.numberOfQuestions - this.questionCount;
-      
-            // Show JavaScript alert with remaining questions
+       
             alert(`Question added successfully. You can add ${remainingQuestions} more questions.`);
           } else {
             console.error('numberOfQuestions or questionCount is undefined.');
             return;
           }
-      
-          // Reset form
+       
           this.questionForm.reset();
         } ,
         
@@ -150,6 +155,7 @@ export class AddQuestionComponent implements OnInit {
       );
     } else {
       this.questionForm.markAllAsTouched();
+     
     }
   }
   

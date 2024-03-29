@@ -47,7 +47,7 @@ import { MatMenuModule } from '@angular/material/menu';
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatMenuModule,
+   MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

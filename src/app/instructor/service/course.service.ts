@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICourse } from '../interface/i-course';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
+import { IStudent } from '../interface/istudent';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,10 @@ export class CourseService {
 
   deleteCourse(ID: number): Observable<ICourse> {
     return this.http.delete<ICourse>(`${this.baseURL}/${ID}` );
+  }
+  getStudentsEnrolledInCourse(courseId: number): Observable<IStudent[]> {
+    return this.http.get<IStudent[]>(`${this.baseURL}/Student`).pipe(
+      map(students => students.filter(student => student.courseIDs.includes(courseId)))
+    );
   }
 }

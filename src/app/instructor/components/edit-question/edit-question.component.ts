@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { IExam } from 'src/app/instructor/interface/i-exam';
-import { ExamService } from '../../service/exam.service';
-import { QuestionService } from '../../service/question.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IQuestion } from '../../interface/iquestion';
+import { Subscription } from 'rxjs';
+import { QuestionService } from 'src/app/instructor/service/question.service';
+import { IQuestion } from 'src/app/instructor/interface/iquestion';
+import { IExam } from 'src/app/instructor/interface/i-exam';
+import { ExamService } from 'src/app/instructor/service/exam.service';
 
 @Component({
   selector: 'app-edit-question',
@@ -13,102 +13,120 @@ import { IQuestion } from '../../interface/iquestion';
   styleUrls: ['./edit-question.component.scss']
 })
 export class EditQuestionComponent implements OnInit, OnDestroy {
-  constructor(private QuestionService: QuestionService,  private formBuilder: FormBuilder,
-     private myRoute: Router, private act: ActivatedRoute) 
-  
-  {
-    this.questionForm = this.formBuilder.group({
-      question: ['', [Validators.required]],
-      correctAnswer: ['', [Validators.required]],
-      questionType: ['', [Validators.required, Validators.minLength(3)]],
-      exam_ID: [''],
-      choosesName: this.formBuilder.array([this.createChoiceFormControl()])
-    });
-  }
+  questionForm!: FormGroup;
+  questionId: number | null = null; 
+  question: IQuestion | undefined;
+  examId: number | null = null; 
+  numberOfQuestions: number | undefined;
+  questionCount: number = 0;
+  myGetSub: Subscription | undefined;
+  myActionSub: Subscription | undefined;
 
-  get questionFormControl(): { [key: string]: AbstractControl } {
-    return this.questionForm.controls;
-  }
-  createChoiceFormControl(): FormControl {
-    return this.formBuilder.control('');
-  }
+  constructor(private formBuilder: FormBuilder, 
+              private questionService: QuestionService,
+              private examService: ExamService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
-  get choicesFormArray(): FormArray {
-    return this.questionForm.get('choosesName') as FormArray;
-  }
-
-  addChoice(): void {
-    this.choicesFormArray.push(this.createChoiceFormControl());
-  }
-
-  removeChoice(index: number): void {
-    if (this.choicesFormArray.length > 1) {
-      this.choicesFormArray.removeAt(index);
-    } else {
-      alert('At least one choice is required.');
+  ngOnInit(): void {
+    this.questionId = +this.route.snapshot.params['questionId'];
+    if (this.questionId) {
+        this.myGetSub = this.questionService.getQuestionById(this.questionId).subscribe(
+            (question: IQuestion) => {
+                this.question = question;
+                console.log('Question Details:', question);
+                this.initializeForm();
+            },
+            error => {
+                console.error('Failed to fetch question:', error);
+            }
+        );
     }
   }
 
-
-  myGetSub: Subscription | undefined;
-  myActionSub: Subscription | undefined;
-  questionForm: FormGroup;
-  question: IQuestion | undefined;
-  id: number = 0;
-  
   ngOnDestroy(): void {
     this.myGetSub?.unsubscribe();
     this.myActionSub?.unsubscribe();
   }
-  ngOnInit(): void {
-    this.id = this.act.snapshot.params['questionId'];
 
-    this.myGetSub = this.QuestionService.getQuestionById(this.id).subscribe(
-      (data: IQuestion) => {
-        this.question = data;
-        this.questionForm.patchValue({
-          question: data.question,
-          correctAnswer: data.correctAnswer,
-          questionType: data.questionType,
-          
-        });
-        if (data.choosesName) {
-          this.questionForm.setControl('choosesName', this.formBuilder.array(data.choosesName.map(choice => this.formBuilder.control(choice))));
-        }
-      },
-      error => {
-        console.error('Failed to fetch question:', error);
-      }
-    );
-
-    }
-
-    onSubmit(event: Event) {
-      if (!this.id) {
-        console.error('Question ID not found.');
-        return;
-      }
+  initializeForm(): void {
+    const choicesArray = this.formBuilder.array([
+      this.formBuilder.control(this.question?.choosesName[0], Validators.required),
+      this.formBuilder.control(this.question?.choosesName[1], Validators.required),
+      this.formBuilder.control(this.question?.choosesName[2]),
+      this.formBuilder.control(this.question?.choosesName[3])
+    ]);
   
-      if (this.questionForm.valid) {
-        const formData = this.questionForm.value;
-       
-        
-        this.myActionSub = this.QuestionService.updateQuestion(this.id ,formData)
-          .subscribe(
-            () => {
-              alert('Question updated successfully.');
-              this.myRoute.navigate(['examDetails', this.id]); 
-            },
-            error => {
-              console.error('Failed to update question:', error);
-            }
-          );
-      } else {
-        console.error('Invalid question form.');
-      }
-    }
+    this.questionForm = this.formBuilder.group({
+      question: [this.question?.question, Validators.required],
+      choices: choicesArray,
+      correctAnswer: [this.question?.correctAnswer, [Validators.required, this.correctAnswerValidator(choicesArray)]],
+      questionType: [this.question?.questionType, Validators.required],
+      exam_ID: [this.question?.exam_ID, Validators.required]
+    });
+  
+    console.log(this.numberOfQuestions);
   }
 
+  getChoiceControl(index: number): FormControl {
+    return (this.questionForm.get('choices') as FormArray).controls[index] as FormControl;
+  }
 
+  isChoiceInvalid(): boolean {
+    const choicesArray = this.questionForm.get('choices') as FormArray;
+    return choicesArray.controls.slice(0, 2).some(control => control.invalid && control.touched);
+  }
 
+  correctAnswerValidator(choicesArray: FormArray): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const correctAnswer = control.value;
+      if (!correctAnswer || choicesArray.value.indexOf(correctAnswer) === -1) {
+        return { incorrectAnswer: true };
+      }
+      return null;
+    };
+  }
 
+  onSubmit(e:Event): void {
+    
+    if (!this.questionId) { 
+      console.error('Question ID not found.'); 
+      return;
+    }
+  
+
+    if (this.questionForm.valid) {
+      console.log('11111.'); 
+      const choicesArray = this.questionForm.get('choices') as FormArray;
+      const choices: string[] = [];
+      
+      choicesArray.controls.forEach(control => {
+        const choiceValue = control.value?.trim();  
+        if (choiceValue && choiceValue !== '') {     
+          choices.push(choiceValue);
+        }
+      });
+    
+      const questionData: IQuestion = {
+        id: this.questionId, 
+        question: this.questionForm.value.question,
+        exam_ID: this.questionForm.value.exam_ID,
+        choosesName: choices,
+        correctAnswer: this.questionForm.value.correctAnswer,
+        questionType: this.questionForm.value.questionType
+      };
+      
+      this.myActionSub = this.questionService.updateQuestion(this.questionId, questionData).subscribe(
+        () => {
+          alert('Question updated successfully.');
+          this.router.navigate(['examDetails', this.examId]); 
+        },
+        error => {
+          console.error('Failed to update question:', error);
+        }
+      );
+    } else {
+      this.questionForm.markAllAsTouched();
+    }
+  }
+}
