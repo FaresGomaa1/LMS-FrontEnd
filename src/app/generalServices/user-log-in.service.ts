@@ -18,8 +18,7 @@ export class UserLogInService {
     return this.http.post<any>(url, loginData).pipe(
       tap((response) => {
         localStorage.setItem(this.tokenKey, response.token);
-      }),
-      catchError((error) => throwError(error))
+      })
     );
   }
   isLoggedIn(): boolean {

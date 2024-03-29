@@ -19,7 +19,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { DurationToMinutesPipe } from './exams/duration-to-minutes.pipe';
 import { SolveExamComponent } from './exams/solve-exam/solve-exam.component';
 import { QuestionsComponent } from './exams/solve-exam/questions/questions.component';
-
+import { SignUpComponent } from './log-in/sign-up/sign-up.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,12 +39,15 @@ import { QuestionsComponent } from './exams/solve-exam/questions/questions.compo
     DurationToMinutesPipe,
     SolveExamComponent,
     QuestionsComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

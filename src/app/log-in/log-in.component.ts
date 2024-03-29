@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserLogInService } from '../generalServices/user-log-in.service';
@@ -14,6 +14,7 @@ export class LogInComponent implements OnInit {
   loading = false;
   error = '';
   tokenKey = 'auth_token';
+
   constructor(
     private fb: FormBuilder,
     private userLoginService: UserLogInService,
@@ -30,27 +31,49 @@ export class LogInComponent implements OnInit {
       password: ['', Validators.required],
     });
   }
-
+  togglePanel(isSignUp: boolean) {
+    const container = document.getElementById('container');
+    if (isSignUp) {
+      container?.classList.add('right-panel-active');
+    } else {
+      container?.classList.remove('right-panel-active');
+    }
+  }
   onSubmit(): void {
-    if (this.loginForm.valid) {
+    if (!this.loginForm.value.email) {
+      alert("Please Enter a valid email");
+    } else if (!this.loginForm.value.password) {
+      alert("Please enter the password");
+    } else {
       this.loading = true;
       const { email, password } = this.loginForm.value;
-      this.userLoginService.signIn(email, password).subscribe((response) => {
-        this.loading = false;
-        const token = response.token;
-        if (token) {
-          const helper = new JwtHelperService();
-          const decodedToken = helper.decodeToken(token);
-          const userRole = decodedToken.role;
-          const userType = userRole === 'student' ? 'student' : 'instructor';
-          if (userType === 'student') {
-            this.router.navigate(['/shared']);
-          } else if (userType === 'instructor') {
-            this.router.navigate(['/instructor']);
+      this.userLoginService.signIn(email, password).subscribe(
+        (response) => {
+          this.loading = false;
+          const token = response.token;
+          if (token) {
+            const helper = new JwtHelperService();
+            const decodedToken = helper.decodeToken(token);
+            const userRole = decodedToken.role;
+            const userType = userRole === 'student' ? 'student' : 'instructor';
+            if (userType === 'student') {
+              this.router.navigate(['/shared']);
+            } else if (userType === 'instructor') {
+              this.router.navigate(['/instructor']);
+            }
+            this.loginForm.reset();
           }
-          this.loginForm.reset();
+        },
+        (error) => {
+          this.loading = false;
+          if (error.error && error.error.message) {
+            alert(error.error.message);
+          } else {
+            console.error("An error occurred:", error);
+            alert("An error occurred. Please try again later.");
+          }
         }
-      });
+      );
     }
   }
 }
