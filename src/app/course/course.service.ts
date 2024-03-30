@@ -24,7 +24,4 @@ export class CourseService {
       .get<ICourses>(`${this.domainName}/Courses/${ID}`)
       .pipe(retry(2), catchError(this.errorHandlerService.handleError));
   }
-  enroll(courseId: number){
-    
-  }
 }

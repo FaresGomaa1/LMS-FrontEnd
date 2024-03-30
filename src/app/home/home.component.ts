@@ -22,7 +22,9 @@ export class HomeComponent implements OnInit {
     ) {}
   ngOnInit(): void {
     this.CourserService.getAllInstructors().subscribe((courses) => {
-      this.allCourses = courses;
+      for (let i = 0; i < 3; i++){
+        this.allCourses.push(courses[i])
+      }
     });
     this.InstructorService.getAllInstructors().subscribe((ins)=>{
       this.allInstructors = ins;

@@ -4,15 +4,23 @@
     <app-sign-up></app-sign-up>
   </div>
   <div class="form-container sign-in-container">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogIn()">
       <h1>Sign in</h1>
+    
+      <!-- Email Input Field -->
       <input type="email" placeholder="Email" formControlName="email" />
-      <input
-        type="password"
-        placeholder="Password"
-        formControlName="password"
-      />
-      <a href="#">Forgot your password?</a>
+      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="alert alert-danger">
+        Email is required and must be a valid email address.
+      </div>
+    
+      <!-- Password Input Field -->
+      <input type="password" placeholder="Password" formControlName="password" />
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="alert alert-danger">
+        Password is required.
+      </div>
+
+    
+      <!-- Submit Button -->
       <button type="submit">Sign In</button>
     </form>
   </div>

@@ -34,8 +34,6 @@ export class StudentService {
   }
 
   addStudent(student :any): Observable<any> {
-    return this.http.post<any>(`${this.domainName}/Student`, student).pipe(
-      catchError(this.errorHandlerService.handleError)
-    );
+    return this.http.post<any>(`${this.domainName}/Student`, student)
   }
 }

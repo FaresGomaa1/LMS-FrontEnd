@@ -39,7 +39,8 @@ export class LogInComponent implements OnInit {
       container?.classList.remove('right-panel-active');
     }
   }
-  onSubmit(): void {
+  onSubmitLogIn(): void {
+    event?.preventDefault();
     if (!this.loginForm.value.email) {
       alert("Please Enter a valid email");
     } else if (!this.loginForm.value.password) {

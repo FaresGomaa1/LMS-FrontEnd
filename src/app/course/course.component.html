@@ -3,54 +3,98 @@
 <!-- Navbar End -->
 
 <div class="bg-light p-2">
-  <h3 style="margin-left: 50%; margin-top: 50px; color: green;">courses</h3>
+  <h1 class="text-center text-success mb-0">Courses</h1>
 </div>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 mb-4" *ngFor="let course of courses">
+      <div class="card h-100">
+        <img
+          src="../../assets/img/course-2.jpg"
+          class="card-img-top"
+          alt="Course Image"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ course.name }}</h5>
+          <p class="card-text">{{ course.description }}</p>
+        </div>
+        <div class="card-footer">
+          <div class="row">
+            <div class="col">
+              <span class="text-muted"
+                >Start Date: {{ course.start_Date | date }}</span
+              >
+            </div>
+            <div class="col">
+              <span class="text-muted"
+                >End Date: {{ course.end_Date | date }}</span
+              >
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col">
+              <span>{{ course.numOfExam }} Exams</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button
+  type="button"
+  class="custom-button fixed-bottom m-3"
+  data-bs-toggle="modal"
+  data-bs-target="#exampleModal"
+>
   Enroll In New Courses
-</button> -->
+</button>
 
 <!-- Modal -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">All Courses</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <div *ngFor="let course of enrollInNewCourses">
+        <div *ngFor="let course of enrollInNewCourses" class="mb-3">
           <h5>{{ course.name }}</h5>
-          <a class="btn btn-primary me-2" href="{{ 'http://localhost:4200/coursedetails/' + course.id }}" target="_blank">View Details</a>
-          <button class="btn btn-success" (click)="enroll(course.id)">Enroll</button>
+          <a
+            href="{{ 'http://localhost:4200/coursedetails/' + course.id }}"
+            target="_blank"
+            class="btn btn-primary me-2"
+            >View Details</a
+          >
+          <button class="btn btn-success" (click)="enroll(course.id)">
+            Enroll
+          </button>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
   </div>
-</div> -->
-<table class="table table-hover table-striped">
-  <thead>
-    <tr class="text-center">
-      <th scope="col">Name</th>
-      <th scope="col">View Details</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="text-center" *ngFor="let course of courses; let i = index">
-      <th scope="row">{{ course.name }}</th>
-      <td><button class="btn btn-primary" (click)="openCourseDetailsInNewTab(course.id)">View Details</button></td>
-    </tr>
-  </tbody>
-</table>
+</div>
 
 <!-- Footer Start -->
 <app-footer></app-footer>
 <!-- Footer End -->
-
-<!-- Back to Top -->
-<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top">
-  <i class="bi bi-arrow-up"></i>
-</a>

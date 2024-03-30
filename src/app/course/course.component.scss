@@ -1,37 +1,64 @@
-.card {
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+// .card {
+//     margin-bottom: 20px;
+//     border: 1px solid #ccc;
+//     border-radius: 10px;
+//     overflow: hidden;
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 10px;
+//     .card-title {
+//       font-size: 1.25rem;
+//       font-weight: bold;
+//       color: #333;
+//       margin-bottom: 10px;
+//     }
+  
+//     .card-text {
+//       color: #666;
+//     }
+  
+//     .list-group-item {
+//       color: #888;
+//     }
+  
+//     button {
+//       background-color: #007bff;
+//       border: none;
+//       color: #fff;
+//       padding: 8px 16px;
+//       border-radius: 5px;
+//       cursor: pointer;
+//       transition: background-color 0.3s ease;
+  
+//       &:hover {
+//         background-color: #0056b3;
+//       }
+//     }
+//   }
+  .card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+  }
+  .back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  .custom-button {
+    position: sticky;
+    background: linear-gradient(to right, #00cc00, #009900); 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
   
-    .card-text {
-      color: #666;
-    }
-  
-    .list-group-item {
-      color: #888;
-    }
-  
-    button {
-      background-color: #007bff;
-      border: none;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-  
-      &:hover {
-        background-color: #0056b3;
-      }
-    }
+  .custom-button:hover {
+    background: linear-gradient(to right, #009900, #006600);
   }
   

@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="bg-light p-2">
-  <h3 style="margin-left: 50%; margin-top: 50px; color: green">Exams</h3>
+  <h1 style="margin-left: 50%; margin-top: 50px; color: green">Exams</h1>
 </div>
 
 <table class="table table-hover table-striped">
@@ -11,7 +11,7 @@
       <th scope="col">Duration</th>
       <th scope="col">Date</th>
       <th scope="col">Time</th>
-      <th scope="col">Course</th>
+      <!-- <th scope="col">Course</th> -->
       <th scope="col">Action</th>
     </tr>
   </thead>
@@ -21,7 +21,7 @@
       <td>{{ exam.duration }} Min</td>
       <td>{{ exam.date | date : "mediumDate" }}</td>
       <td>{{ exam.time }}</td>
-      <td>{{ courses[i] }}</td>
+      <!-- <td>{{ courses[i] }}</td> -->
       <td id= "action{{i}}">
         <button
         (click)="startExam(i)"

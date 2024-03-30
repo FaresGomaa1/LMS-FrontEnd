@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { ICourses } from './icourses';
 import { StudentService } from './../generalServices/student.service';
 import { CourseService } from './course.service';
-import { ICourse } from '../instructor/interface/i-course';
 import { InstructorService } from './../generalServices/instructor.service';
 
 @Component({
@@ -17,12 +16,13 @@ export class CourseComponent implements OnInit {
   courses: ICourses[] = [];
   studentCourseIds: number[] = [];
   enrollInNewCourses: ICourses[] = [];
-  instructorId!: number
+  instructorId!: number;
+  studentId!: number;
 
   constructor(
     private courseService: CourseService,
     private studentService: StudentService,
-    private instructorService :InstructorService
+    private instructorService: InstructorService
   ) {
     this.courseService.getAllCourses().subscribe((courses) => {
       this.enrollInNewCourses = courses;
@@ -31,6 +31,7 @@ export class CourseComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStudentCourseIds();
+    console.log(  this.studentId)
   }
 
   getStudentCourseIds(): void {
@@ -39,11 +40,22 @@ export class CourseComponent implements OnInit {
       const helper = new JwtHelperService();
       const decodedToken = helper.decodeToken(token);
       const userId = decodedToken.nameid;
+      this.studentId = userId;
       if (userId) {
         this.studentService
           .getStudentById(parseInt(userId, 10))
           .subscribe((student) => {
             this.studentCourseIds = student.courseIDs;
+            let studentCourseIdsString = localStorage.getItem(`course${userId}`);
+            if (studentCourseIdsString !== null) {
+              this.studentCourseIds = JSON.parse(studentCourseIdsString);
+            } else {
+              // this.studentCourseIds = this.studentCourseIds;
+              localStorage.setItem(
+                `course${userId}`,
+                JSON.stringify(this.studentCourseIds)
+              );
+            }
 
             this.getAllStudentCourses();
           });
@@ -68,53 +80,27 @@ export class CourseComponent implements OnInit {
     );
   }
   enroll(courseId: number) {
-    const token = localStorage.getItem(this.tokenKey);
-
-    if (token) {
-      const helper = new JwtHelperService();
-      const decodedToken = helper.decodeToken(token);
-      const userId = decodedToken.nameid;
-
-      // Retrieve the student by ID
-      this.studentService.getStudentById(userId).subscribe((student) => {
-        // Retrieve the course by ID
-        this.courseService.getCourseById(courseId).subscribe((course: ICourse) => {
-          // Add the course to the student's courseName array
-          if (!student.courseName) {
-            student.courseName = []; // Initialize the array if it doesn't exist
-          }
-          student.courseName.push(course.name);
-          this.instructorService.getAllInstructors().subscribe((ins)=>{
-            for (let  i = 0; i < ins.length ; i++){
-              for (let  j = 0; j < ins[i].courseName.length ; j++){
-                if (ins[i].courseName[j] === student.courseName[0]){
-                    this.instructorId = ins[i].id;
-                }
-              }
-            }
-          })
-
-          // Update the student's information
-          this.studentService.updateStudent(student).subscribe((updatedStudent: IStudent) => {
-            console.log('Student enrolled successfully:', updatedStudent);
-            // Handle any success logic here
-          }, error => {
-            console.error('Error updating student:', error);
-            // Handle error logic here
-          });
-        }, error => {
-          console.error('Error retrieving course:', error);
-          // Handle error logic here
-        });
-      }, error => {
-        console.error('Error retrieving student:', error);
-        // Handle error logic here
-      });
+    let studentCourseIdsString = localStorage.getItem(`course${this.studentId}`);
+    if (studentCourseIdsString !== null) {
+      this.studentCourseIds = JSON.parse(studentCourseIdsString);
     } else {
-      console.error('No token found');
-      // Handle error logic here
+      // this.studentCourseIds = this.studentCourseIds;
     }
+  
+    for (let i = 0; i < this.studentCourseIds.length; i++) {
+      if (courseId === this.studentCourseIds[i]) {
+        alert('You are already enrolled in this course');
+        return;
+      }
+    }  
+    this.studentCourseIds.push(courseId);
+    localStorage.setItem(
+      `course${this.studentId}`,
+      JSON.stringify(this.studentCourseIds)
+    );
+    alert("Enrolled Sucssfully")
   }
+  
   openCourseDetailsInNewTab(courseId: number): void {
     const url = `http://localhost:4200/coursedetails/${courseId}`;
     window.open(url, '_blank');

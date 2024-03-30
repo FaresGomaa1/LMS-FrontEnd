@@ -1,53 +1,95 @@
 <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
   <h1>Create Account</h1>
   <input type="text" placeholder="Name" formControlName="name" />
-  <div *ngIf="signUpForm.get('name')?.invalid && signUpForm.get('name')?.touched" class="alert alert-danger">
-    Name is required.
+  <div
+    *ngIf="signUpForm.get('name')?.invalid && signUpForm.get('name')?.touched"
+    class="alert alert-danger"
+  >
+    <div *ngIf="signUpForm.get('name')?.errors?.['required']">
+      Name is required.
+    </div>
+    <div *ngIf="signUpForm.get('name')?.errors?.['pattern']">
+      You need to insert your First and last Names.
+    </div>
   </div>
+
+  <input type="text" placeholder="Age" formControlName="age" />
   <div>
-    <input type="text" placeholder="Age" formControlName="age" />
-    <div *ngIf="signUpForm.get('age')?.invalid && signUpForm.get('age')?.touched" class="alert alert-danger">
+    <div
+      *ngIf="signUpForm.get('age')?.invalid && signUpForm.get('age')?.touched"
+      class="alert alert-danger"
+    >
       <div *ngIf="signUpForm.get('age')?.errors?.['required']">
         Age is required.
       </div>
       <div *ngIf="signUpForm.get('age')?.errors?.['min']">
-        Age must be greater than or equal to 1.
+        Age must be greater than or equal to 18.
       </div>
     </div>
   </div>
   <input type="text" placeholder="Title" formControlName="title" />
-  <div *ngIf="signUpForm.get('title')?.invalid && signUpForm.get('title')?.touched" class="alert alert-danger">
+  <div
+    *ngIf="signUpForm.get('title')?.invalid && signUpForm.get('title')?.touched"
+    class="alert alert-danger"
+  >
     Title is required.
   </div>
 
   <input type="email" placeholder="Email" formControlName="email" />
-  <div *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" class="alert alert-danger">
+  <div
+    *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched"
+    class="alert alert-danger"
+  >
     Email is required and must be a valid email address.
   </div>
 
   <input type="password" placeholder="Password" formControlName="password" />
-  <div *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" class="alert alert-danger">
-    Password is required and must contain at least 8 characters, including uppercase, lowercase, and a number.
+  <div
+    *ngIf="
+      signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched
+    "
+    class="alert alert-danger"
+  >
+    Password is required and must contain at least 8 characters, including
+    uppercase, lowercase, and a number.
   </div>
 
   <input type="text" placeholder="Phone number" formControlName="phoneNumber" />
-  <div *ngIf="signUpForm.get('phoneNumber')?.invalid && signUpForm.get('phoneNumber')?.touched" class="alert alert-danger">
-    Phone number is required and must start with 010, 011, or 012 and must be 11 digits long.
+  <div
+    *ngIf="
+      signUpForm.get('phoneNumber')?.invalid &&
+      signUpForm.get('phoneNumber')?.touched
+    "
+    class="alert alert-danger"
+  >
+    Phone number is required and must start with 010, 011, or 012 and must be 11
+    digits long.
   </div>
 
   <input type="text" placeholder="Address" formControlName="address" />
-  <div *ngIf="signUpForm.get('address')?.invalid && signUpForm.get('address')?.touched" class="alert alert-danger">
-   Address is required.
+  <div
+    *ngIf="
+      signUpForm.get('address')?.invalid && signUpForm.get('address')?.touched
+    "
+    class="alert alert-danger"
+  >
+    Address is required.
   </div>
 
-  <input type="url" placeholder="Photo Url" formControlName="photoUrl" />
-  <div *ngIf="signUpForm.get('photoUrl')?.invalid && signUpForm.get('photoUrl')?.touched" class="alert alert-danger">
-      Photo is required.
+  <input type="file" placeholder="Photo Url" formControlName="photoUrl" />
+  <div
+    *ngIf="
+      signUpForm.get('photoUrl')?.invalid && signUpForm.get('photoUrl')?.touched
+    "
+    class="alert alert-danger"
+  >
+    Photo is required.
   </div>
-  <select multiple formControlName="selectedCourses" style="display: none;">
-    <option *ngFor="let course of coursesNames" [ngValue]="course.name">{{ course.name }}</option>
+  
+  <select multiple formControlName="selectedCourses" style="display: none">
+    <option *ngFor="let course of coursesNames" [ngValue]="course.name">
+      {{ course.name }}
+    </option>
   </select>
-  <!-- Error message for selectedCourses is optional -->
-
   <button type="submit">Sign Up</button>
 </form>

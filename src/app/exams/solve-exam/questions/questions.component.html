@@ -1,9 +1,7 @@
 <div class="container questions-container">
   <h2 class="mb-4">Questions</h2>
   <form [formGroup]="questionForm" (ngSubmit)="submitForm()" class="questions-form">
-    <div *ngIf="questionForm.invalid && questionForm.dirty" class="alert alert-danger mt-3">
-      <i class="fas fa-exclamation-circle me-2"></i> Please answer all questions.
-    </div>
+
     <div *ngFor="let question of allQuestions; let i = index" class="card mt-3">
       <div class="card-body">
         <h5 class="card-title mb-3">{{ question.question }}</h5>
@@ -13,13 +11,10 @@
             <label class="form-check-label" [for]="'choice'+i+j">{{ choice }}</label>
           </div>
         </div>
-        <!-- Error message for each question -->
-        <!-- <div *ngIf="questionForm.get('answers')?.at(i)?.invalid && questionForm.get('answers')?.at(i)?.dirty" class="text-danger mt-2">
-          Please select an answer.
-        </div> -->
+
       </div>
     </div>
-    
+    <p>You need to answer all Questions to be able to submit</p>
     <button type="submit" class="btn btn-primary mt-3" [disabled]="questionForm.invalid && questionForm.dirty">
       <i class="fas fa-check me-2"></i> Submit
     </button>

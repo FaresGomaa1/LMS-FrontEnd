@@ -1,0 +1,31 @@
+/* Custom styles */
+.bg-light {
+  background-color: #f8f9fa; /* Light gray background */
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Center align text within table cells */
+.table {
+  td,
+  th {
+    text-align: center;
+  }
+}
+
+/* Button styles */
+.btn-success {
+  background-color: #28a745; /* Green */
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+/* Icon styles */
+.fa-arrow-circle-right {
+  font-size: 0.9em;
+}

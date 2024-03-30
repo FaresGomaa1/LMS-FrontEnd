@@ -26,6 +26,7 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup = new FormGroup({});
   coursesNames: ICourse[] = [];
   allEmails: string[] = [];
+  check = 1;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,8 +38,8 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
     this.getAllCoursesNames();
     this.signUpForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      age: ['', Validators.required, Validators.min(1)],
+      name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]{3,}\s[a-zA-Z]{3,}$/)]],
+      age: ['', [Validators.required, Validators.min(1)]],
       title: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: [
@@ -49,12 +50,13 @@ export class SignUpComponent implements OnInit {
           Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$'),
         ],
       ],
+      confirmPassword:[],
       phoneNumber: [
         '',
         [Validators.required, Validators.pattern('^(010|011|012)\\d{8}$')],
       ],
       address: ['', [Validators.required]],
-      photoUrl: ['', [Validators.required]],
+      photoUrl: [[Validators.required]],
       selectedCourses: [[]],
     });
   }
@@ -75,6 +77,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmit(): void {
+    event?.preventDefault();
     if (this.signUpForm.valid) {
       // Call the method to retrieve all emails
       this.getAllEmails(() => {
@@ -82,9 +85,11 @@ export class SignUpComponent implements OnInit {
         for (let i = 0; i < this.allEmails.length; i++) {
           if (this.allEmails[i] === enteredEmail) {
             alert('The Email is Already Exist');
-            return; // Exit the function if duplicate email found
-          }
+            this.check = 0;
+            return;
+          } 
         }
+        
         // If email is unique, proceed to add the new student
         let newStudent: IStudent = {
           name: this.signUpForm.value.name,
@@ -94,16 +99,19 @@ export class SignUpComponent implements OnInit {
           address: this.signUpForm.value.address,
           email: enteredEmail, 
           password: this.signUpForm.value.password,
-          photo: this.signUpForm.value.photoUrl,
+          photo:this.signUpForm.value.photo || 'testimonial-3.jpg',
           courseName: this.signUpForm.value.selectedCourses,
         };
-        console.log("new student",newStudent);
         // Add logic to call service method to add the new student
         this.studentService.addStudent(newStudent).subscribe({
           next: (response) => {
-            console.log('New student added:', response);
-            this.signUpForm.reset();
-            alert("Registration Successful!");
+            if (this.check == 0){
+              return;
+            } else {
+              this.signUpForm.reset();
+              alert("Registration Successful!");
+              this.check++;
+            }
           },
           error: (error) => {
             console.error('Error adding student:', error);

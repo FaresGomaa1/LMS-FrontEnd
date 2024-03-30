@@ -89,13 +89,12 @@ export class QuestionsComponent implements OnInit {
 
       this.questionService.getAllQuestions().subscribe((questions) => {
         questions.forEach(question => {
-          this.correctedAnswers.push(question.correctAnswer);
+          if (question.exam_ID === this.id){
+            this.correctedAnswers.push(question.correctAnswer);
+          }
         });
-        let degree = 0;
-        this.examService.getExamById(this.id).subscribe((exam)=>{
-          degree = exam.max_Degree / questions.length;
-        })
         const userAnswers = this.questionForm.value.answers;
+        console.log(userAnswers);
         for (let i = 0; i < this.correctedAnswers.length; i++) {
           if (this.correctedAnswers[i] === userAnswers[i]) {
             this.result ++;
