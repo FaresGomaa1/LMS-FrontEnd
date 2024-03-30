@@ -127,4 +127,6 @@ examIdd:number=0;
 
     return maxDegree && minDegree && maxDegree.value <= minDegree.value ? { maxLessThanMin: true } : null;
   };
+
+  
 }
