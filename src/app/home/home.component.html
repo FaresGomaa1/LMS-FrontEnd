@@ -354,7 +354,7 @@
             <div class="overflow-hidden">
               <img
                 class="img-fluid"
-                src="../../assets/img/{{instructor.photo}}"
+                src="{{instructor.userAttachmentPath}}"
                 alt="Instructor Photo"
               />
             </div>
@@ -377,12 +377,13 @@
             <div class="text-center p-4">
               <h3 class="mb-0">{{ instructor.name }}</h3>
               <h4>{{ instructor.specialization }}</h4>
-              <!-- <p>Courses:</p>
+              <p>Courses:</p>
               <ul>
                 <li *ngFor="let course of instructor.courseName">
-                  {{ course }}
+                  
+                  <h3>{{ course }}</h3>
                 </li>
-              </ul> -->
+              </ul>
             </div>
           </div>
         </div>

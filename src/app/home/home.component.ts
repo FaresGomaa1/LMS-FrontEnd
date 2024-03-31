@@ -1,4 +1,4 @@
-import { IInstructor } from 'src/app/instructor/interface/i-instructor';
+import { IInstructor } from '../Interfaces/instructor';
 import { InstructorService } from '../generalServices/instructor.service';
 import { IStudent } from '../Interfaces/istudent';
 import { StudentService } from '../generalServices/student.service';

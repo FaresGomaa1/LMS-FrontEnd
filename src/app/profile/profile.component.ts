@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private studentService: StudentService,
     private formBuilder: FormBuilder,
-    private instructorService: InstructorService // corrected the typo here
+    private instructorService: InstructorService
   ) {}
 
   ngOnInit(): void {
@@ -58,35 +58,35 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  submitForm() {
-    if (this.profileForm.valid) {
-      const formData = this.profileForm.value;
-      console.log(formData);
-      const updatedStudent1 = {
-        name: formData.name || this.student?.name , 
-        age: formData.age || this.student?.age,
-        title: formData.title || this.student?.title ,
-        phone: formData.phone || this.student?.phone ,
-        address: formData.address || this.student?.address,
-        email: formData.email || this.student?.email ,
-        password: formData.password || this.student?.password ,
-        photo: formData.photo || this.student?.photo ,
-        courseName: ["alkwdnpon"],
-        instructorIDs: [1],
-      };
-      console.log(updatedStudent1)
-      this.studentService.updateStudent(updatedStudent1).subscribe(
-        (updatedStudent) => {
-          console.log("Student updated successfully:", updatedStudent);
-        },
-        (error) => {
-          console.error("Error updating student:", error);
-        }
-      );
-    } else {
-      // Form is invalid, do something like displaying error messages or preventing submission
-    }
-  }
+  // submitForm() {
+  //   if (this.profileForm.valid) {
+  //     const formData = this.profileForm.value;
+  //     console.log(formData);
+  //     const updatedStudent1 = {
+  //       name: formData.name || this.student?.name , 
+  //       age: formData.age || this.student?.age,
+  //       title: formData.title || this.student?.title ,
+  //       phone: formData.phone || this.student?.phone ,
+  //       address: formData.address || this.student?.address,
+  //       email: formData.email || this.student?.email ,
+  //       password: formData.password || this.student?.password ,
+  //       photo: formData.photo || this.student?.photo ,
+  //       courseName: ["alkwdnpon"],
+  //       instructorIDs: [1],
+  //     };
+  //     console.log(updatedStudent1)
+  //     this.studentService.updateStudent(updatedStudent1).subscribe(
+  //       (updatedStudent) => {
+  //         console.log("Student updated successfully:", updatedStudent);
+  //       },
+  //       (error) => {
+  //         console.error("Error updating student:", error);
+  //       }
+  //     );
+  //   } else {
+  //     // Form is invalid, do something like displaying error messages or preventing submission
+  //   }
+  // }
   
   
 

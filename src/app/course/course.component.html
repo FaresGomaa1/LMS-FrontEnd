@@ -18,6 +18,12 @@
         <div class="card-body">
           <h5 class="card-title">{{ course.name }}</h5>
           <p class="card-text">{{ course.description }}</p>
+          <a
+          href="{{ 'http://localhost:4200/coursedetails/' + course.id }}"
+          target="_blank"
+          class="btn btn-primary me-2"
+          >View Details</a
+        >
         </div>
         <div class="card-footer">
           <div class="row">

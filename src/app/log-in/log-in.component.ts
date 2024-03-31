@@ -40,7 +40,7 @@ export class LogInComponent implements OnInit {
     }
   }
   onSubmitLogIn(): void {
-    event?.preventDefault();
+    // event?.preventDefault();
     if (!this.loginForm.value.email) {
       alert("Please Enter a valid email");
     } else if (!this.loginForm.value.password) {

@@ -22,6 +22,7 @@ import { QuestionsComponent } from './exams/solve-exam/questions/questions.compo
 import { SignUpComponent } from './log-in/sign-up/sign-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
+import { StudentEditComponent } from './profile/student-edit/student-edit.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +41,7 @@ import { MatMenuModule } from '@angular/material/menu';
     SolveExamComponent,
     QuestionsComponent,
     SignUpComponent,
+    StudentEditComponent,
   ],
   imports: [
     BrowserModule,

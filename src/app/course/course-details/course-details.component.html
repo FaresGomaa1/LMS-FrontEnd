@@ -11,10 +11,13 @@
             <p class="course-details__info-item"><strong>Start Date:</strong> {{ selectedCourse.start_Date | date }}</p>
             <p class="course-details__info-item"><strong>End Date:</strong> {{ selectedCourse.end_Date | date }}</p>
             <p class="course-details__info-item"><strong>Instructor:</strong> {{ instructor?.name }}</p>
+            <p class="course-details__info-item"><strong>Material:</strong> {{ selectedCourse.material }}</p>
+            <!-- <p class="course-details__info-item"><strong>Attachment Path:</strong> {{ selectedCourse.userAttachmentPath }}</p> -->
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 <app-footer></app-footer>

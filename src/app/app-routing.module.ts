@@ -12,6 +12,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { SolveExamComponent } from './exams/solve-exam/solve-exam.component';
 import { QuestionsComponent } from './exams/solve-exam/questions/questions.component';
+import { StudentEditComponent } from './profile/student-edit/student-edit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'shared', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'event', component: EventsComponent },
       { path: 'course', component: CourseComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'editProfile/:id', component: StudentEditComponent },
     ],
   },
   { path: 'login', component: LogInComponent },
