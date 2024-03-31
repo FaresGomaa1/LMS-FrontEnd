@@ -1,12 +1,9 @@
-import { InstructorService } from '../../generalServices/instructor.service';
 import { StudentService } from './../../generalServices/student.service';
-import { CourseService } from '../../course/course.service';
 import { ICourse } from 'src/app/instructor/interface/i-course';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component,  OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-// import { MessageService } from 'primeng/api';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {IStudent1} from "../../Interfaces/student-for-add"
 
 @Component({
@@ -15,7 +12,8 @@ import {IStudent1} from "../../Interfaces/student-for-add"
   styleUrls: ['./sign-up.component.scss', '../log-in.component.scss'],
 })
 export class SignUpComponent implements OnInit {
-  StudentForm: FormGroup;
+  checkConfirmedPassword: boolean = true;
+  studentForm!: FormGroup;
   selectedFile!: File;
   imagePreview: string | ArrayBuffer | null = null;
   check:number = 1;
@@ -26,138 +24,106 @@ export class SignUpComponent implements OnInit {
 
 
   constructor(
-    private formBuilder: FormBuilder,
-    private courseService: CourseService,
+    private fb: FormBuilder,
     private studentService: StudentService,
-    private InstructorService: InstructorService,
-    private actRoute: ActivatedRoute,
     private router: Router,
   ) {
-    this.StudentForm = new FormGroup({
-      name: new FormControl('', [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)+$'),
-      ]),
-      phone: new FormControl('', [
-          Validators.required,
-          Validators.minLength(11),
-          Validators.maxLength(11),
-          Validators.pattern('^01[0152]+[0-9]{8,}$'),
-      ]),
-      address: new FormControl('', [
-          Validators.required,
-          Validators.minLength(5),
-      ]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
-      ]),
-      imageFile: new FormControl(null, [
-          Validators.required,
-          //this.validateFileType(),
-      ]),
-      age: new FormControl('', [Validators.required, Validators.min(18)]),
-      ssn: new FormControl('', [
-          Validators.required,
-          Validators.pattern(/^\d{14}$/),
-      ]),
-      title: new FormControl('', [
-          Validators.required,
-          Validators.minLength(4),
-      ]),
-  });
+ 
+  }
+  createForm() {
+    this.studentForm = this.fb.group({
+      id: [0, Validators.required],
+      name: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)+$'),
+      ]],
+      age: ['', Validators.required],
+      title: ['', [
+        Validators.required,
+        Validators.minLength(4),
+      ]],
+      phone: ['', [
+        Validators.required,
+        Validators.minLength(11),
+        Validators.maxLength(11),
+        Validators.pattern('^01[0152]+[0-9]{8,}$'),
+      ]],
+      address: ['', [
+        Validators.required,
+        Validators.minLength(5),
+      ]],
+      ssn: ['', [
+        Validators.required,
+        Validators.pattern(/^\d{14}$/),
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.email,
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
+      ]],
+      userAttachmentPath: [''],
+      imageFile: [null, Validators.required]
+    });
   }
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0] as File;
-    console.log(this.selectedFile);
+    const file: File = event.target.files[0];
+    if (file) {
+      this.studentForm.patchValue({
+        imageFile: file,
+      });
+    }
   }
-  
-getFormControl(name: string): FormControl {
-  return this.StudentForm.get(name) as FormControl;
-}
-id: number = 0;
+  comparePassword() {
+    let passwordValue = (document.getElementById("password") as HTMLInputElement).value;
+    let confirmPasswordValue = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+    console.log(passwordValue);
+    console.log(confirmPasswordValue);
+
+    if (passwordValue === confirmPasswordValue) {
+      this.checkConfirmedPassword = true;
+    } else {
+      this.checkConfirmedPassword = false;
+    }
+  }
 ngOnInit(): void {
-  this.actRoute.params.subscribe((params) => {
-      this.id = params['id'];
-      if (!this.id) {
-          this.id = 0;
-      }
-
-      if (this.id != 0) {
-          this.studentService.getById(this.id)
-              .subscribe((student: IStudent1) => {
-                  this.StudentForm.controls['name'].setValue(
-                      student.name
-                  );
-                  this.StudentForm.controls['phone'].setValue(
-                      student.phone
-                  );
-                  this.StudentForm.controls['address'].setValue(
-                      student.address
-                  );
-                  this.StudentForm.controls['age'].setValue(student.age);
-                  this.StudentForm.controls['title'].setValue(
-                      student.title
-                  );
-                  this.StudentForm.controls['email'].setValue(
-                      student.email
-                  );
-                  this.StudentForm.controls['password'].setValue(
-                      student.password
-                  );
-                   this.StudentForm.controls['ssn'].setValue(
-                       student.ssn
-                   );
-                  this.StudentForm.controls['age'].setValue(student.age);
-                  this.StudentForm.controls['title'].setValue(
-                      student.title
-                  );
-                  this.imagePreview = student.userAttachmentPath || null;
-              });
-      }
-  });
+  this.createForm();
 }
-
-
-
   openCourseDetails(courseId: number): void {
     window.open(`http://localhost:4200/coursedetails/${courseId}`, '_blank');
   }
 
-  onSubmit(e:Event): void {
-    e.preventDefault();
-    if (this.StudentForm.valid) {
-      const formData = new FormData();
-      formData.append('name', this.StudentForm.get('name')!.value);
-      formData.append('phone', this.StudentForm.get('phone')!.value);
-      formData.append('address', this.StudentForm.get('address')!.value);
-      formData.append('email', this.StudentForm.get('email')!.value);
-      formData.append('password', this.StudentForm.get('password')!.value);
-      formData.append('age', this.StudentForm.get('age')!.value);
-      formData.append('title', this.StudentForm.get('title')!.value);
-      formData.append('ssn', this.StudentForm.get('ssn')!.value);
+  onSubmit() {
+    const studentFormData = new FormData();
+    Object.keys(this.studentForm.value).forEach(key => {
+      studentFormData.append(key, this.studentForm.get(key)?.value);
+    });
   
-      if (this.selectedFile) {
-        formData.append('imageFile', this.selectedFile, this.selectedFile.name);
+    this.studentService.Add(studentFormData).subscribe(
+      response => {
+        alert("Registration successful!");
+        console.log('Edit successful', response);
+      },
+      error => {
+        // Handle error
+        console.error('Edit failed', error);
+        if (error && error.error && error.error.errors) {
+          // If there are validation errors, handle them here
+          const validationErrors = error.error.errors;
+          // Example: Display validation errors in console
+          console.log('Validation errors:', validationErrors);
+        } else {
+          // Handle other types of errors
+          console.error('Unknown error:', error);
+        }
       }
-  
-      // Now formData should contain all the form data correctly
-  
-      if (this.id) {
-        this.studentService.Edit(this.id, formData).subscribe(() => {
-          console.log('Edit Success');
-        });
-      } else {
-        this.studentService.Add(formData).subscribe(() => {
-          console.log('Add Success');
-        });
-      }
-      this.router.navigate(['/student']);
-    }
+    );
   }
+  
   
 
   

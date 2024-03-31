@@ -46,13 +46,14 @@ export class StudentService {
   }
 
   Add(student: FormData) {
-    const headers = new HttpHeaders().append(
-      'Content-Disposition',
-      'multipart/form-data'
-    );
-    return this.http.post(`${this.domainName}/Student`, student, {
-      headers: new HttpHeaders(),
-    });
+    const url = `${this.domainName}/Student/`;
+    return this.http.post(url, student)
+      .pipe(
+        catchError(error => {
+          this.errorHandlerService.handleError(error);
+          throw error;
+        })
+      );
   }
 
   Edit(id: number, studentFormData: FormData): Observable<any> {
