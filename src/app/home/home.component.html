@@ -333,8 +333,13 @@
         </div>
       </div>
     </div>
+    <!-- Anchor tag to view all courses -->
+    <div class="text-center mt-4">
+      <a routerLink="/shared/allCourses" class="btn btn-primary">View All Courses</a>
+    </div>
   </div>
 </div>
+
 <!-- Courses End -->
 
 <!-- Team Start -->
@@ -355,11 +360,9 @@
         >
           <div class="team-item bg-light">
             <div class="overflow-hidden">
-              <img
-                class="img-fluid"
-                src="{{instructor.userAttachmentPath}}"
-                alt="Instructor Photo"
-              />
+              <a [routerLink]="'/shared/instructorProfile/' + instructor?.id" target="_blank">
+                <img class="img-fluid" [src]="instructor?.userAttachmentPath" alt="Instructor Photo" />
+              </a>              
             </div>
             <div
               class="position-relative d-flex justify-content-center"
@@ -380,15 +383,6 @@
             <div class="text-center p-4">
               <h3 class="mb-0">{{ instructor.name }}</h3>
               <h4>{{ instructor.specialization }}</h4>
-              <p>Courses:</p>
-              <ng-container *ngFor="let course of instructor.courseName">
-                <h3 style="display: inline-block; margin-right: 10px;">{{ course }} |</h3>
-              </ng-container>              
-              <!-- <ul>
-                <li *ngFor="let course of instructor.courseName">
-                  <h3>{{ course }}</h3>
-                </li>
-              </ul> -->
             </div>
           </div>
         </div>

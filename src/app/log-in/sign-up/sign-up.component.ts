@@ -1,3 +1,4 @@
+import { InstructorService } from '../../generalServices/instructor.service';
 import { StudentService } from './../../generalServices/student.service';
 import { ICourse } from 'src/app/instructor/interface/i-course';
 import { Component,  OnInit } from '@angular/core';
@@ -5,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import {IStudent1} from "../../Interfaces/student-for-add"
+
 
 @Component({
   selector: 'app-sign-up',
@@ -17,6 +19,7 @@ export class SignUpComponent implements OnInit {
   selectedFile!: File;
   imagePreview: string | ArrayBuffer | null = null;
   check:number = 1;
+  checkEmailIsUnique:boolean = true;
   private myActionSub: Subscription | undefined;
 
   coursesNames: ICourse[] = [];
@@ -27,6 +30,7 @@ export class SignUpComponent implements OnInit {
     private fb: FormBuilder,
     private studentService: StudentService,
     private router: Router,
+    private InstructorService :InstructorService,
   ) {
  
   }
@@ -38,7 +42,7 @@ export class SignUpComponent implements OnInit {
         Validators.minLength(3),
         Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)+$'),
       ]],
-      age: ['', Validators.required],
+      age: ['', [Validators.required, Validators.min(18)]],
       title: ['', [
         Validators.required,
         Validators.minLength(4),
@@ -81,8 +85,6 @@ export class SignUpComponent implements OnInit {
   comparePassword() {
     let passwordValue = (document.getElementById("password") as HTMLInputElement).value;
     let confirmPasswordValue = (document.getElementById("confirmPassword") as HTMLInputElement).value;
-    console.log(passwordValue);
-    console.log(confirmPasswordValue);
 
     if (passwordValue === confirmPasswordValue) {
       this.checkConfirmedPassword = true;
@@ -92,6 +94,7 @@ export class SignUpComponent implements OnInit {
   }
 ngOnInit(): void {
   this.createForm();
+  this.isEmailUnique();
 }
   openCourseDetails(courseId: number): void {
     window.open(`http://localhost:4200/coursedetails/${courseId}`, '_blank');
@@ -102,11 +105,10 @@ ngOnInit(): void {
     Object.keys(this.studentForm.value).forEach(key => {
       studentFormData.append(key, this.studentForm.get(key)?.value);
     });
-  
     this.studentService.Add(studentFormData).subscribe(
       response => {
-        alert("Registration successful!");
-        console.log('Edit successful', response);
+        window.location.href = '/login';
+        console.log('Registration successful', response);
       },
       error => {
         // Handle error
@@ -122,24 +124,23 @@ ngOnInit(): void {
         }
       }
     );
+  
   }
   
   
 
   
-  // getAllEmails(callback: () => void): void {
-  //   this.allEmails = []; // Initialize allEmails array before fetching emails
-  //   this.studentService.getAllStudents().subscribe((stds) => {
-  //     for (let i = 0; i < stds.length; i++) {
-  //       this.allEmails.push(stds[i].email.toLowerCase()); // Store emails in lowercase for comparison
-  //     }
-  //     callback(); // Call the callback function to proceed after fetching emails
-  //   });
-  //   this.InstructorService.getAllInstructors().subscribe((ins) => {
-  //     for (let i = 0; i < ins.length; i++) {
-  //       this.allEmails.push(ins[i].email.toLowerCase()); // Store emails in lowercase for comparison
-  //     }
-  //     callback(); // Call the callback function to proceed after fetching emails
-  //   });
-  // }
+  isEmailUnique() {
+    this.allEmails = []; 
+    this.studentService.getAllStudents().subscribe((stds) => {
+      for (let i = 0; i < stds.length; i++) {
+        this.allEmails.push(stds[i].email.toLowerCase()); 
+      }
+    });
+    this.InstructorService.getAllInstructors().subscribe((ins) => {
+      for (let i = 0; i < ins.length; i++) {
+        this.allEmails.push(ins[i].email.toLowerCase()); 
+      }
+    });
+  }
 }

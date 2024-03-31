@@ -23,13 +23,8 @@
                 instructor?.name
               }}</a>
             </p>
-
-            <p class="course-details__info-item">
-              <strong>Material:</strong
-              ><a href="{{ selectedCourse.material }}" target="_blank"
-                >Material <i class="fas fa-external-link-alt"></i
-              ></a>
-            </p>
+            <!-- Button for enrolling in the course -->
+            <button class="btn btn-primary" (click)="enroll(selectedCourse.id)" >Enroll in The Course</button>
           </div>
         </div>
       </div>

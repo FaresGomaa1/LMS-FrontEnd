@@ -20,46 +20,44 @@ export class StudentEditComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
   ) {
-    this.createForm();
+    this.getStudentId();
   }
 
   ngOnInit(): void {
-    this.getStudentId();
- 
   }
-  createForm() {
-    this. getStudentById();
+  createForm(student: any) {
+    console.log(student);
     this.studentForm = this.fb.group({
       id: [0, Validators.required],
-      name: [this.studentInfo?.name, [
+      name: [student.name, [
         Validators.required,
         Validators.minLength(3),
         Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)+$'),
       ]],
-      age: [this.studentInfo?.age, Validators.required],
-      title: [this.studentInfo?.title, [
+      age: [student.age, Validators.required],
+      title: [student.title, [
         Validators.required,
         Validators.minLength(4),
       ]],
-      phone: [this.studentInfo?.phone, [
+      phone: [student.phone, [
         Validators.required,
         Validators.minLength(11),
         Validators.maxLength(11),
         Validators.pattern('^01[0152]+[0-9]{8,}$'),
       ]],
-      address: [this.studentInfo?.address, [
+      address: [student.address, [
         Validators.required,
         Validators.minLength(5),
       ]],
-      ssn: [this.studentInfo?.ssn, [
+      ssn: [student.ssn, [
         Validators.required,
         Validators.pattern(/^\d{14}$/),
       ]],
-      email: [this.studentInfo?.email, [
+      email: [student.email, [
         Validators.required,
         Validators.email,
       ]],
-      password: [this.studentInfo?.password, [
+      password: [student.password, [
         Validators.required,
         Validators.minLength(8),
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
@@ -89,16 +87,15 @@ export class StudentEditComponent implements OnInit {
         // Parse the student ID as a number
         this.studentId = parseInt(idString, 10);
         console.log('Student ID:', this.studentId);
+        this.studentService.getStudentById(this.studentId).subscribe((std)=>{
+          this.createForm(std);
+        })
+        
       } else {
         // Handle the case when 'id' parameter is null
         console.error('Student ID is null');
       }
     });
-  }
-  getStudentById() {
-    this.studentService.getStudentById(this.studentId).subscribe((std)=>{
-      this.studentInfo = std
-    })
   }
   onFileSelected(event: any) {
     const file: File = event.target.files[0];

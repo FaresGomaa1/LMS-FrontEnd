@@ -61,4 +61,11 @@
   .custom-button:hover {
     background: linear-gradient(to right, #009900, #006600);
   }
+  .description {
+    max-height: calc(1.2em * 4); /* Set maximum height to roughly 4 lines */
+    overflow: hidden; /* Hide overflowing content */
+    margin: 0; /* Reset margin to prevent extra spacing */
+    padding: 0; /* Reset padding to prevent extra spacing */
+    line-height: 1.2em; /* Set line height for consistent display */
+  }
   

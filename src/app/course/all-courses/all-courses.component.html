@@ -1,0 +1,44 @@
+<app-header></app-header>
+
+<div class="container-fluid py-5">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6">
+        <h2 class="section-title text-success mb-4">New Courses</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <!-- New Courses Loop -->
+          <div class="col" *ngFor="let course of allCourses">
+            <div class="card h-100 shadow">
+              <img [src]="course.userAttachmentPath" class="card-img-top" [alt]="course.name" />
+              <div class="card-body">
+                <h5 class="card-title course-name">{{ course.name }}</h5>
+                <button class="btn btn-primary" (click)="enroll(course.id)">Enroll Now</button>
+                <a [routerLink]="'/nonEnrolledCourses/' + course.id" class="btn btn-secondary">More Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <h2 class="section-title text-success mb-4">Enrolled Courses</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          <!-- Enrolled Courses Loop -->
+          <div class="col" *ngFor="let course of enrolledCourses">
+            <div class="card h-100 shadow">
+              <img [src]="course.userAttachmentPath" class="card-img-top" [alt]="course.name" />
+              <div class="card-body">
+                <h5 class="card-title course-name">{{ course.name }}</h5>
+                <a [routerLink]="'/coursedetails/' + course.id" class="btn btn-secondary">Continue Learning</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
+
+<!-- <snackbar-container></snackbar-container> -->

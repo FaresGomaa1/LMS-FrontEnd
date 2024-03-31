@@ -1,5 +1,6 @@
       <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="card p-4 shadow">
         <h2 class="text-center mb-4">Create Account</h2>
+        <div *ngIf="!checkEmailIsUnique" class="alert alert-danger mt-2">Email Already Exist</div>
         <div class="mb-6">
             <!-- <label for="name" class="form-label">Name:</label> -->
             <input type="text" placeholder="Name" id="name" class="form-control" formControlName="name" />
@@ -53,7 +54,7 @@
             <input type="text" placeholder="SSN" id="ssn" class="form-control" formControlName="ssn" />
             <div *ngIf="studentForm.get('ssn')?.invalid && (studentForm.get('ssn')?.dirty || studentForm.get('ssn')?.touched)" class="alert alert-danger mt-2">
               <div *ngIf="studentForm.get('ssn')?.errors?.['required']">SSN is required</div>
-              <div *ngIf="studentForm.get('ssn')?.errors?.['pattern']">Invalid SSN format</div>
+              <div *ngIf="studentForm.get('ssn')?.errors?.['pattern']">SSN should be 14 number</div>
             </div>
           </div>
           

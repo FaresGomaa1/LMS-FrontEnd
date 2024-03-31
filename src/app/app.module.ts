@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,9 @@ import { SignUpComponent } from './log-in/sign-up/sign-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
 import { StudentEditComponent } from './profile/student-edit/student-edit.component';
+import { AllCoursesComponent } from './course/all-courses/all-courses.component';
+import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
+import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/none-enrolled-courses.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +47,9 @@ import { StudentEditComponent } from './profile/student-edit/student-edit.compon
     QuestionsComponent,
     SignUpComponent,
     StudentEditComponent,
+    AllCoursesComponent,
+    InstructorProfileComponent,
+    NoneEnrolledCoursesComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,8 +57,9 @@ import { StudentEditComponent } from './profile/student-edit/student-edit.compon
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-   MatMenuModule,
-   FormsModule,
+    MatMenuModule,
+    FormsModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

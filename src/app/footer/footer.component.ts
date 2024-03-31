@@ -13,7 +13,9 @@ export class FooterComponent {
     private courserService : CourseService
   ){
     this.courserService.getAllCourses().subscribe((courses)=>{
-      this.allCourses = courses
+     for (let i = 0; i < 4; i++){
+      this.allCourses.push(courses[i]);
+     }
     })
   }
 

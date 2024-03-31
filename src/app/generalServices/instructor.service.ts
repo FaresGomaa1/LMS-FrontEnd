@@ -19,4 +19,10 @@ export class InstructorService {
       catchError(this.errorHandlerService.handleError)
     );
   }
+  getInstructorById(id:number): Observable<IInstructor[]> {
+    return this.http.get<IInstructor[]>(`${this.domainName}/Instructor/${id}`).pipe(
+      retry(2),
+      catchError(this.errorHandlerService.handleError)
+    );
+  }
 }

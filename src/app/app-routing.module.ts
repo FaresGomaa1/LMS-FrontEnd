@@ -13,6 +13,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { SolveExamComponent } from './exams/solve-exam/solve-exam.component';
 import { QuestionsComponent } from './exams/solve-exam/questions/questions.component';
 import { StudentEditComponent } from './profile/student-edit/student-edit.component';
+import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
+import { AllCoursesComponent } from './course/all-courses/all-courses.component';
+import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/none-enrolled-courses.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'shared', pathMatch: 'full' },
@@ -29,6 +32,8 @@ const routes: Routes = [
       { path: 'course', component: CourseComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'editProfile/:id', component: StudentEditComponent },
+      { path: 'instructorProfile/:id', component: InstructorProfileComponent },
+      { path: 'allCourses', component: AllCoursesComponent },
     ],
   },
   { path: 'login', component: LogInComponent },
@@ -37,6 +42,11 @@ const routes: Routes = [
   {
     path: 'coursedetails/:id',
     component: CourseDetailsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'nonEnrolledCourses/:id',
+    component: NoneEnrolledCoursesComponent,
     canActivate: [AuthGuard],
   },
   {
