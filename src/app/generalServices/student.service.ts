@@ -55,14 +55,14 @@ export class StudentService {
     });
   }
 
-  Edit(id: number, student: FormData) {
-    const headers = new HttpHeaders().append(
-      'Content-Disposition',
-      'multipart/form-data'
-    );
-    return this.http
-      .put(`${this.domainName}/Student/${id}`, student, {
-        headers: new HttpHeaders(),
-      })
+  Edit(id: number, studentFormData: FormData): Observable<any> {
+    const url = `${this.domainName}/Student/${id}`;
+    return this.http.put(url, studentFormData)
+      .pipe(
+        catchError(error => {
+          this.errorHandlerService.handleError(error);
+          throw error;
+        })
+      );
   }
 }

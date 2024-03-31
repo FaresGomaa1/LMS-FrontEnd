@@ -3,9 +3,9 @@ import { InstructorService } from '../generalServices/instructor.service';
 import { IStudent } from '../Interfaces/istudent';
 import { StudentService } from '../generalServices/student.service';
 import { ICourse } from '../instructor/interface/i-course';
-import { CourserService } from './../generalServices/courser.service';
+import { CourseService } from '../course/course.service';
 import { Component, OnInit } from '@angular/core';
-import { ICourses } from '../exams/ICourses';
+import { ICourses } from '../course/icourses';
 
 @Component({
   selector: 'app-home',
@@ -13,15 +13,15 @@ import { ICourses } from '../exams/ICourses';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  allCourses: ICourse[] = [];
+  allCourses: ICourses[] = [];
   allInstructors: IInstructor[] = [];
   
-  constructor(private CourserService: CourserService,
+  constructor(private courserService: CourseService,
     private studentService : StudentService,
     private InstructorService : InstructorService
     ) {}
   ngOnInit(): void {
-    this.CourserService.getAllInstructors().subscribe((courses) => {
+    this.courserService.getAllCourses().subscribe((courses) => {
       for (let i = 0; i < 3; i++){
         this.allCourses.push(courses[i])
       }

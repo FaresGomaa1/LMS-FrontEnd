@@ -1,18 +1,27 @@
 <app-header></app-header>
 
-<section class="course-details">
+<section class="course-details"  style="height: 500px;">
   <div class="container">
     <div class="row">
       <div class="col-lg-8 offset-lg-2">
         <div class="course-details-container">
           <h2 class="course-details__title">{{ selectedCourse.name }}</h2>
           <div class="course-details__info">
-            <p class="course-details__info-item"><strong>Description:</strong> {{ selectedCourse.description }}</p>
-            <p class="course-details__info-item"><strong>Start Date:</strong> {{ selectedCourse.start_Date | date }}</p>
-            <p class="course-details__info-item"><strong>End Date:</strong> {{ selectedCourse.end_Date | date }}</p>
-            <p class="course-details__info-item"><strong>Instructor:</strong> {{ instructor?.name }}</p>
-            <p class="course-details__info-item"><strong>Material:</strong> {{ selectedCourse.material }}</p>
-            <!-- <p class="course-details__info-item"><strong>Attachment Path:</strong> {{ selectedCourse.userAttachmentPath }}</p> -->
+            <p class="course-details__info-item">
+              <strong>Description:</strong> {{ selectedCourse.description }}
+            </p>
+            <p class="course-details__info-item">
+              <strong>Start Date:</strong> {{ selectedCourse.start_Date | date }}
+            </p>
+            <p class="course-details__info-item">
+              <strong>End Date:</strong> {{ selectedCourse.end_Date | date }}
+            </p>
+            <p class="course-details__info-item">
+              <strong>Instructor:</strong> {{ instructor?.name }}
+            </p>
+            <p class="course-details__info-item">
+              <strong>Material:</strong><a href="{{ selectedCourse.material }}" target="_blank">Material <i class="fas fa-external-link-alt"></i></a>
+            </p>            
           </div>
         </div>
       </div>

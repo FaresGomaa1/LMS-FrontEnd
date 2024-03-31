@@ -4,7 +4,7 @@
   <h1 style="margin-left: 50%; margin-top: 50px; color: green">Exams</h1>
 </div>
 
-<table class="table table-hover table-striped">
+<table class="table table-hover table-striped"  style="margin-bottom:200px;">
   <thead>
     <tr class="text-center">
       <th scope="col">Name</th>
@@ -20,7 +20,7 @@
       <td>{{ exam.name }}</td>
       <td>{{ exam.duration }} Min</td>
       <td>{{ exam.date | date : "mediumDate" }}</td>
-      <td>{{ exam.time }}</td>
+      <td>{{ exam.time}}</td>
       <!-- <td>{{ courses[i] }}</td> -->
       <td id= "action{{i}}">
         <button

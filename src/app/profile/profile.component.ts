@@ -4,6 +4,7 @@ import { StudentService } from '../generalServices/student.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IStudent } from '../Interfaces/istudent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private studentService: StudentService,
     private formBuilder: FormBuilder,
-    private instructorService: InstructorService
+    private instructorService: InstructorService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -88,7 +90,15 @@ export class ProfileComponent implements OnInit {
   //   }
   // }
   
-  
+  navigateToEditProfile() {
+    // Assuming you have the student object available
+    const studentId = this.student?.id;
+    if (studentId) {
+      this.router.navigate(['/shared/editProfile', studentId]);
+    } else {
+      console.error('Student ID is missing.');
+    }
+  }
 
   getStudentById(): void {
     const token = localStorage.getItem(this.tokenKey);
