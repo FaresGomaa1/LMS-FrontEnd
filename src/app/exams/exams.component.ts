@@ -18,34 +18,34 @@ export class ExamsComponent implements OnInit {
   tokenKey = 'auth_token';
   exams: IExam[] = [];
   courses: string[] = [];
-  studentId!:number;
-  coursesIds : number[]= [];
+  studentId!: number;
+  coursesIds: number[] = [];
   constructor(
     private examService: ExamService,
     private studentService: StudentService,
     private router: Router,
     private ConverTimeService: ConverTimeService
   ) {}
-getStudentId(){
-  const token = localStorage.getItem(this.tokenKey);
-        
-  if(token){
-    const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
-     return decodedToken.nameid; 
+  getStudentId() {
+    const token = localStorage.getItem(this.tokenKey);
+
+    if (token) {
+      const helper = new JwtHelperService();
+      const decodedToken = helper.decodeToken(token);
+      return decodedToken.nameid;
+    }
   }
-}
   ngOnInit(): void {
     this.getData();
-    this.getCoursesNames()
+    this.getCoursesNames();
   }
-getCoursesNames(){
-   for(let i = 0 ; i < this.coursesIds.length; i++){
-    this.examService.getById(this.coursesIds[i]).subscribe((course)=>{
-      this.courses.push(course.name)
-    })
-   }
-}
+  getCoursesNames() {
+    for (let i = 0; i < this.coursesIds.length; i++) {
+      this.examService.getById(this.coursesIds[i]).subscribe((course) => {
+        this.courses.push(course.name);
+      });
+    }
+  }
   getData() {
     const token = localStorage.getItem(this.tokenKey);
     if (token) {
@@ -75,19 +75,21 @@ getCoursesNames(){
       //       }
       //     );
       // }
-      let studentCourseIdsString = localStorage.getItem(`course${this.studentId}`);
+      let studentCourseIdsString = localStorage.getItem(
+        `course${this.studentId}`
+      );
       if (studentCourseIdsString !== null) {
-         let studentCourseIds = JSON.parse(studentCourseIdsString);
-         this.examService.getAllData().subscribe((AllExams)=>{
-          for (let i = 0; i < AllExams.length; i++){
-            for (let j = 0; j < studentCourseIds.length; j++){
-              if (AllExams[i].course_ID === studentCourseIds[j]){
-                  this.exams.push(AllExams[i]);
-                  this.coursesIds.push(studentCourseIds[j]);
+        let studentCourseIds = JSON.parse(studentCourseIdsString);
+        this.examService.getAllData().subscribe((AllExams) => {
+          for (let i = 0; i < AllExams.length; i++) {
+            for (let j = 0; j < studentCourseIds.length; j++) {
+              if (AllExams[i].course_ID === studentCourseIds[j]) {
+                this.exams.push(AllExams[i]);
+                this.coursesIds.push(studentCourseIds[j]);
               }
             }
           }
-        })
+        });
       } else {
         // this.studentCourseIds = this.studentCourseIds;
       }
@@ -109,7 +111,7 @@ getCoursesNames(){
     const currentDate1 = currentDate.getDate().toString();
     // Get the exam object at the specified index
     const exam = this.exams[index];
-    const examD = new Date(exam.date)
+    const examD = new Date(exam.date);
     const examDate = examD.getDate().toString();
     // Convert current date and exam date to timestamps
     const currentTimestamp: number = currentDate.getTime(); // can't compare
@@ -119,8 +121,8 @@ getCoursesNames(){
     const examTime: string = exam.time;
     const duration: number = exam.duration;
     // Check if current timestamp matches exam timestamp
-    if (currentDate.getFullYear() === examD.getFullYear()){
-      if ((currentDate.getMonth()+1) === (examD.getMonth()+1)){
+    if (currentDate.getFullYear() === examD.getFullYear()) {
+      if (currentDate.getMonth() + 1 === examD.getMonth() + 1) {
         if (currentDate1 === examDate) {
           // Get the DOM element for the exam action
           const row = document.getElementById('action' + index);
@@ -132,15 +134,12 @@ getCoursesNames(){
             +minutes1,
             +seconds1
           );
-    
+
           // Split exam time into hours, minutes, and seconds
           const [hours, minutes, seconds] = examTime.split(':');
           // Convert exam time to minutes
-          const examTimeInMins: number = this.ConverTimeService.convertTimeToMin(
-            +hours,
-            +minutes,
-            +seconds
-          );
+          const examTimeInMins: number =
+            this.ConverTimeService.convertTimeToMin(+hours, +minutes, +seconds);
           // Calculate exam end time based on duration
           const examEndTime = duration + examTimeInMins;
           // Check if current time matches exam start time
@@ -159,7 +158,27 @@ getCoursesNames(){
                   this.examService.checkIfResultExist() ||
                   this.examService.checkIfResultExist() === 0
                 ) {
-                  row.innerHTML = `${localStorage.getItem(`result${this.getStudentId()}:${examId}`)}`;
+                  // row.innerHTML = `${localStorage.getItem(`result${this.getStudentId()}:${examId}`)}`;
+                  row.innerHTML = `Done`;
+                  const resultElement = document.getElementById(`result${index}`);
+                  if (resultElement) {
+                    const resultString = localStorage.getItem(`result${this.getStudentId()}:${examId}`);
+                    const result = resultString ? +resultString : null;                    
+                      if (result !== null && !isNaN(result)) {
+                          if (exam.min_Degree <= result) {
+                              resultElement.innerHTML = `Passed: ${result.toFixed(2)}`;
+                              resultElement.style.color = 'green'; 
+                          } else {
+                              resultElement.innerHTML = `Failed: ${result.toFixed(2)}`;
+                              resultElement.style.color = 'red'; 
+                          }
+                      } else {
+                          resultElement.innerHTML = 'No result available';
+                          resultElement.style.color = 'black'; 
+                      }
+                  }
+                  
+
                   return;
                 }
                 row.innerHTML = `You Missed The Exam`;
@@ -186,13 +205,19 @@ getCoursesNames(){
           const row = document.getElementById('action' + index);
           if (row) {
             if (this.examService.checkIfResultExist()) {
-              row.innerHTML = `${this.examService.checkIfResultExist()}`;
+              row.innerHTML = `Done`;
+              const resultElement = document.getElementById(`result${index}`);
+              if (resultElement) {
+                resultElement.innerHTML = `${localStorage.getItem(
+                  `result${this.getStudentId()}:${exam.id}`
+                )}`;
+              }
               return;
             }
             row.innerHTML = `You Missed The Exam`;
           }
         }
-      } else if ((currentDate.getMonth()+1) < (examD.getMonth()+1)) {
+      } else if (currentDate.getMonth() + 1 < examD.getMonth() + 1) {
         return false;
       } else {
         const row = document.getElementById('action' + index);
@@ -200,17 +225,14 @@ getCoursesNames(){
           row.innerHTML = `You Missed The Exam`;
         }
       }
-    } else if (currentDate.getFullYear() < examD.getFullYear()){
+    } else if (currentDate.getFullYear() < examD.getFullYear()) {
       return false;
-
     } else {
       const row = document.getElementById('action' + index);
       if (row) {
         row.innerHTML = `You Missed The Exam`;
       }
     }
-
-
   }
 
   startExam(index: number): void {

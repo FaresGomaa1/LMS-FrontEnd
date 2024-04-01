@@ -11,8 +11,10 @@
       <th scope="col">Duration</th>
       <th scope="col">Date</th>
       <th scope="col">Time</th>
-      <!-- <th scope="col">Course</th> -->
+      <th scope="col">Exam Degree</th>
+      <th scope="col">Min Degree</th>
       <th scope="col">Action</th>
+      <th scope="col">Result</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +23,8 @@
       <td>{{ exam.duration }} Min</td>
       <td>{{ exam.date | date : "mediumDate" }}</td>
       <td>{{ exam.time}}</td>
-      <!-- <td>{{ courses[i] }}</td> -->
+      <td>{{ exam.max_Degree}}</td>
+      <td>{{ exam.min_Degree}}</td>
       <td id= "action{{i}}">
         <button
         (click)="startExam(i)"
@@ -32,6 +35,7 @@
           Start Exam
         </button>
       </td>
+      <td id= "result{{i}}"></td>
     </tr>
   </tbody>
 </table>

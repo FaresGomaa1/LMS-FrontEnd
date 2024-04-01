@@ -9,7 +9,7 @@
           <!-- New Courses Loop -->
           <div class="col" *ngFor="let course of allCourses">
             <div class="card h-100 shadow">
-              <img [src]="course.userAttachmentPath" class="card-img-top" [alt]="course.name" />
+              <img [src]="course.userAttachmentPath" height="200px" class="card-img-top" [alt]="course.name" />
               <div class="card-body">
                 <h5 class="card-title course-name">{{ course.name }}</h5>
                 <button class="btn btn-primary" (click)="enroll(course.id)">Enroll Now</button>
