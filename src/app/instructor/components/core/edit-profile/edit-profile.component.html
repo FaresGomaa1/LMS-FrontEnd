@@ -2,10 +2,10 @@
     <div class="row">
         <div class="col-md-4 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqVyiI1XClbT2Ue-7CGVAp8sKoqe_068R9zw&usqp=CAU"  width="90">
+                <!-- <img class="rounded-circle mt-5" src="{{instructor.userAttachmentPath}}"  width="90">
                 <span class="font-weight-bold">{{ instructor.name }}</span>
                 <span class="text-black-50">{{ instructor.email }}</span>
-                <span>{{ instructor.address }}</span>
+                <span>{{ instructor.address }}</span> -->
             </div>
         </div>
         <div class="col-md-8">
@@ -71,26 +71,67 @@
                                 </ng-container>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <input type="password"   class="form-control" placeholder="Password" formControlName="password"
+                                aria-label="Password" aria-describedby="basic-icon-default-password2"  readonly class="text-black-50 w-100"
+                                [ngClass]="{
+                                    'is-valid': profileForm.get('password')?.valid,
+                                    'is-invalid': profileForm.get('password')?.errors && profileForm.get('password')?.touched
+                                }" />
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                <ng-container *ngIf="profileForm.get('password')?.hasError('required')">
+                                    Password is required
+                                </ng-container>
+                              
+                                <ng-container *ngIf="profileForm.get('password')?.hasError('pattern')">
+                                    Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character
+                                </ng-container>
+                            </div>
+                        </div>    
                     </div>
-                    <div class="row mt-3">   <div class="col-md-6">
-                        <input type="password" class="form-control" placeholder="Password" formControlName="password"
-                            aria-label="Password" aria-describedby="basic-icon-default-password2"
-                            [ngClass]="{
-                                'is-valid': profileForm.get('password')?.valid,
-                                'is-invalid': profileForm.get('password')?.errors && profileForm.get('password')?.touched
-                            }" />
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">
-                            <ng-container *ngIf="profileForm.get('password')?.hasError('required')">
-                                Password is required
-                            </ng-container>
-                          
-                            <ng-container *ngIf="profileForm.get('password')?.hasError('pattern')">
-                                Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character
-                            </ng-container>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control"   placeholder="SSN" formControlName="ssn"
+                                aria-label="ssn" aria-describedby="basic-icon-default-password2"  readonly class="text-black-50 w-100"
+                                [ngClass]="{
+                                    'is-valid': profileForm.get('ssn')?.valid,
+                                    'is-invalid': profileForm.get('ssn')?.errors && profileForm.get('ssn')?.touched
+                                }" />
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                <ng-container *ngIf="profileForm.get('ssn')?.hasError('required')">
+                                    SSN is required
+                                </ng-container>
+                                <ng-container *ngIf="profileForm.get('ssn')?.hasError('minlength')">
+                                    SSN must be 14 characters long
+                                </ng-container>
+                                <ng-container *ngIf="profileForm.get('ssn')?.hasError('maxlength')">
+                                    SSN must be 14 characters long
+                                </ng-container>
+                            </div>
+                        </div>  
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Specialization" formControlName="specialization"
+                                aria-label="Specialization" aria-describedby="basic-icon-default-specialization2"
+                                [ngClass]="{
+                                    'is-valid': profileForm.get('specialization')?.valid,
+                                    'is-invalid': profileForm.get('specialization')?.errors && profileForm.get('specialization')?.touched
+                                }" />
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">
+                                <ng-container *ngIf="profileForm.get('specialization')?.hasError('required')">
+                                    Specialization is required
+                                </ng-container>
+                                <ng-container *ngIf="profileForm.get('specialization')?.hasError('minlength')">
+                                    Specialization must be at least 4 characters
+                                </ng-container>
+                            </div>
                         </div>
+
                     </div>
-                </div>
+                     
                 <!-- Address -->
                 <div class="row mt-3">
                     <div class="col-md-6">
@@ -111,24 +152,50 @@
                         </div>
                     </div>
                     <!-- Specialization -->
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" placeholder="Specialization" formControlName="specialization"
-                            aria-label="Specialization" aria-describedby="basic-icon-default-specialization2"
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Experience" formControlName="experience"
+                            aria-label="experience" aria-describedby="basic-icon-default-address2"
                             [ngClass]="{
-                                'is-valid': profileForm.get('specialization')?.valid,
-                                'is-invalid': profileForm.get('specialization')?.errors && profileForm.get('specialization')?.touched
+                                'is-valid': profileForm.get('experience')?.valid,
+                                'is-invalid': profileForm.get('experience')?.errors && profileForm.get('experience')?.touched
                             }" />
                         <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">
-                            <ng-container *ngIf="profileForm.get('specialization')?.hasError('required')">
-                                Specialization is required
+                            <ng-container *ngIf="profileForm.get('experience')?.hasError('required')">
+                                experience is required
                             </ng-container>
-                            <ng-container *ngIf="profileForm.get('specialization')?.hasError('minlength')">
-                                Specialization must be at least 4 characters
+                            <ng-container *ngIf="profileForm.get('experience')?.hasError('minlength')">
+                                experience must be at least 5 characters
                             </ng-container>
                         </div>
                     </div>
                 </div>
+
+   <!-- Address -->
+   <div class="row mt-3">
+ 
+    <!-- Specialization -->
+    <div class="col">
+        <input pInputText type="file" id="imageFile" formControlName="imageFile" class="form-control"
+               required (change)="onFileSelected($event)" 
+            aria-label="imageFile" aria-describedby="basic-icon-default-specialization2"
+            [ngClass]="{
+                'is-valid': profileForm.get('imageFile')?.valid,
+                'is-invalid': profileForm.get('imageFile')?.errors && profileForm.get('imageFile')?.touched
+            }" />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">
+            <ng-container *ngIf="profileForm.get('imageFile')?.hasError('required')">
+                image File is required
+            </ng-container>
+            <ng-container *ngIf="profileForm.get('imageFile')?.hasError('pattern')">
+                Must be image
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+
                 <div class="row mt-3">
                     <div class="mt-5 text-right">
                         <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
