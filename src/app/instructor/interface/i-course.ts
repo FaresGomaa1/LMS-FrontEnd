@@ -1,7 +1,11 @@
 export interface ICourse {
-    id: number;
+      id: number;
     name: string;
+    description: string;
     start_Date: Date;
     end_Date: Date;
-    description: string;
+    numOfExam: number;
+    material: string;
+    userAttachmentPath?: string;
+    imageFile: File;
 }

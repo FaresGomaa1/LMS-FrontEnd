@@ -5,15 +5,13 @@
     <form method="post">
         <div class="row">
             <div class="col-md-4">
-                <div class="profile-img" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqVyiI1XClbT2Ue-7CGVAp8sKoqe_068R9zw&usqp=CAU" alt=""/>
-                    <div class="file btn btn-lg btn-primary">
-                        Upload Image
-                    </div>
+                <div class="profile-img" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 200px; height: 200px;">
+                    <img src="{{ instructor?.userAttachmentPath }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
+                
             </div>
-            <div class="col-md-6">
-                <div class="profile-head">
+            <div class="col-md-6 ">
+                <div class="profile-head ">
                             <h2>
                                 {{ instructor?.name }}
                             </h2>
@@ -24,9 +22,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
-                        </li>
+                      
                     </ul>
                 </div>
             </div>
@@ -44,14 +40,7 @@
             <div class="col-md-8">
                 <div class="tab-content profile-tab" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <div class="row">
-                                    <div class="col-md-6 h4">
-                                        <label>Instructor Id</label>
-                                    </div>
-                                    <div class="col-md-6 h4">
-                                        <p>{{instructor?.id}}</p>
-                                    </div>
-                                </div>
+                              
                                 <div class="row">
                                     <div class="col-md-6 h4" >
                                         <label>Instructor Name</label>
@@ -78,14 +67,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 h4">
-                                        <label>Profession</label>
+                                        <label>specialization</label>
                                     </div>
                                     <div class="col-md-6 h4">
                                         <p>{{instructor?.specialization}}</p>
                                     </div>
                                 </div>
-                    </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    
                                 <div class="row">
                                     <div class="col-md-6 h4">
                                         <label>Address</label>
@@ -94,13 +82,24 @@
                                         <p>{{instructor?.address}}</p>
                                     </div>
                                 </div>
-                                
+                                <div class="row">
+                                    <div class="col-md-6 h4">
+                                        <label>Experience</label>
+                                    </div>
+                                    <div class="col-md-6 h4">
+                                        <p>{{instructor?.experience}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 h4">
+                                        <label>SSN</label>
+                                    </div>
+                                    <div class="col-md-6 h4">
+                                        <p>{{instructor?.ssn}}</p>
+                                    </div>
+                                </div>
                               
-                               
-                               
-                        <div class="row">
-                             
-                        </div>
+                       
                     </div>
                 </div>
             </div>

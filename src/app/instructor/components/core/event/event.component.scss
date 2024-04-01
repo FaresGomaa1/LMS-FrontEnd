@@ -102,7 +102,7 @@ body {
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background-color: #f1c40f;
+  background-color: #224530;
   content: "";
   top: 50%;
   right: 26px;
@@ -137,7 +137,7 @@ body {
   transition-duration: 500ms;
   width: 30px;
   height: 30px;
-  background-color: #f1c40f;
+  background-color:  #224530;
   -webkit-box-flex: 0;
   -ms-flex: 0 0 30px;
   flex: 0 0 30px;
@@ -167,5 +167,5 @@ body {
   color: #3f43fd;
 }
 .event-past .timeline-text {
-  color: red;
+  color: rgb(126, 22, 22);
 }
