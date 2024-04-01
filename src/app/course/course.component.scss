@@ -49,18 +49,19 @@
   }
   .custom-button {
     position: sticky;
-    background: linear-gradient(to right, #00cc00, #009900); 
+    text-align: center;
+    width: 31%;
+    text-decoration: none;
+    background: #28a745; 
     color: white;
+    font-size: large;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
   }
-  
-  .custom-button:hover {
-    background: linear-gradient(to right, #009900, #006600);
-  }
+
   .description {
     max-height: calc(1.2em * 4); /* Set maximum height to roughly 4 lines */
     overflow: hidden; /* Hide overflowing content */

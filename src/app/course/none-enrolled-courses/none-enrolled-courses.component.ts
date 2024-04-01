@@ -7,7 +7,6 @@ import { IInstructor } from '../../Interfaces/instructor';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
-
 @Component({
   selector: 'app-none-enrolled-courses',
   templateUrl: './none-enrolled-courses.component.html',
@@ -26,7 +25,7 @@ export class NoneEnrolledCoursesComponent {
     private courseService: CourseService,
     private router: Router,
     private instructorService: InstructorService,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {}
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -61,23 +60,32 @@ export class NoneEnrolledCoursesComponent {
         );
       });
   }
-  enroll(selectedCourseId: number) {
-    // Retrieve studentCourseIds from localStorage
-    let studentCourseIdsString = localStorage.getItem(
-      `course${this.studentId}`
-    );
+  enroll(courseId: number) {
+    this.courseService.getCourseById(courseId).subscribe((course) => {
+      let courseName: string = course.name;
 
-    // Check if studentCourseIdsString is not null before parsing
-    if (studentCourseIdsString !== null) {
-      let studentCourseIds: number[] = JSON.parse(studentCourseIdsString);
-      studentCourseIds.push(selectedCourseId);
-      this.showSnackbar('Enrolled successfully!');
-      localStorage.setItem(`course${this.studentId}`,JSON.stringify(studentCourseIds))
-      this.router.navigateByUrl('/shared/course');
-    } else {
-      
-    }
+      this.instructorService
+        .getInstructorForSpecificCourse(courseName)
+        .subscribe((instructorId) => {
+          if (typeof instructorId === 'number') {
+            this.instructorService
+              .addNewCourse(this.studentId, course, instructorId)
+              .subscribe(
+                () => {
+                  this.showSnackbar(`Successfully enrolled in ${courseName}`);
+                  this.router.navigate(['coursedetails', courseId]);
+                },
+                (error) => {
+                  console.error('Error enrolling course:', error);
+                }
+              );
+          } else {
+            console.error('Instructor ID not found for course:', courseName);
+          }
+        });
+    });
   }
+
   showSnackbar(message: string): void {
     const config: MatSnackBarConfig = {
       duration: 3000,

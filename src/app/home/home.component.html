@@ -243,24 +243,24 @@
         data-wow-delay="0.1s"
       >
         <div class="course-item bg-light">
-          <a href="/nonEnrolledCourses/{{ course.id }}">
+          <a href="/nonEnrolledCourses/{{ course?.id }}">
             <div class="position-relative overflow-hidden">
               <img
                 class="img-fluid"
-                src="{{ course.userAttachmentPath }}"
+                src="{{ course?.userAttachmentPath }}"
                 alt=""
               />
             </div>
           </a>
 
           <div class="text-center p-4 pb-0">
-            <h2 class="mb-4">{{ course.name }}</h2>
+            <h2 class="mb-4">{{ course?.name }}</h2>
           </div>
           <div class="d-flex border-top">
             <small class="flex-fill text-center border-end py-2"
               ><i class="fa fa-clock text-success me-2"></i>
-              {{ course.start_Date | date }} to
-              {{ course.end_Date | date }}</small
+              {{ course?.start_Date | date }} to
+              {{ course?.end_Date | date }}</small
             >
           </div>
         </div>
@@ -323,8 +323,8 @@
           </div> -->
             </div>
             <div class="text-center p-4">
-              <h3 class="mb-0">{{ instructor.name }}</h3>
-              <h4>{{ instructor.specialization }}</h4>
+              <h3 class="mb-0">{{ instructor?.name }}</h3>
+              <h4>{{ instructor?.specialization }}</h4>
             </div>
           </div>
         </div>
