@@ -4,10 +4,10 @@
     border: none;
 }
 .panel .panel-heading{
-    background: #6a94ad;
+    background:  rgb(66, 104, 66);
     padding: 15px;
     margin: 0 0 10px;
-    box-shadow: 0 0 10px #6a94ad;
+    box-shadow: 0 0 10px rgb(144, 179, 144);
     border-radius: 5px;
 }
 .panel .panel-heading .title{
@@ -44,6 +44,21 @@
     padding: 12px;
     border-bottom: none;
 }
+
+.btn-green {
+    background:  rgb(66, 104, 66);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline from links */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+  
+  .btn-green:hover {
+    background-color: lightgreen; /* Change to light green on hover */
+  }
+
+  
 .panel .panel-body .table thead tr th:nth-of-type(2){ width: 50%; }
 .panel .panel-body .table tbody tr td{
     color: #555;
@@ -55,8 +70,8 @@
     font-weight: bold;
 }
 .panel .panel-body .table tbody .form-control:focus{
-    border-color: #86af83;
-    box-shadow: 0 0 4px #9acc84;
+    border-color: rgb(144, 179, 144);
+    box-shadow: 0 0 4px rgb(144, 179, 144);
 }
 .panel .panel-body .table tbody .user_icon{
     height: 55px;
@@ -85,7 +100,7 @@
 .panel .panel-body .table tbody .action-list li a:hover{ box-shadow: 0 0 5px #ddd; }
 .panel .panel-footer{
     color: #fff;
-    background: #6a94ad;
+    background:  rgb(66, 104, 66);
     font-size: 16px;
     line-height: 33px;
     padding: 15px;
@@ -96,7 +111,7 @@
 .pagination{ margin: 0; }
 .pagination li a{
     color: #fff;
-    background-color: #6a94ad;
+    background-color:rgb(144, 179, 144);
     font-size: 15px;
     font-weight: 700;
     margin: 0 2px;
