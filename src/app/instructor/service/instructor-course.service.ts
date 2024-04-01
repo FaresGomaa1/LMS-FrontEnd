@@ -12,6 +12,21 @@ export class InstructorCourseService {
 
   constructor(private instservice: InstructorService, private courseService: CourseService , private HttpClient : HttpClient) { }
 
+
+  isInstructorCourse(instructorId: number, courseName: string): Observable<boolean> {
+    return this.instservice.getById(instructorId)
+      .pipe(
+        map(instructor => {
+          if (instructor && instructor.courseName.includes(courseName)) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      );
+  }
+
+  
   getInstructorCourses(id:number): Observable<ICourse[]> {
     return this.instservice.getById(id)
       .pipe(
@@ -27,10 +42,8 @@ export class InstructorCourseService {
       );
   }
 
-  getPaginatedCourses(page: number, pageSize: number): Observable<ICourse[]> {
-    const url = `$http://localhost:5050/Instructor/Courses?page=${page}&pageSize=${pageSize}`;
-    return this.HttpClient.get<ICourse[]>(url);
-  }
+  
+
 
 
 }

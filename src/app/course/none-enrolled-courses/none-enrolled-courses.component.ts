@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from './../course.service';
 import { ICourses } from '../icourses';
-import { IInstructor } from 'src/app/instructor/interface/i-instructor';
+import { IInstructor } from '../../Interfaces/instructor';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 

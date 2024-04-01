@@ -57,7 +57,7 @@ export class InstructorCoursesComponent implements OnInit {
   }
 
   loadInstructorCourses() {
-    this.instructorcourseService.getInstructorCourses(1).subscribe(
+    this.instructorcourseService.getInstructorCourses(this.userId).subscribe(
       courses => {
         this.instructorCourses = courses;
         
