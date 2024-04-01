@@ -6,8 +6,12 @@ export interface IInstructor {
   phone: string;
   address: string;
   email: string;
+  //photo:string;
   password: string;
-  photo?: string;
+  userAttachmentPath?: string;
+  imageFile:File;
   specialization: string;
   courseName: string[];
+  experience: string,
+  ssn:string
 }

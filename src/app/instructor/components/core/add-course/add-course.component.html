@@ -1,4 +1,4 @@
-<div id="booking" class="section">
+<!-- <div id="booking" class="section">
     <div class="section-center">
       <div class="container">
         <div class="row">
@@ -63,6 +63,29 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="row">
+                  <div class="form-group">
+                    <span class="form-label">material</span>
+                    <input type="text" class="form-control" formControlName="material">
+                    <div *ngIf="courseForm.get('material')?.invalid && (courseForm.get('material')?.dirty || courseForm.get('material')?.touched)"
+                      class="text-danger">
+                      <div *ngIf="courseForm.get('material')?.hasError('required')">material is required.</div>
+                      <div *ngIf="courseForm.get('material')?.hasError('pattern')">material is URL.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group">
+                    <span class="form-label">Image</span>
+                    <input type="file" class="form-control" formControlName="imageFile">
+                    <div *ngIf="courseForm.get('imageFile')?.invalid && (courseForm.get('imageFile')?.dirty || courseForm.get('imageFile')?.touched)"
+                      class="text-danger">
+                      <div *ngIf="courseForm.get('imageFile')?.hasError('imageFile')">material is required.</div>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-btn">
                   <button class="submit-btn">Add Course</button>
                 </div>
@@ -73,4 +96,199 @@
       </div>
     </div>
   </div>
-  
+   -->
+
+<!-- 
+   <div class="grid p-fluid">
+    <div class="col-12 ">
+        <div class="card">
+            <h5>Course Data</h5>
+
+            <form class="row g-3" [formGroup]="CourseForm" (ngSubmit)="onSubmit($event)">
+                <label for="name">Name</label>
+                <span class="p-float-label">
+                    <input pInputText type="text" id="name" formControlName="name" class="form-control"
+                        placeholder="EX: PHP" required
+                        [ngClass]="{'is-valid': getFormControl('name').valid, 'is-invalid': getFormControl('name').invalid && getFormControl('name').touched}" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('name').errors && getFormControl('name').touched">
+                        <ng-container *ngIf="getFormControl('name').hasError('required')">Name is
+                            required</ng-container>
+                        <ng-container *ngIf="getFormControl('name').hasError('minlength')">Name must be at least 3
+                            characters</ng-container>
+
+                    </div>
+                </span>
+
+
+
+                <label for="description">Description</label>
+                <span class="p-float-label">
+                    <input pInputText type="text" id="description" formControlName="description" class="form-control"
+                        placeholder="Enter description" required
+                        [ngClass]="{'is-valid': getFormControl('description').valid, 'is-invalid': getFormControl('description').invalid && getFormControl('description').touched}" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('description').errors && getFormControl('description').touched">
+                        <ng-container *ngIf="getFormControl('description').hasError('required')">Description is
+                            required</ng-container>
+                        <ng-container *ngIf="getFormControl('description').hasError('minlength')">Description must be at
+                            least 4
+                            characters</ng-container>
+                    </div>
+                </span>
+
+
+                <label for="start_Date">Start Date</label>
+                <span class="p-float-label">
+                    <input pInputText type="date" id="start_Date" formControlName="start_Date" class="form-control"
+                        required [ngClass]="{
+                        'is-valid': getFormControl('start_Date').valid,
+                        'is-invalid': getFormControl('start_Date').invalid && getFormControl('start_Date').touched
+                    }" (change)="getValue($event)" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('start_Date').errors && getFormControl('start_Date').touched">
+                        <ng-container *ngIf="getFormControl('start_Date').hasError('required')">Start date is
+                            required</ng-container>
+                        <ng-container *ngIf="getFormControl('start_Date').hasError('minDate')">Please enter a future
+                            date</ng-container>
+                        <ng-container *ngIf="getFormControl('start_Date').hasError('sDate')">Please enter a Date less
+                            than End Date </ng-container>
+                    </div>
+                </span>
+
+
+                <label for="end_Date">End Date</label>
+                <span class="p-float-label">
+                    <input pInputText type="date" id="end_Date" formControlName="end_Date" class="form-control" required
+                        [ngClass]="{'is-valid': getFormControl('end_Date').valid, 'is-invalid': getFormControl('end_Date').invalid && getFormControl('end_Date').touched}"
+                        (change)="getEndValue($event)" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('end_Date').errors && getFormControl('end_Date').touched">
+                        <ng-container *ngIf="getFormControl('end_Date').hasError('required')">End date is
+                            required</ng-container>
+                        <ng-container *ngIf="getFormControl('end_Date').hasError('endDateBeforeStart')">End date must be
+                            after
+                            start date
+                        </ng-container>
+                    </div>
+                </span>
+
+                <label for="imageFile">Photo</label>
+                <span class="p-float-label">
+                    <input pInputText type="file" id="imageFile" formControlName="imageFile" class="form-control"
+                        placeholder="Enter imageFile number" required (change)="onFileSelected($event)"
+                        [ngClass]="{'is-valid': getFormControl('imageFile').valid, 'is-invalid': getFormControl('imageFile').invalid && getFormControl('imageFile').touched}" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('imageFile').errors && getFormControl('imageFile').touched">
+                        <ng-container *ngIf="getFormControl('imageFile').hasError('required')">Photo is
+                            required</ng-container>
+                        <ng-container *ngIf="getFormControl('imageFile').hasError('invalidFileType')">Invalid photo
+                            type. Please select
+                            a JPG, JPEG, or PNG photo.</ng-container>
+                    </div>
+                </span>
+
+                <label for="material">Material</label>
+                <span class="p-float-label">
+                    <input pInputText type="text" id="material" formControlName="material" class="form-control"
+                        placeholder="Enter material number" required
+                        [ngClass]="{'is-valid': getFormControl('material').valid, 'is-invalid': getFormControl('material').invalid && getFormControl('material').touched}" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('material').errors && getFormControl('material').touched">
+                        <ng-container *ngIf="getFormControl('material').hasError('required')">material is
+                            required</ng-container>
+                    </div>
+                </span>
+
+
+                <button pButton label="Submit" type="submit" class="p-button p-button-primary"></button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+ -->
+
+ <div id="booking" class="section">
+  <div class="section-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 col-md-push-5">
+            <div class="booking-cta">
+              <h1> Add Your Course</h1>
+              <p>Join us to Teach More students
+              </p>
+            </div>
+          </div>
+        <div class="col-md-4 col-md-pull-7">
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="CourseForm" (ngSubmit)="onSubmit($event)">
+                <div class="mb-3">
+                  <label for="name" class="form-label">Your Course Name</label>
+                  <input type="text" class="form-control" id="name" formControlName="name" placeholder="Enter a Course name">
+                  <div *ngIf="CourseForm.get('name')?.invalid && (CourseForm.get('name')?.dirty || CourseForm.get('name')?.touched)" class="text-danger">
+                    <div *ngIf="CourseForm.get('name')?.hasError('required')">Course name is required.</div>
+                    <div *ngIf="CourseForm.get('name')?.hasError('minlength')">Course name must be more than 3 letters</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="start_Date" class="form-label">Start Date</label>
+                      <input type="date" class="form-control" id="start_Date" formControlName="start_Date">
+                      <div *ngIf="CourseForm.get('start_Date')?.invalid && (CourseForm.get('start_Date')?.dirty || CourseForm.get('start_Date')?.touched)" class="text-danger">
+                        <div *ngIf="CourseForm.get('start_Date')?.hasError('required')">Start date is required.</div>
+                        <div *ngIf="CourseForm.get('start_Date')?.hasError('startDateInvalid')">Start date must be after today.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="end_Date" class="form-label">End Date</label>
+                      <input type="date" class="form-control" id="end_Date" formControlName="end_Date">
+                      <div *ngIf="CourseForm.get('end_Date')?.invalid && (CourseForm.get('end_Date')?.dirty || CourseForm.get('end_Date')?.touched)" class="text-danger">
+                        <div *ngIf="CourseForm.get('end_Date')?.hasError('required')">End date is required.</div>
+                        <div *ngIf="CourseForm.get('end_Date')?.hasError('endDateInvalid')">End date must be after start date.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+                  <div *ngIf="CourseForm.get('description')?.invalid && (CourseForm.get('description')?.dirty || CourseForm.get('description')?.touched)" class="text-danger">
+                    <div *ngIf="CourseForm.get('description')?.hasError('required')">Description is required.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="material" class="form-label">Material</label>
+                  <input type="text" class="form-control" id="material" formControlName="material" placeholder="Enter material">
+                  <div *ngIf="CourseForm.get('material')?.invalid && (CourseForm.get('material')?.dirty || CourseForm.get('material')?.touched)" class="text-danger">
+                    <div *ngIf="CourseForm.get('material')?.hasError('required')">Material is required.</div>
+                    <div *ngIf="CourseForm.get('material')?.hasError('invalidUrl')">must be URL.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="imageFile" class="form-label">Image</label>
+                  <input type="file" class="form-control"(change)="onFileSelected($event)"   id="imageFile" formControlName="imageFile">
+                  <div *ngIf="CourseForm.get('imageFile')?.invalid && (CourseForm.get('imageFile')?.dirty || CourseForm.get('imageFile')?.touched)" class="text-danger">
+                    <div *ngIf="CourseForm.get('imageFile')?.hasError('imageFile')">Image is required.</div>
+                    <div *ngIf="CourseForm.get('imageFile')?.hasError('pattern')">Must be image</div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Add Course</button>
+              </form>
+            </div>
+          </div>
+
+          
+          
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

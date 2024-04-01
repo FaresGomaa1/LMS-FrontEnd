@@ -27,9 +27,11 @@ export class InstructorCoursesComponent implements OnInit {
       const decodedToken = helper.decodeToken(token);
       this.userId = decodedToken.nameid;
     }
+    console.log(this.userId)
     this.loadInstructorCourses();
   }
   sortByEndDateDesc: boolean = true;
+  
   isCourseEnded(endDate: Date): boolean { 
     const endDateTime = new Date(endDate).getTime(); 
     const currentDateTime = new Date().getTime(); 
@@ -37,25 +39,25 @@ export class InstructorCoursesComponent implements OnInit {
   }
 
 
+
+  
+
+
   toggleSortOrder() {
-    this.sortByEndDateDesc = !this.sortByEndDateDesc;
-    // Reload courses to reflect the new sorting order
+    this.sortByEndDateDesc = !this.sortByEndDateDesc; 
     this.loadInstructorCourses();
   }
 
   sortCourses(courses: ICourse[]): ICourse[] {
-    if (this.sortByEndDateDesc) {
-      // Sort courses by end date in descending order (newest first)
+    if (this.sortByEndDateDesc) { 
       return courses.sort((a, b) => new Date(b.end_Date).getTime() - new Date(a.end_Date).getTime());
-    } else {
-      // Sort courses by end date in ascending order (oldest first)
+    } else { 
       return courses.sort((a, b) => new Date(a.end_Date).getTime() - new Date(b.end_Date).getTime());
     }
   }
 
-  
   loadInstructorCourses() {
-    this.instructorcourseService.getInstructorCourses(this.userId).subscribe(
+    this.instructorcourseService.getInstructorCourses(1).subscribe(
       courses => {
         this.instructorCourses = courses;
         
@@ -67,9 +69,10 @@ export class InstructorCoursesComponent implements OnInit {
       }
     );
   }
+
   openMaterialtLink(course: ICourse): void {
  
-    window.open(course.material, '_blank');
-  
-  }
+      window.open(course.material, '_blank');
+  
+  }
 }

@@ -8,9 +8,9 @@ export interface IExam {
   time:string;
   date: Date;
   max_Degree: number;
-  min_Degree: number;
-  studentIDs?: number[];
+  min_Degree: number; 
   numberOfQuestions: number;
   course_ID:number;
-  
+  questions?:string [];
+  studentExam?:[]
 }
