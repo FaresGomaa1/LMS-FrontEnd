@@ -20,6 +20,8 @@
                   <th>description</th>
                   <th>start date</th>
                   <th>end date</th>
+                  <th>Material</th>
+
               </tr>
           </thead>
           <tbody>
@@ -29,7 +31,9 @@
                   <td>{{ course.description }}</td>
                   <td>{{ course.start_Date }}</td>
                   <td>{{ course.end_Date }}</td>
-                 
+                  <td>  <a  (click)="openMaterialtLink(course)" class="btn btn-green" >
+                    material
+                </a></td>
                   <td>
                      
                       <ul class="action-list">
