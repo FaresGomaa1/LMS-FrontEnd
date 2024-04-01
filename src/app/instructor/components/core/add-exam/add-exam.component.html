@@ -93,9 +93,9 @@
       </div>
     </div>
    
-    <ng-container *ngFor="let question of questionCountArray; let i = index">
+  <ng-container *ngFor="let question of questionCountArray; let i = index">
       <app-add-question #questionComponent [questionIndex]="i" [examId]="Exam?.id"></app-add-question>
-    </ng-container> 
+    </ng-container>  
     
 
     <button type="submit" class="btn btn-primary" #submitBtn>Submit</button>
