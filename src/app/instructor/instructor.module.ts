@@ -20,9 +20,11 @@ import { EditProfileComponent } from './components/core/edit-profile/edit-profil
 import { CourseDetailsComponent } from './components/course-details/course-details.component';
 import { AllExamsComponent } from './components/core/all-exams/all-exams.component';
 import { NotFoundComponent } from '../not-found/not-found.component';
+import { AddExamWithQuestionsComponent } from './components/core/add-exam-with-questions/add-exam-with-questions.component';
+import { EmptyExamComponent } from './components/core/empty-exam/empty-exam.component';
 
 const instructorRoutes: Routes = [
-  {path: '', redirectTo: 'shared', pathMatch: 'full'},
+  {path: '', redirectTo: 'shared/profile', pathMatch: 'full'},
   {path:'shared', component: TrialComponent,
   children: [
     { path: 'home', component: HomeComponent },
@@ -41,6 +43,7 @@ const instructorRoutes: Routes = [
     {path: 'courseDetails/:courseId' , component:CourseDetailsComponent},
     {path: 'Exams' , component:AllExamsComponent},
     {path: 'NotFound' , component: NotFoundComponent},
+
 
 
    {path: '**', redirectTo: 'NotFound', pathMatch: 'full'},
@@ -68,7 +71,9 @@ const instructorRoutes: Routes = [
     AddCourseComponent,
     EditProfileComponent,
     CourseDetailsComponent,
-    AllExamsComponent
+    AllExamsComponent,
+    AddExamWithQuestionsComponent,
+    EmptyExamComponent
   ],
   imports: [
     CommonModule,
