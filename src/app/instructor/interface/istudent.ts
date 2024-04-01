@@ -6,11 +6,14 @@ export interface IStudent {
     phone: string;
     address: string;
     email: string;
+    ssn:string;
+    userAttachmentPath?:string;
     password: string;
-    photo: string;
+    imageFile:File;
     courseName: string[];
-    courseIDs: number[];
-    groupName: string[];
-    examName: string[];
-    examIDs: number[];
+    instructorIDs: number[];
+    courseIDs?:number[]
+    examName?: string[];
+    examIDs?: number[];
+    results?:number[]
 }
