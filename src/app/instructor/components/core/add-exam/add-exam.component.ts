@@ -100,9 +100,10 @@ examIdd:number=0;
         (examId: any) => {
           this.examIdd= examId;
           console.log('Exam added successfully.');
+          this.myRoute.navigate(['instructor/shared/addQuestions']);
           console.log(examId);  
           const numberOfQuestions = this.ExamForm.get('numberOfQuestions')?.value;
-          this.questionComponent.onSubmit(event, examId);
+          // this.questionComponent.onSubmit(event, examId);
         },
         error => {
           console.error('Failed to add exam:', error);
