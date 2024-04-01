@@ -1,4 +1,4 @@
-<app-header></app-header> 
+<app-header></app-header>
 
 <!-- Carousel End -->
 <div id="carouselExampleIndicators" class="carousel slide">
@@ -19,7 +19,7 @@
     ></button>
   </div>
   <div class="carousel-inner">
-    <div class="carousel-item active" >
+    <div class="carousel-item active">
       <img
         src="../../assets/img/pexels-george-dolgikh-1326946.jpg"
         class="d-block w-100"
@@ -72,9 +72,12 @@
                 Get Educated Online From Your Home
               </h1>
               <p class="fs-5 text-white mb-4 pb-2">
-                Join us on this exciting journey of discovery and transformation. Together, let's unlock the boundless possibilities that learning has to offer and shape a brighter future, one lesson at a time.
+                Join us on this exciting journey of discovery and
+                transformation. Together, let's unlock the boundless
+                possibilities that learning has to offer and shape a brighter
+                future, one lesson at a time.
               </p>
-              
+
               <!-- <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a> -->
             </div>
           </div>
@@ -184,12 +187,17 @@
           Welcome to <span class="text-success">LMS ACADEMY</span>
         </h1>
         <p class="mb-4">
-          Welcome to LMS ACADEMY, your premier destination for learning and growth! At LMS ACADEMY, we're passionate about empowering individuals to unlock their full potential through education and skill development.
-
+          Welcome to LMS ACADEMY, your premier destination for learning and
+          growth! At LMS ACADEMY, we're passionate about empowering individuals
+          to unlock their full potential through education and skill
+          development.
         </p>
         <p class="mb-4">
-         
-Our journey began with a simple yet ambitious goal: to provide accessible, high-quality learning resources that inspire, educate, and transform lives. Guided by this vision, we've curated a diverse range of courses and learning materials designed to meet the evolving needs of learners worldwide.
+          Our journey began with a simple yet ambitious goal: to provide
+          accessible, high-quality learning resources that inspire, educate, and
+          transform lives. Guided by this vision, we've curated a diverse range
+          of courses and learning materials designed to meet the evolving needs
+          of learners worldwide.
         </p>
         <div class="row gy-2 gx-4 mb-4">
           <div class="col-sm-6">
@@ -209,9 +217,6 @@ Our journey began with a simple yet ambitious goal: to provide accessible, high-
               Certificate
             </p>
           </div>
-        
-          
-       
         </div>
         <!-- <a class="btn btn-success py-3 px-5 mt-2" href="">Read More</a> -->
       </div>
@@ -238,19 +243,24 @@ Our journey began with a simple yet ambitious goal: to provide accessible, high-
         data-wow-delay="0.1s"
       >
         <div class="course-item bg-light">
-          <a href="/coursedetails/{{ course.id }}" >
+          <a href="/nonEnrolledCourses/{{ course.id }}">
             <div class="position-relative overflow-hidden">
-              <img class="img-fluid" src="{{course.userAttachmentPath}}" alt="" />
+              <img
+                class="img-fluid"
+                src="{{ course.userAttachmentPath }}"
+                alt=""
+              />
             </div>
           </a>
-          
+
           <div class="text-center p-4 pb-0">
             <h2 class="mb-4">{{ course.name }}</h2>
           </div>
           <div class="d-flex border-top">
             <small class="flex-fill text-center border-end py-2"
               ><i class="fa fa-clock text-success me-2"></i>
-              {{ course.start_Date | date }} to {{ course.end_Date | date}}</small
+              {{ course.start_Date | date }} to
+              {{ course.end_Date | date }}</small
             >
           </div>
         </div>
@@ -258,7 +268,9 @@ Our journey began with a simple yet ambitious goal: to provide accessible, high-
     </div>
     <!-- Anchor tag to view all courses -->
     <div class="text-center mt-4">
-      <a routerLink="/shared/allCourses" class="btn btn-success">View All Courses</a>
+      <a routerLink="/shared/allCourses" class="btn btn-success"
+        >View All Courses</a
+      >
     </div>
   </div>
 </div>
@@ -283,15 +295,22 @@ Our journey began with a simple yet ambitious goal: to provide accessible, high-
         >
           <div class="team-item bg-light">
             <div class="overflow-hidden">
-              <a [routerLink]="'/shared/instructorProfile/' + instructor?.id" target="_blank">
-                <img class="img-fluid" [src]="instructor?.userAttachmentPath" alt="Instructor Photo" />
-              </a>              
+              <a
+                [routerLink]="'/shared/instructorProfile/' + instructor?.id"
+                target="_blank"
+              >
+                <img
+                  class="img-fluid"
+                  [src]="instructor?.userAttachmentPath"
+                  alt="Instructor Photo"
+                />
+              </a>
             </div>
             <div
               class="position-relative d-flex justify-content-center"
               style="margin-top: -23px"
             >
-            <!-- <div class="bg-light d-flex justify-content-center pt-2 px-1">
+              <!-- <div class="bg-light d-flex justify-content-center pt-2 px-1">
               <a class="btn btn-sm-square btn-success mx-1" href="https://www.facebook.com/" target="_blank">
                   <i class="fab fa-facebook-f"></i>
               </a>

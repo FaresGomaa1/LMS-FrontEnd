@@ -35,10 +35,7 @@ export class StudentEditComponent implements OnInit {
         Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)+$'),
       ]],
       age: [student.age, Validators.required],
-      title: [student.title, [
-        Validators.required,
-        Validators.minLength(4),
-      ]],
+      title: [student.title],
       phone: [student.phone, [
         Validators.required,
         Validators.minLength(11),
@@ -49,19 +46,12 @@ export class StudentEditComponent implements OnInit {
         Validators.required,
         Validators.minLength(5),
       ]],
-      ssn: [student.ssn, [
-        Validators.required,
-        Validators.pattern(/^\d{14}$/),
-      ]],
+      ssn: [student.ssn],
       email: [student.email, [
         Validators.required,
         Validators.email,
       ]],
-      password: [student.password, [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
-      ]],
+      password: [student.password],
       userAttachmentPath: [''],
       imageFile: [null, Validators.required]
     });

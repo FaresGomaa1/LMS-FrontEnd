@@ -66,4 +66,14 @@ export class StudentService {
         })
       );
   }
+  AddCourse(id: number, studentFormData: FormData): Observable<any> {
+    const url = `${this.domainName}/Student/${id}`;
+    return this.http.put(url, studentFormData)
+      .pipe(
+        catchError(error => {
+          this.errorHandlerService.handleError(error);
+          throw error;
+        })
+      );
+  }
 }
