@@ -67,4 +67,9 @@ export class InstructorCoursesComponent implements OnInit {
       }
     );
   }
+  openMaterialtLink(course: ICourse): void {
+ 
+    window.open(course.material, '_blank');
+  
+  }
 }
