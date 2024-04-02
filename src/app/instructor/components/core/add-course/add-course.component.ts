@@ -7,7 +7,7 @@ import { IInstructor } from 'src/app/instructor/interface/i-instructor';
 import { CourseService } from 'src/app/instructor/service/course.service';
 import { ICourse } from 'src/app/instructor/interface/i-course';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 declare var $: any;
 @Component({
   selector: 'app-add-course',
@@ -23,6 +23,13 @@ export class AddCourseComponent implements OnInit , OnDestroy {
     today: Date = new Date();
     selectedFile!: File;
     
+
+    private unsubscribe$ = new Subject<void>();
+  
+    ngOnDestroy(): void {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    }
 
     constructor(
         private CourseService: CourseService,
@@ -178,10 +185,7 @@ export class AddCourseComponent implements OnInit , OnDestroy {
     };
   }
 
-  closeModal() {
-    // Close the modal programmatically
-    $('#exampleModalCenter').modal('hide');
-  }
+ 
   
     onSubmit(e: Event) {
         e.preventDefault();
@@ -204,19 +208,22 @@ export class AddCourseComponent implements OnInit , OnDestroy {
         if (this.CourseForm.valid) {
             this.CourseService.addCourse(formData, this.instructorId).subscribe(() => {
               console.log('Success');
-              this.router.navigate(['/instructor/shared/InstructorCourses']);
               this.instructorService.addCourseToInstructor(this.instructorId, this.CourseForm.value.name)
                 .subscribe(() => {
                   console.log('Instructor course list updated');
-                  this.router.navigate(['/instructor/shared/InstructorCourses']);
+                 
                 });
             });
           }
+          else {
+                this.CourseForm.markAllAsTouched();
+              }
+
     }
 
-    ngOnDestroy(): void {
-        this.myActionSub?.unsubscribe();
-    }
+    // ngOnDestroy(): void {
+    //     this.myActionSub?.unsubscribe();
+    // }
 
     
   // endDateAfterStartDate(startDateControlName: string, endDateControlName: string) {

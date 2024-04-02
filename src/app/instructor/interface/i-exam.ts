@@ -11,6 +11,7 @@ export interface IExam {
   min_Degree: number; 
   numberOfQuestions: number;
   course_ID:number;
-  questions?:string [];
+  allQuestion:string [];
+  courseName:string;
   studentExam?:[]
 }

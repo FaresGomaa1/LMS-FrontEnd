@@ -1,9 +1,7 @@
 <div class="container mt-5">
   <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Add Question {{ questionIndex + 1 }}</h5>
-      <h5 class="card-title" [ngModel]="numberOfQuestions">Add {{ numberOfQuestions}} Question </h5>
-      <form [formGroup]="questionForm" >
+    <div class="card-body">  
+      <form class="row g-3" [formGroup]="questionForm" (ngSubmit)="onSubmit($event)">
         <div class="mb-3">
           <label for="question" class="form-label">Question</label>
           <textarea class="form-control" id="question" formControlName="question" rows="3"
@@ -67,6 +65,7 @@
           </div>
         </div>
 
+        <button type="submit"></button>
      
       </form>
     </div>
