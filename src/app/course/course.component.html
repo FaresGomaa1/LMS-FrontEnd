@@ -11,7 +11,7 @@
     <div class="col-lg-4 col-md-6 mb-4" *ngFor="let course of courses">
       <div class="card h-100">
         <img
-          src="{{course.userAttachmentPath}}"
+          src="{{ course.userAttachmentPath }}"
           class="card-img-top"
           alt="Course Image"
         />
@@ -50,15 +50,13 @@
         </div> -->
       </div>
     </div>
-      <!-- Button trigger modal -->
+  </div>
+</div>
+
+<!-- Button trigger modal -->
 <a routerLink="/shared/allCourses" class="custom-button fixed-bottom m-3">
   Enroll In New Courses
 </a>
-  </div>
-
-</div>
-
-
 
 <!-- Footer Start -->
 <app-footer></app-footer>

@@ -1,22 +1,27 @@
 <app-header></app-header>
-<div class="container"  style="height: 500px;">
+<div class="container" style="height: 500px;">
+  <h1 class="text-center">Upcoming Events</h1>
   <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="events-list">
-        <div class="event" *ngFor="let event of events">
-          <div class="event-header">
-            <h3>{{ event.name }} </h3>
-            <span class="event-date">
-              <i class="far fa-calendar-alt"></i> {{ event.start_Date | date: 'mediumDate' }} - {{ event.end_Date | date: 'mediumDate' }}
-            </span>
-          </div>
-          <div class="event-body">
-            <p>{{ event.description }}</p>
-          </div>
+    <div *ngFor="let event of events" class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ event.name }}</h5>
+          <p class="card-text">Start Date: {{ event.start_Date | date }}</p>
+          <p class="card-text">End Date: {{ event.end_Date | date }}</p>
+          <p class="card-text">{{ event.description }}</p>
+          <a [href]="event.hyperLink" class="btn btn-success btn-join">Join now</a>
+
         </div>
-        <div *ngIf="events.length === 0" class="text-center">
-          <h2>No events available.</h2>
-        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <h3>Courses:</h3>
+            <ul class="list-unstyled">
+              <li *ngFor="let course of courses">
+                <a routerLink="/coursedetails/{{course.id}}">{{ course.name }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

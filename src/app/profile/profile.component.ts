@@ -94,7 +94,7 @@ export class ProfileComponent implements OnInit {
     // Assuming you have the student object available
     const studentId = this.student?.id;
     if (studentId) {
-      this.router.navigate(['/shared/editProfile', studentId]);
+      window.location.href = `/shared/editProfile/${studentId}`;
     } else {
       console.error('Student ID is missing.');
     }

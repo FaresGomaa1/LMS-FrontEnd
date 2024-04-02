@@ -243,15 +243,16 @@
         data-wow-delay="0.1s"
       >
         <div class="course-item bg-light">
-          <a href="/nonEnrolledCourses/{{ course?.id }}">
-            <div class="position-relative overflow-hidden">
-              <img
-                class="img-fluid"
-                src="{{ course?.userAttachmentPath }}"
-                alt=""
-              />
-            </div>
-          </a>
+          <div
+            class="position-relative overflow-hidden"
+            (click)="course?.id && checkEnrollment(course.id)"
+          >
+            <img
+              class="img-fluid"
+              src="{{ course?.userAttachmentPath }}"
+              alt=""
+            />
+          </div>
 
           <div class="text-center p-4 pb-0">
             <h2 class="mb-4">{{ course?.name }}</h2>
