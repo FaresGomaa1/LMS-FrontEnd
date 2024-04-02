@@ -26,6 +26,15 @@ export class InstructorService implements OnInit {
 
   }}
 
+  addCourseToInstructor(id: number = this.userId, courseName: string): Observable<any> {
+    const url = 'http://localhost:5050/Instructor/addCourse';
+    const payload = {
+      instructorId: id,
+      courseName: [courseName]
+    };
+    
+    return this.HttpClient.post(url, payload);
+  }
 
   getCurrentInstructorId(): number{
     return this.userId;
@@ -45,44 +54,19 @@ export class InstructorService implements OnInit {
  
   updateInstructor(instructor: IInstructor): Observable<any> {
     const url = `${this.baseURL}/${instructor.id}`;
-    
-    // Convert URL to file and update instructor imageFile
-    const fileName = 'image.jpg'; // You can change the filename as needed
+     
+    const fileName = 'image.jpg';  
     return this.imageService.urlToFile(instructor.userAttachmentPath!, fileName).pipe(
-      switchMap(file => {
-        // Assign the File object to the instructor's imageFile property
+      switchMap(file => { 
         instructor.imageFile = file;
-  
-        // Perform the HTTP PUT request to update the instructor
+   
         return this.HttpClient.put(url, instructor);
       })
     );
   }
   
-  // Method to add a course to an instructor
-  addCourseToInstructor(instructorId: number, courseName: string): Observable<any> {
-    return this.getById(instructorId).pipe( 
-      switchMap((instructor: IInstructor) => { 
-        console.log(instructor);
-        
-        instructor.courseName.push(courseName);  
-        return this.updateInstructor(instructor);
-      })
-    );
-  }
-
-  // addCourseToInstructor(instructorId: number, course: ICourse): Observable<IInstructor> {
-  //   return this.HttpClient.post<IInstructor>(`${this.baseURL}/${instructorId}/Courses`, course);
-  // }
-
-  // updateInstructorCourses(instructorId: number, courseName: string): Observable<IInstructor> {
-  //   return this.getById(instructorId).pipe(
-  //     switchMap((instructor: IInstructor) => {
-  //       instructor.courseName.push(courseName); 
-  //       return this.Updates(instructorId, instructor);  
-  //     })
-  //   );
-  // }
+ 
+ 
 
  
 }

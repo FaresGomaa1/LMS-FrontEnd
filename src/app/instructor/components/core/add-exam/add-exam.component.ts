@@ -1,58 +1,129 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ExamService } from "src/app/instructor/service/exam.service";
 import { IExam } from "src/app/instructor/interface/i-exam";
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { AddQuestionComponent } from "../add-question/add-question.component";
+import { ICourse } from "src/app/instructor/interface/i-course";
 
 @Component({
   selector: 'app-add-exam',
   templateUrl: './add-exam.component.html'
 })
-export class AddExamComponent implements OnInit , OnDestroy {
+export class AddExamComponent implements OnInit, OnDestroy {
   Exam: IExam | undefined;
   course_Id: number = 0;
- 
+ course!:ICourse;
   formSubmitted = false;
-  questionCountArray: any[];
-  ExamForm: FormGroup;
-  @ViewChild('questionComponent') questionComponent!: AddQuestionComponent;
-  constructor(private ExamService: ExamService, private myRoute: Router, private act: ActivatedRoute) {
-    this.ExamForm = new FormGroup({
-      numberOfQuestions: new FormControl('', [Validators.required, Validators.min(1)]),
-      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      duration: new FormControl('', [Validators.required, Validators.min(1)]),
-      time: new FormControl('', [Validators.required]),
-      date: new FormControl('', [Validators.required, this.startDateValidator.bind(this)]),
-      max_Degree: new FormControl('', [Validators.required]),
-      min_Degree: new FormControl('', [Validators.required]),
-      course_ID: new FormControl(''),
-    }, { validators: this.maxGreaterThanMinValidator });
-
-    this.questionCountArray = [];
+  ExamForm!: FormGroup;
+  start: Date = new Date();
+  constructor(private examService: ExamService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) {
+    this.ExamForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      duration: ['', [Validators.required, Validators.min(1)]],
+      time: ['', [Validators.required]],
+      date: ['', [Validators.required ,this.endValidator(this.start)]],
+      max_Degree: ['', [Validators.required]],
+      min_Degree: ['', [Validators.required]],
+      course_ID: [''],
+      courseName: ['dotnet'],
+      questions: this.formBuilder.array([])
+    }, { validators: this.degreeRangeValidator });
   }
 
-  onAddQuestions(): void {
-    const numberOfQuestions = this.ExamForm.get('numberOfQuestions')?.value;
-    if (numberOfQuestions) {
-      this.questionCountArray = Array.from({ length: numberOfQuestions });
+  endValidator(day: Date): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const selectedDate: Date = new Date(control.value);
+        if (selectedDate < day) {
+            return { past: true };
+        }
+        return null;
+    };
+}
+
+  get questions(): FormArray | null {
+    const questionsControl = this.ExamForm.get('questions');
+    return questionsControl instanceof FormArray ? questionsControl : null;
+  }
+
+  getChoiceControl(index: number): FormControl {
+    return (this.questions?.at(index)?.get('choices') as FormArray).controls[index] as FormControl;
+  }
+
+  isChoiceInvalid(): boolean {
+    const choicesArray = this.ExamForm.get('questions') as FormArray;
+    return choicesArray.controls.slice(0, 2).some(control => control.invalid && control.touched);
+  }
+
+  addQuestion(): void {
+    const questionsArray = this.questions;
+    if (questionsArray) {
+      const choicesArray = this.formBuilder.array([
+        this.createChoice(),
+        this.createChoice(),
+        this.formBuilder.control(''),
+        this.formBuilder.control('')
+      ]);
+      
+      const questionGroup = this.formBuilder.group({
+        question: ['', Validators.required],
+        questionType: ['MCQ', Validators.required],
+        correctAnswer: ['', [Validators.required , this.correctAnswerValidator(choicesArray)]],
+        choices: choicesArray
+      });
+
+
+   
+  
+      questionsArray.push(questionGroup);
+      console.log('Question added');
+    } else {
+      console.error("Form array 'questions' is null.");
     }
   }
 
-  formatTime(time: string): string {
-    const [hours, minutes] = time.split(':');
-    const formattedTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
-    return formattedTime;
+  correctAnswerValidator(choicesArray: FormArray): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const correctAnswer = control.value;
+      if (!correctAnswer || choicesArray.value.indexOf(correctAnswer) === -1) {
+        return { incorrectAnswer: true };
+      }
+      return null;
+    };
   }
 
-  ngOnDestroy(): void {
-    this.myGetSub?.unsubscribe();
-    this.myActionSub?.unsubscribe();
+  
+  removeQuestion(index: number): void {
+    const questionsArray = this.questions;
+    if (questionsArray) {
+      questionsArray.removeAt(index);
+    } else {
+      console.error("Form array 'questions' is null.");
+    }
+  }
+ 
+  createChoice(): FormGroup {
+    return this.formBuilder.group({
+      choice: ['', Validators.required]
+    });
   }
 
-  myGetSub: Subscription | undefined;
-  myActionSub: Subscription | undefined;
+  degreeRangeValidator: ValidatorFn = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    const minDegree = control.get('min_Degree')?.value;
+    const maxDegree = control.get('max_Degree')?.value;
+
+    if (minDegree !== null && maxDegree !== null && minDegree > maxDegree) {
+        control.get('min_Degree')?.setErrors({ minGreaterThanMax: true });
+        return { minGreaterThanMax: true };
+    } else {
+        if (control.get('min_Degree')?.hasError('minGreaterThanMax')) {
+            control.get('min_Degree')?.setErrors(null);
+        }
+        return null;
+    }
+  };
 
   get numberquestionControl() {
     return this.ExamForm.controls['numberOfQuestions'];
@@ -77,33 +148,46 @@ export class AddExamComponent implements OnInit , OnDestroy {
   get timeControl() {
     return this.ExamForm.controls['time'];
   }
-examIdd:number=0;
-  ngOnInit(): void {
-    this.course_Id = this.act.snapshot.params['courseId'];
+
+  formatTime(time: string): string {
+    const [hours, minutes] = time.split(':');
+    const formattedTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+    return formattedTime;
+  }
+
+  ngOnDestroy(): void {
+    
+  }
+
+  ngOnInit(): void { 
+    this.course_Id = this.route.snapshot.params['courseId'];
+    
     this.ExamForm.controls['course_ID'].setValue(this.course_Id);
     console.log(this.course_Id);
+
+    
   }
 
   onSubmit(event: Event ) {
     event.preventDefault();
+    console.log(' clicked')
+  console.log(this.ExamForm.value);
   
     const formattedTime = this.formatTime(this.ExamForm.get('time')?.value);
     this.ExamForm.get('time')?.setValue(formattedTime);
   
     if (!this.course_Id) {
-      this.myRoute.navigate(['instructorCourses']);
+      this.router.navigate(['instructorCourses']);
       return;
     }
   
-    if (this.ExamForm.valid && !this.formSubmitted) {
-      this.ExamService.addExam(this.ExamForm.value).subscribe(
+    if (this.ExamForm.valid ) {
+        console.log(this.ExamForm.value)
+      this.examService.addExam(this.ExamForm.value).subscribe(
         (examId: any) => {
-          this.examIdd= examId;
           console.log('Exam added successfully.');
-          this.myRoute.navigate(['instructor/shared/addQuestions']);
+          this.router.navigate(['instructor/shared/addQuestions']);
           console.log(examId);  
-          const numberOfQuestions = this.ExamForm.get('numberOfQuestions')?.value;
-          // this.questionComponent.onSubmit(event, examId);
         },
         error => {
           console.error('Failed to add exam:', error);
@@ -111,7 +195,6 @@ examIdd:number=0;
       );
     }
   }
-  
 
   startDateValidator(control: any) {
     const selectedDate = new Date(control.value);
@@ -127,7 +210,5 @@ examIdd:number=0;
     const minDegree = control.get('min_Degree');
 
     return maxDegree && minDegree && maxDegree.value <= minDegree.value ? { maxLessThanMin: true } : null;
-  };
-
-  
+  };  
 }
