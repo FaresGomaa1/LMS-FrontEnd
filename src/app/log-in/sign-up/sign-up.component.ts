@@ -4,8 +4,7 @@ import { ICourse } from 'src/app/instructor/interface/i-course';
 import { Component,  OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
-import {IStudent1} from "../../Interfaces/student-for-add"
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -29,8 +28,8 @@ export class SignUpComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private studentService: StudentService,
-    private router: Router,
     private InstructorService :InstructorService,
+    private snackBar: MatSnackBar
   ) {
  
   }
@@ -96,9 +95,6 @@ ngOnInit(): void {
   this.createForm();
   this.isEmailUnique();
 }
-  openCourseDetails(courseId: number): void {
-    window.open(`http://localhost:4200/coursedetails/${courseId}`, '_blank');
-  }
 
   onSubmit() {
     const studentFormData = new FormData();
@@ -107,8 +103,15 @@ ngOnInit(): void {
     });
     this.studentService.Add(studentFormData).subscribe(
       response => {
-        window.location.href = '/login';
-        console.log('Registration successful', response);
+        this.snackBar.open('Registration successful', 'Dismiss', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom', 
+        });
+        const signInButton = document.getElementById('signIn');
+        if (signInButton) {
+          signInButton.click();
+        }
       },
       error => {
         // Handle error

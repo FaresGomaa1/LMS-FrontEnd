@@ -31,7 +31,6 @@ export class CourseComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStudentCourseIds();
-    console.log(  this.studentId)
   }
 
   getStudentCourseIds(): void {
@@ -46,17 +45,6 @@ export class CourseComponent implements OnInit {
           .getStudentById(parseInt(userId, 10))
           .subscribe((student) => {
             this.studentCourseIds = student.courseIDs;
-            let studentCourseIdsString = localStorage.getItem(`course${userId}`);
-            if (studentCourseIdsString !== null) {
-              this.studentCourseIds = JSON.parse(studentCourseIdsString);
-            } else {
-              // this.studentCourseIds = this.studentCourseIds;
-              localStorage.setItem(
-                `course${userId}`,
-                JSON.stringify(this.studentCourseIds)
-              );
-            }
-
             this.getAllStudentCourses();
           });
       } else {
@@ -78,27 +66,6 @@ export class CourseComponent implements OnInit {
         console.error('Failed to fetch courses:', error);
       }
     );
-  }
-  enroll(courseId: number) {
-    let studentCourseIdsString = localStorage.getItem(`course${this.studentId}`);
-    if (studentCourseIdsString !== null) {
-      this.studentCourseIds = JSON.parse(studentCourseIdsString);
-    } else {
-      // this.studentCourseIds = this.studentCourseIds;
-    }
-  
-    for (let i = 0; i < this.studentCourseIds.length; i++) {
-      if (courseId === this.studentCourseIds[i]) {
-        alert('You are already enrolled in this course');
-        return;
-      }
-    }  
-    this.studentCourseIds.push(courseId);
-    localStorage.setItem(
-      `course${this.studentId}`,
-      JSON.stringify(this.studentCourseIds)
-    );
-    alert("Enrolled Sucssfully")
   }
   
   openCourseDetailsInNewTab(courseId: number): void {

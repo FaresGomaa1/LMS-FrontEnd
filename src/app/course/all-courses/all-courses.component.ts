@@ -1,9 +1,11 @@
+import { InstructorService } from '../../generalServices/instructor.service';
 import { StudentService } from './../../generalServices/student.service';
 import { CourseService } from './../course.service';
 import { Component, OnInit } from '@angular/core';
 import { ICourses } from '../icourses';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-all-courses',
@@ -21,7 +23,8 @@ export class AllCoursesComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private studentService: StudentService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private instructorService: InstructorService
   ) {}
 
   ngOnInit(): void {
@@ -31,54 +34,54 @@ export class AllCoursesComponent implements OnInit {
       const decodedToken = helper.decodeToken(token);
       const userId = decodedToken.nameid;
       this.studentId = userId;
-      this.studentService.getStudentById(userId).subscribe((std) => {
-        this.student = std;
-        this.studentCourseIds = [...std.courseIDs];
-        const otherStudentCourseIds = JSON.parse(
-          localStorage.getItem(`course${userId}`) || '[]'
-        );
-        this.studentCourseIds.push(...otherStudentCourseIds);
-        this.studentCourseIds = [...new Set(this.studentCourseIds)];
-
-        this.courseService.getAllCourses().subscribe((courses) => {
-          this.allCourses = courses;
-
-          this.enrolledCourses = this.allCourses.filter((course) =>
-            this.studentCourseIds.includes(course.id)
+      
+      // Fetch all courses first
+      this.courseService.getAllCourses().subscribe((courses) => {
+        this.allCourses = courses;
+  
+        // Then fetch the student's enrolled courses
+        this.studentService.getStudentById(userId).subscribe((std) => {
+          const courseObservables = std.courseIDs.map(courseId =>
+            this.courseService.getCourseById(courseId)
           );
-
-          this.allCourses = this.allCourses.filter(
-            (course) => !this.studentCourseIds.includes(course.id)
-          );
+          forkJoin(courseObservables).subscribe(courses => {
+            this.studentCourseIds = courses.map(course => course.id);
+            // Filter out enrolled courses from allCourses array
+            this.allCourses = this.allCourses.filter(course => !this.studentCourseIds.includes(course.id));
+            this.enrolledCourses = courses;
+          });
         });
       });
     }
   }
-
+  
   enroll(courseId: number) {
-    if (this.student) {
-      let studentCourseIdsString = localStorage.getItem(
-        `course${this.student.id}`
-      );
-      if (studentCourseIdsString !== null) {
-        this.studentCourseIds = JSON.parse(studentCourseIdsString);
-      } else {
-        this.studentCourseIds = [];
-      }
+    this.courseService.getCourseById(courseId).subscribe((course) => {
+      let courseName: string = course.name;
 
-      if (!this.studentCourseIds.includes(courseId)) {
-        this.studentCourseIds.push(courseId);
-        this.showSnackbar('Enrolled successfully!');
-        localStorage.setItem(
-          `course${this.student.id}`,
-          JSON.stringify(this.studentCourseIds)
-        );
-      } else {
-        this.showSnackbar('You are Already Enrolled in this Course!');
-      }
-    } else {
-      // Handle case where student is not defined
-    }
+      this.instructorService
+        .getInstructorForSpecificCourse(courseName)
+        .subscribe((instructorId) => {
+          if (typeof instructorId === 'number') {
+            this.instructorService
+              .addNewCourse(this.studentId, course, instructorId)
+              .subscribe(
+                () => {
+                  this.showSnackbar(`Successfully enrolled in ${courseName}`);
+                  // Update enrolledCourses array after successful enrollment
+                  this.enrolledCourses.push(course);
+                  // Filter out the enrolled courses from allCourses array again
+                  this.allCourses = this.allCourses.filter(c => c.id !== course.id);
+                },
+                (error) => {
+                  console.error('Error enrolling course:', error);
+                }
+              );
+          } else {
+            console.error('Instructor ID not found for course:', courseName);
+          }
+        });
+    });
   }
 
   showSnackbar(message: string): void {
@@ -86,7 +89,7 @@ export class AllCoursesComponent implements OnInit {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
-      panelClass: ['custom-snackbar'], // Apply custom class
+      panelClass: ['custom-snackbar'],
     };
 
     this.snackBar.open(message, 'Dismiss', config);

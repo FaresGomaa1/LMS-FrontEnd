@@ -1,3 +1,4 @@
+import { ICourses } from '../course/icourses';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, tap } from 'rxjs';
@@ -66,14 +67,14 @@ export class StudentService {
         })
       );
   }
-  AddCourse(id: number, studentFormData: FormData): Observable<any> {
-    const url = `${this.domainName}/Student/${id}`;
-    return this.http.put(url, studentFormData)
-      .pipe(
-        catchError(error => {
-          this.errorHandlerService.handleError(error);
-          throw error;
-        })
-      );
-  }
+  // AddCourse(id: number, studentFormData: FormData): Observable<any> {
+  //   const url = `${this.domainName}/Student/${id}`;
+  //   return this.http.put(url, studentFormData)
+  //     .pipe(
+  //       catchError(error => {
+  //         this.errorHandlerService.handleError(error);
+  //         throw error;
+  //       })
+  //     );
+  // }
 }

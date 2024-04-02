@@ -26,7 +26,6 @@ export class StudentEditComponent implements OnInit {
   ngOnInit(): void {
   }
   createForm(student: any) {
-    console.log(student);
     this.studentForm = this.fb.group({
       id: [0, Validators.required],
       name: [student.name, [
@@ -51,7 +50,11 @@ export class StudentEditComponent implements OnInit {
         Validators.required,
         Validators.email,
       ]],
-      password: [student.password],
+      password: [student.password, [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
+      ]],
       userAttachmentPath: [''],
       imageFile: [null, Validators.required]
     });

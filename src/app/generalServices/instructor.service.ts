@@ -1,8 +1,9 @@
 import { ErrorHandlerService } from './../generalServices/error-handler.service';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, retry } from 'rxjs';
 import { IInstructor } from '../Interfaces/instructor';
+import { ICourses } from '../course/icourses';
 
 @Injectable({
   providedIn: 'root',
@@ -23,19 +24,44 @@ export class InstructorService {
       .get<IInstructor[]>(`${this.domainName}/Instructor/${id}`)
       .pipe(retry(2), catchError(this.errorHandlerService.handleError));
   }
-  getInstructorForSpecificCourse(courseNames: string[]): number[] {
-    let instructorIds: number[] = [];
-    this.getAllInstructors().subscribe((allInstructors) => {
-      for (let i = 0; i < courseNames.length; i++) {
+  addNewCourse(
+    studentId: number,
+    newCourses: ICourses,
+    instructorId: number
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    const body = JSON.stringify({
+      studentId: studentId,
+      courseName: [newCourses.name],
+      instructorIDs: [instructorId],
+    });
+    return this.http.post(`${this.domainName}/Student/addCourse`, body, {
+      headers: headers,
+    });
+  }
+
+  getInstructorForSpecificCourse(
+    courseName: string
+  ): Observable<number | boolean> {
+    return new Observable<number | boolean>((observer) => {
+      this.getAllInstructors().subscribe((allInstructors) => {
+        let instructorId: number | null = null;
         for (let j = 0; j < allInstructors.length; j++) {
           for (let k = 0; k < allInstructors[j].courseName.length; k++) {
-            if (courseNames[i] === allInstructors[j].courseName[k]) {
-              instructorIds.push(allInstructors[j].id);
+            if (courseName === allInstructors[j].courseName[k]) {
+              instructorId = allInstructors[j].id;
+              observer.next(instructorId);
+              observer.complete();
+              return;
             }
           }
         }
-      }
+
+        observer.next(false);
+        observer.complete();
+      });
     });
-    return instructorIds;
   }
 }
