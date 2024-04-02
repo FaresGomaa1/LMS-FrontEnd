@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs';
 })
 export class StudentEditComponent implements OnInit {
   studentId!: number;
-  studentInfo!: IStudent;
+  studentInfo: IStudent;
   studentForm!: FormGroup;
   checkConfirmedPassword: boolean = true;
   constructor(
@@ -22,12 +22,33 @@ export class StudentEditComponent implements OnInit {
     private studentService: StudentService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private instructorService :InstructorService
+    private instructorService: InstructorService
   ) {
+    this.studentInfo = { 
+      id: 0, 
+      name: '', 
+      age: 0, 
+      title: '', 
+      phone: '', 
+      address: '', 
+      ssn: '', 
+      email: '', 
+      password: '', 
+      userAttachmentPath: '', 
+      courseName: [], 
+      courseIDs: [], 
+      groupName: [], 
+      examName: [], 
+      examIDs: [],
+      results: [],
+    };
+    
     this.getStudentId();
   }
+  
 
   ngOnInit(): void {
+    this.getStudentId();
     this.initializeForm();
   }
   initializeForm() {
@@ -73,7 +94,7 @@ export class StudentEditComponent implements OnInit {
           Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
         ],
       ],
-      userAttachmentPath: [''],
+      userAttachmentPath: [this.studentInfo.userAttachmentPath],
       imageFile: [null, Validators.required],
     });
   }
@@ -121,15 +142,11 @@ export class StudentEditComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.studentForm.value);
     const studentFormData = new FormData();
-  
-    // Append form values to FormData
-    Object.keys(this.studentForm.value).forEach((key) => {
+     Object.keys(this.studentForm.value).forEach((key) => {
       studentFormData.append(key, this.studentForm.get(key)?.value);
     });
-  
-    // Log the studentFormData object
-    console.log('Student FormData:', studentFormData);
   
     // Submit FormData to studentService.Edit
     this.studentService.Edit(this.studentId, studentFormData).subscribe(
