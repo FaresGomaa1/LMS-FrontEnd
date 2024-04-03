@@ -1,10 +1,10 @@
-import { IStudent } from './../Interfaces/istudent';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Component, OnInit } from '@angular/core';
 import { ICourses } from './icourses';
 import { StudentService } from './../generalServices/student.service';
 import { CourseService } from './course.service';
 import { InstructorService } from './../generalServices/instructor.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-course',
@@ -18,6 +18,10 @@ export class CourseComponent implements OnInit {
   enrollInNewCourses: ICourses[] = [];
   instructorId!: number;
   studentId!: number;
+  pagedCourses: any[] = [];
+  pageSize = 3;
+  startIndex!:number
+  endIndex!:number
 
   constructor(
     private courseService: CourseService,
@@ -61,13 +65,25 @@ export class CourseComponent implements OnInit {
         this.courses = courses.filter((course) =>
           this.studentCourseIds.includes(course.id)
         );
+        this.pagedCourses = this.courses.slice(0, this.pageSize);
       },
       (error) => {
         console.error('Failed to fetch courses:', error);
       }
     );
   }
-  
+  filterCourses(searchTerm: any) {
+    // Filter courses based on search term
+    const filteredCourses = this.courses.filter(course =>
+      course.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+    );
+    this.pagedCourses = filteredCourses.slice(this.startIndex, this.pageSize);
+  }
+  onPageChange(event: PageEvent) {
+    this.startIndex = event.pageIndex * event.pageSize;
+   this.endIndex = this.startIndex + event.pageSize;
+   this.pagedCourses = this.courses.slice(this.startIndex, this.endIndex);
+ }
   openCourseDetailsInNewTab(courseId: number): void {
     const url = `http://localhost:4200/coursedetails/${courseId}`;
     window.open(url, '_blank');

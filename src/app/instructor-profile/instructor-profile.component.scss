@@ -1,18 +1,44 @@
-
 .card {
-    margin-bottom: 20px;
-  
-    img {
-      object-fit: cover; 
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); // Bigger shadow on hover
+  }
+
+  img {
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.05); // Zoom in image on hover
     }
   }
+}
 
 .list-group-item {
   display: flex;
   align-items: center;
   border: none;
+  padding: 10px;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+
   i {
     width: 20px;
+    margin-right: 10px;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: rotate(180deg); // Rotate icon on hover
+    }
   }
 }
 
@@ -21,15 +47,35 @@
 }
 
 main {
-  min-height: calc(100vh - 350px); // Adjust height based on header and footer height
+  min-height: calc(100vh - 350px);
 }
 
-// Apply font size directly
 .card-title.larger-font {
-  font-size: 1.5rem; // Adjust the font size as needed
+  font-size: 1.5rem;
 }
 
 .card-text.larger-font,
 .list-group-item.larger-font {
-  font-size: 1.2rem; // Adjust the font size as needed
+  font-size: 1.2rem;
+}
+
+.course-name {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    color: #0056b3;
+    text-decoration: underline; // Underline text on hover
+  }
+
+  &:visited {
+    color: #0056b3;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
 }

@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICourses } from '../icourses';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { forkJoin } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-all-courses',
@@ -19,6 +19,10 @@ export class AllCoursesComponent implements OnInit {
   studentId: number = 0;
   studentCourseIds: number[] = [];
   enrolledCourses: ICourses[] = [];
+  pagedCourses: any[] = [];
+  pageSize = 3;
+  startIndex!: number;
+  endIndex!: number;
 
   constructor(
     private courseService: CourseService,
@@ -34,27 +38,34 @@ export class AllCoursesComponent implements OnInit {
       const decodedToken = helper.decodeToken(token);
       const userId = decodedToken.nameid;
       this.studentId = userId;
-      
+
       // Fetch all courses first
       this.courseService.getAllCourses().subscribe((courses) => {
-        this.allCourses = courses;
-  
-        // Then fetch the student's enrolled courses
         this.studentService.getStudentById(userId).subscribe((std) => {
-          const courseObservables = std.courseIDs.map(courseId =>
-            this.courseService.getCourseById(courseId)
+          this.allCourses = courses.filter(
+            (course) => !std.courseIDs.includes(course.id)
           );
-          forkJoin(courseObservables).subscribe(courses => {
-            this.studentCourseIds = courses.map(course => course.id);
-            // Filter out enrolled courses from allCourses array
-            this.allCourses = this.allCourses.filter(course => !this.studentCourseIds.includes(course.id));
-            this.enrolledCourses = courses;
-          });
+          // Initialize pagedCourses with the first set of courses
+          this.pagedCourses = this.allCourses.slice(0, this.pageSize);
         });
       });
     }
   }
+  filterCourses(searchTerm: any) {
+    // Filter courses based on search term
+    const filteredCourses = this.allCourses.filter(course =>
+      course.name.toLowerCase().includes(searchTerm.value.toLowerCase())
+    );
   
+    // Update pagedCourses with filtered data
+    this.pagedCourses = filteredCourses.slice(0, this.pageSize);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.startIndex = event.pageIndex * event.pageSize;
+    this.endIndex = this.startIndex + event.pageSize;
+    this.pagedCourses = this.allCourses.slice(this.startIndex, this.endIndex);
+  }
   enroll(courseId: number) {
     this.courseService.getCourseById(courseId).subscribe((course) => {
       let courseName: string = course.name;
@@ -71,7 +82,9 @@ export class AllCoursesComponent implements OnInit {
                   // Update enrolledCourses array after successful enrollment
                   this.enrolledCourses.push(course);
                   // Filter out the enrolled courses from allCourses array again
-                  this.allCourses = this.allCourses.filter(c => c.id !== course.id);
+                  this.allCourses = this.allCourses.filter(
+                    (c) => c.id !== course.id
+                  );
                 },
                 (error) => {
                   console.error('Error enrolling course:', error);

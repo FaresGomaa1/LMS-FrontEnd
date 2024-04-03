@@ -50,12 +50,13 @@
   .custom-button {
     position: absolute;
     text-align: center;
+    z-index: 0;
     width: 13%;
     height: 5%;
-    left: 2%;
+    left: 0%;
     top: 8%;
     text-decoration: none;
-    background: #28a745;
+    background: #28a745; 
     color: white;
     font-size: large;
     border: none;
