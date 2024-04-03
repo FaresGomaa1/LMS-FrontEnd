@@ -24,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
  
 import { MatDialogModule } from '@angular/material/dialog';
 import { AddQuestionComponent } from './components/core/add-question/add-question.component';
+import { AddExamModifiedComponent } from './components/core/add-exam/add-exam-modified/add-exam-modified.component';
 
 const instructorRoutes: Routes = [
   {path: '', redirectTo: 'shared/profile', pathMatch: 'full'},
@@ -74,6 +75,7 @@ const instructorRoutes: Routes = [
     EditProfileComponent,
     CourseDetailsComponent,
     AllExamsComponent,
+    AddExamModifiedComponent,
   ],
   imports: [
     CommonModule,

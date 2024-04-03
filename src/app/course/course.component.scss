@@ -48,11 +48,14 @@
     right: 20px;
   }
   .custom-button {
-    position: sticky;
+    position: absolute;
     text-align: center;
-    width: 31%;
+    width: 13%;
+    height: 5%;
+    left: 2%;
+    top: 8%;
     text-decoration: none;
-    background: #28a745; 
+    background: #28a745;
     color: white;
     font-size: large;
     border: none;
