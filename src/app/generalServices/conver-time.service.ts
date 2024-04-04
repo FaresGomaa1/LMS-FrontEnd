@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class ConverTimeService {
+export class ConvertTimeService {
   constructor() {}
 
   convertMinToTime(Min: number): string {
@@ -21,9 +21,9 @@ export class ConverTimeService {
   }
 
   convertTimeToMin(hr: number, min: number, sec: number): number {
-    let Min = 0;
-    sec = sec / 60;
-    Min = hr * 60 + min + sec;
-    return Min;
-  }
+    let totalMinutes = 0;
+    totalMinutes = (hr * 60) + min + (sec / 60);
+    return totalMinutes;
+}
+
 }

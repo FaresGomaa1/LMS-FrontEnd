@@ -4,38 +4,30 @@
   <h1 style="margin-left: 50%; margin-top: 50px; color: green">Exams</h1>
 </div>
 
-<table class="table table-hover table-striped"  style="margin-bottom:200px;">
+<table class="table table-hover table-striped" style="margin-bottom: 200px">
   <thead>
     <tr class="text-center">
       <th scope="col">Name</th>
-      <th scope="col">Duration</th>
+      <th scope="col">Duration (Min)</th>
       <th scope="col">Date</th>
       <th scope="col">Time</th>
       <th scope="col">Exam Degree</th>
       <th scope="col">Min Degree</th>
       <th scope="col">Action</th>
-      <th scope="col">Result</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="text-center" *ngFor="let exam of exams; let i = index">
+    <tr class="text-center" *ngFor="let exam of studentExams; let i = index">
       <td>{{ exam.name }}</td>
-      <td>{{ exam.duration }} Min</td>
+      <td>{{ exam.duration }}</td>
       <td>{{ exam.date | date : "mediumDate" }}</td>
-      <td>{{ exam.time}}</td>
-      <td>{{ exam.max_Degree}}</td>
-      <td>{{ exam.min_Degree}}</td>
-      <td id= "action{{i}}">
-        <button
-        (click)="startExam(i)"
-          id="examButton_{{ i }}"
-          class="btn btn-primary"
-          [disabled]="!checkTodayDate(i)"
-        >
+      <td>{{ exam.time }}</td>
+      <td>{{ exam.max_Degree }}</td>
+      <td>{{ exam.min_Degree }}</td>
+      <td id="action{{ i }}">
+        <button class="btn btn-success" (click)="startExam(exam.id)" [disabled]="!checkFullDate(exam.id)">
           Start Exam
         </button>
-      </td>
-      <td id= "result{{i}}"></td>
     </tr>
   </tbody>
 </table>
