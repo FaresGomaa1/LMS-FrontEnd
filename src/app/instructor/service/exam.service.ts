@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map, switchMap } from 'rxjs';
 import { IExam } from '../interface/i-exam';
@@ -13,7 +13,6 @@ export class ExamService {
    courseURL: string = 'http://localhost:5050/Course';
 
   constructor(private httpClient: HttpClient) {}
-
   getAllExams(): Observable<IExam[]> {
     return this.httpClient.get<IExam[]>(this.baseURL);
   }
@@ -27,10 +26,11 @@ export class ExamService {
     return this.httpClient.post<any>(this.baseURL, examData).pipe(
       map(response => response.id) 
     );
-
-    
   }
-
+  createExam(exam: any): Observable<IExam> {
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.post<IExam>(this.baseURL, exam, { headers: headers });
+  }
   // addExam(examData: IExam): Observable<IExam> {
   //   return this.httpClient.post<IExam>(this.baseURL, examData);
   // }

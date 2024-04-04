@@ -64,7 +64,7 @@ export class ExamService {
   isExamDatePassed(
     examDate: Date,
     examTime: string,
-    duration: number
+    duration: number = 0
   ): boolean {
     let currentDate = new Date();
     let examDate1 = new Date(examDate);
@@ -87,10 +87,10 @@ export class ExamService {
     );
     let examEndTime = examTimeInMins + duration;
     if (
-      currentDate.getFullYear() > examDate1.getFullYear() ||
-      currentDate.getMonth() + 1 > examDate1.getMonth() + 1 ||
-      currentDate.getDay() > examDate1.getDay() ||
-      currentTimeInMins > examEndTime
+      (currentDate.getFullYear() > examDate1.getFullYear() ||
+        currentDate.getMonth() + 1 > examDate1.getMonth() + 1 ||
+        currentDate.getDay() > examDate1.getDay()) &&
+      (currentTimeInMins > examEndTime )
     ) {
       return false;
     }

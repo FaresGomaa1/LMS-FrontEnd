@@ -77,4 +77,7 @@ export class LogInComponent implements OnInit {
       );
     }
   }
+  goToHome(){
+    this.router.navigate(['/landingPage']);
+  }
 }

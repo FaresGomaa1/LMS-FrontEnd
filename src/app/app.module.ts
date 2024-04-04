@@ -29,6 +29,7 @@ import { StudentEditComponent } from './profile/student-edit/student-edit.compon
 import { AllCoursesComponent } from './course/all-courses/all-courses.component';
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/none-enrolled-courses.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +52,7 @@ import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/non
     AllCoursesComponent,
     InstructorProfileComponent,
     NoneEnrolledCoursesComponent,
+    LandingPageComponent,
   ],
   imports: [
     BrowserModule,

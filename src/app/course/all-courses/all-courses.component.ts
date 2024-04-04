@@ -1,3 +1,4 @@
+import { ExamService } from '../../exams/exam.service';
 import { InstructorService } from '../../generalServices/instructor.service';
 import { StudentService } from './../../generalServices/student.service';
 import { CourseService } from './../course.service';
@@ -28,7 +29,8 @@ export class AllCoursesComponent implements OnInit {
     private courseService: CourseService,
     private studentService: StudentService,
     private snackBar: MatSnackBar,
-    private instructorService: InstructorService
+    private instructorService: InstructorService,
+    private examService: ExamService
   ) {}
 
   ngOnInit(): void {
@@ -41,11 +43,16 @@ export class AllCoursesComponent implements OnInit {
 
       // Fetch all courses first
       this.courseService.getAllCourses().subscribe((courses) => {
+        for (let i = 0; i < courses.length; i++) {
+          if (this.courseService.isCourseEndDatePassed(courses[i].end_Date)) {
+            this.allCourses.push(courses[i]);
+          }
+        }
         this.studentService.getStudentById(userId).subscribe((std) => {
           this.allCourses = courses.filter(
             (course) => !std.courseIDs.includes(course.id)
           );
-          // Initialize pagedCourses with the first set of courses
+
           this.pagedCourses = this.allCourses.slice(0, this.pageSize);
         });
       });
@@ -53,10 +60,10 @@ export class AllCoursesComponent implements OnInit {
   }
   filterCourses(searchTerm: any) {
     // Filter courses based on search term
-    const filteredCourses = this.allCourses.filter(course =>
+    const filteredCourses = this.allCourses.filter((course) =>
       course.name.toLowerCase().includes(searchTerm.value.toLowerCase())
     );
-  
+
     // Update pagedCourses with filtered data
     this.pagedCourses = filteredCourses.slice(0, this.pageSize);
   }

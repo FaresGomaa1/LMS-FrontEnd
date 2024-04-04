@@ -16,9 +16,10 @@ import { StudentEditComponent } from './profile/student-edit/student-edit.compon
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { AllCoursesComponent } from './course/all-courses/all-courses.component';
 import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/none-enrolled-courses.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'shared', pathMatch: 'full' },
+  { path: '', redirectTo: 'landingPage', pathMatch: 'full' },
   {
     path: 'shared',
     component: SharedViewComponent,
@@ -38,7 +39,8 @@ const routes: Routes = [
   },
   { path: 'login', component: LogInComponent },
   { path: 'instructions/:id', component: SolveExamComponent },
-  { path: 'startExam/:id', component: QuestionsComponent },
+  { path: 'startExam/:id', component: QuestionsComponent,canActivate: [AuthGuard] },
+  { path: 'landingPage', component: LandingPageComponent },
   {
     path: 'coursedetails/:id',
     component: CourseDetailsComponent,
