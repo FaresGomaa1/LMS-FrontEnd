@@ -80,4 +80,7 @@ export class LogInComponent implements OnInit {
   goToHome(){
     this.router.navigate(['/landingPage']);
   }
+  instructorSignUp(){
+    this.router.navigate(['/instructorSignUp']);
+  }
 }

@@ -19,6 +19,16 @@ export class InstructorService {
       .get<IInstructor[]>(`${this.domainName}/Instructor`)
       .pipe(retry(2), catchError(this.errorHandlerService.handleError));
   }
+  addInstructor(instructor: FormData) {
+    const url = `${this.domainName}/Instructor/`;
+    return this.http.post(url, instructor)
+      .pipe(
+        catchError(error => {
+          this.errorHandlerService.handleError(error);
+          throw error;
+        })
+      );
+  }
   getInstructorById(id: number): Observable<IInstructor[]> {
     return this.http
       .get<IInstructor[]>(`${this.domainName}/Instructor/${id}`)

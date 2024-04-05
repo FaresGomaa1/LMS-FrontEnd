@@ -30,6 +30,7 @@ import { AllCoursesComponent } from './course/all-courses/all-courses.component'
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/none-enrolled-courses.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { InstructorSignUpComponent } from './log-in/instructor-sign-up/instructor-sign-up.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +54,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     InstructorProfileComponent,
     NoneEnrolledCoursesComponent,
     LandingPageComponent,
+    InstructorSignUpComponent,
   ],
   imports: [
     BrowserModule,

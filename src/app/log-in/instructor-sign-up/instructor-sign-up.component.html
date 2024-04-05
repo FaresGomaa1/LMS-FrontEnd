@@ -1,0 +1,101 @@
+<form [formGroup]="instructorForm" (ngSubmit)="onSubmit()" class="card p-4 shadow">
+    <h2 class="text-center mb-4">Sign Up as Instructor</h2>
+    <div class="mb-6">
+        <!-- <label for="name" class="form-label">Name:</label> -->
+        <input type="text" placeholder="Name" id="name" class="form-control" formControlName="name" />
+        <div *ngIf="instructorForm.get('name')?.invalid && (instructorForm.get('name')?.dirty || instructorForm.get('name')?.touched)" class="alert alert-danger mt-2">
+          <div *ngIf="instructorForm.get('name')?.errors?.['required']">Name is required</div>
+          <div *ngIf="instructorForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters long</div>
+          <div *ngIf="instructorForm.get('name')?.errors?.['pattern']">You need to Insert you First and Last Names</div>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <!-- <label for="Specialization" class="form-label">Specialization:</label> -->
+        <input type="text" id="Specialization" placeholder="Specialization" class="form-control" formControlName="Specialization" />
+        <div *ngIf="instructorForm.get('Specialization')?.invalid && (instructorForm.get('Specialization')?.dirty || instructorForm.get('Specialization')?.touched)" class="alert alert-danger mt-2">
+            <div *ngIf="instructorForm.get('Specialization')?.errors?.['required']">Specialization is required</div>
+            <div *ngIf="instructorForm.get('Specialization')?.errors?.['minlength']">Specialization must be at least 4 characters long</div>
+        </div>
+    </div>    
+
+      <div class="mb-6">
+        <!-- <label for="Experience" class="form-label">Experience:</label> -->
+        <input type="text" placeholder="Experience" id="Experience" class="form-control" formControlName="Experience" />
+        <div *ngIf="instructorForm.get('Experience')?.invalid && (instructorForm.get('Experience')?.dirty || instructorForm.get('Experience')?.touched)" class="alert alert-danger mt-2">
+          <div *ngIf="instructorForm.get('Experience')?.errors?.['required']">Experience is required</div>
+          <div *ngIf="instructorForm.get('Experience')?.errors?.['minlength']">Experience must be at least 50 characters long</div>
+        </div>
+      </div>
+      
+      <div class="mb-6">
+        <!-- <label for="phone" class="form-label">Phone:</label> -->
+        <input type="text" placeholder="Phone" id="phone" class="form-control" formControlName="phone" />
+        <div *ngIf="instructorForm.get('phone')?.invalid && (instructorForm.get('phone')?.dirty || instructorForm.get('phone')?.touched)" class="alert alert-danger mt-2">
+          <div *ngIf="instructorForm.get('phone')?.errors?.['required']">Phone is required</div>
+          <div *ngIf="instructorForm.get('phone')?.errors?.['minlength']">Phone must be at least 11 digits long</div>
+          <div *ngIf="instructorForm.get('phone')?.errors?.['maxlength']">Phone cannot exceed 11 digits</div>
+          <div *ngIf="instructorForm.get('phone')?.errors?.['pattern']">Invalid phone number format</div>
+        </div>
+      </div>
+      
+      <div class="mb-6">
+        <!-- <label for="address" class="form-label">Address:</label> -->
+        <input type="text" placeholder="Address" id="address" class="form-control" formControlName="address" />
+        <div *ngIf="instructorForm.get('address')?.invalid && (instructorForm.get('address')?.dirty || instructorForm.get('address')?.touched)" class="alert alert-danger mt-2">
+          <div *ngIf="instructorForm.get('address')?.errors?.['required']">Address is required</div>
+          <div *ngIf="instructorForm.get('address')?.errors?.['minlength']">Address must be at least 5 characters long</div>
+        </div>
+      </div>
+      
+      <div class="mb-6">
+        <!-- <label for="ssn" class="form-label">SSN:</label> -->
+        <input type="text" placeholder="SSN" id="ssn" class="form-control" formControlName="ssn" />
+        <div *ngIf="instructorForm.get('ssn')?.invalid && (instructorForm.get('ssn')?.dirty || instructorForm.get('ssn')?.touched)" class="alert alert-danger mt-2">
+          <div *ngIf="instructorForm.get('ssn')?.errors?.['required']">SSN is required</div>
+          <div *ngIf="instructorForm.get('ssn')?.errors?.['pattern']">SSN should be 14 number</div>
+        </div>
+      </div>
+      
+      <div class="mb-6">
+        <!-- <label for="email" class="form-label">Email:</label> -->
+        <input type="email" placeholder="Email" id="email" class="form-control" formControlName="email" />
+        <div *ngIf="instructorForm.get('email')?.invalid && (instructorForm.get('email')?.dirty || instructorForm.get('email')?.touched)" class="alert alert-danger mt-2">
+          <div *ngIf="instructorForm.get('email')?.errors?.['required']">Email is required</div>
+          <div *ngIf="instructorForm.get('email')?.errors?.['email']">Invalid email format</div>
+        </div>
+      </div>
+      
+      <div class="mb-6">
+        <!-- <label for="password" class="form-label">Password:</label> -->
+        <input type="password" placeholder="Password" id="password" class="form-control" formControlName="password" />
+        <div *ngIf="instructorForm.get('password')?.invalid && (instructorForm.get('password')?.dirty || instructorForm.get('password')?.touched)" class="alert alert-danger mt-2">
+          <div *ngIf="instructorForm.get('password')?.errors?.['required']">Password is required</div>
+          <div *ngIf="instructorForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters long</div>
+          <div *ngIf="instructorForm.get('password')?.errors?.['pattern']">Password must contain at least one uppercase letter, one lowercase letter, and one number</div>
+        </div>
+      </div>
+      <div class="mb-6">
+        <!-- <label for="confirmPassword" class="form-label">Confirm Password:</label> -->
+        <input type="password" placeholder="Confirm Password" id="confirmPassword" class="form-control" (input)="comparePassword()" />
+        <div *ngIf="!checkConfirmedPassword" class="alert alert-danger mt-2">
+          Passwords do not match
+        </div>
+      </div>          
+      <div class="mb-6">
+        <label for="userAttachment" class="form-label">Select Photo:</label>
+        <input
+          type="file"
+          id="userAttachment"
+          class="form-control"
+          (change)="onFileSelected($event)"
+          accept=".jpg,.jpeg,.png"
+          formControlName="imageFile"
+        />
+        <div *ngIf="instructorForm.get('imageFile')?.invalid && (instructorForm.get('imageFile')?.dirty || instructorForm.get('imageFile')?.touched)" class="alert alert-danger mt-2">
+          <div *ngIf="instructorForm.get('imageFile')?.errors?.['required']">Attachment is required</div>
+        </div>
+      </div>      
+      <button type="submit" [disabled]="instructorForm.invalid || !checkConfirmedPassword">> Sign Up
+      </button>          
+  </form>

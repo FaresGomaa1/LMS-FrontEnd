@@ -17,6 +17,7 @@ import { InstructorProfileComponent } from './instructor-profile/instructor-prof
 import { AllCoursesComponent } from './course/all-courses/all-courses.component';
 import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/none-enrolled-courses.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { InstructorSignUpComponent } from './log-in/instructor-sign-up/instructor-sign-up.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'landingPage', pathMatch: 'full' },
@@ -38,6 +39,7 @@ const routes: Routes = [
     ],
   },
   { path: 'login', component: LogInComponent },
+  { path: 'instructorSignUp', component: InstructorSignUpComponent },
   { path: 'instructions/:id', component: SolveExamComponent },
   { path: 'startExam/:id', component: QuestionsComponent,canActivate: [AuthGuard] },
   { path: 'landingPage', component: LandingPageComponent },
