@@ -1,7 +1,7 @@
 import { ErrorHandlerService } from './../generalServices/error-handler.service';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, retry } from 'rxjs';
+import { Observable, catchError, map, retry } from 'rxjs';
 import { IInstructor } from '../Interfaces/instructor';
 import { ICourses } from '../course/icourses';
 
@@ -21,13 +21,12 @@ export class InstructorService {
   }
   addInstructor(instructor: FormData) {
     const url = `${this.domainName}/Instructor/`;
-    return this.http.post(url, instructor)
-      .pipe(
-        catchError(error => {
-          this.errorHandlerService.handleError(error);
-          throw error;
-        })
-      );
+    return this.http.post(url, instructor).pipe(
+      catchError((error) => {
+        this.errorHandlerService.handleError(error);
+        throw error;
+      })
+    );
   }
   getInstructorById(id: number): Observable<IInstructor[]> {
     return this.http
@@ -39,39 +38,38 @@ export class InstructorService {
     newCourses: ICourses,
     instructorId: number
   ): Observable<any> {
+    console.log("addNewCourse",studentId,newCourses, instructorId)
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
     const body = JSON.stringify({
-      studentId: studentId,
-      courseName: [newCourses.name],
-      instructorIDs: [instructorId],
+      courseId: newCourses.id,
+      instructorId: instructorId,
     });
-    return this.http.post(`${this.domainName}/Student/addCourse`, body, {
-      headers: headers,
-    });
+    return this.http.post(
+      `${this.domainName}/Student/addCourse/${+studentId}`,
+      body,
+      {
+        headers: headers,
+      }
+    );
   }
 
-  getInstructorForSpecificCourse(
-    courseName: string
-  ): Observable<number | boolean> {
-    return new Observable<number | boolean>((observer) => {
-      this.getAllInstructors().subscribe((allInstructors) => {
-        let instructorId: number | null = null;
-        for (let j = 0; j < allInstructors.length; j++) {
-          for (let k = 0; k < allInstructors[j].courseName.length; k++) {
-            if (courseName === allInstructors[j].courseName[k]) {
-              instructorId = allInstructors[j].id;
-              observer.next(instructorId);
-              observer.complete();
-              return;
+  getInstructorForSpecificCourse(courseName: string): Observable<number> {
+    return this.getAllInstructors().pipe(
+      map((allInstructors) => {
+        let instructorId: number = 0;
+        for (let i = 0; i < allInstructors.length; i++) {
+          for (let j = 0; j < allInstructors[i].courseName.length; j++) {
+            if (allInstructors[i].courseName[j] === courseName) {
+              instructorId = allInstructors[i].id;
+              console.log("getInstructorForSpecificCourse",instructorId)
+              return instructorId; 
             }
           }
         }
-
-        observer.next(false);
-        observer.complete();
-      });
-    });
+        return instructorId; 
+      })
+    );
   }
 }

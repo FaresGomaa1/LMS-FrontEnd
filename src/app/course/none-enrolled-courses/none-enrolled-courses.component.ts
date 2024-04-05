@@ -63,26 +63,27 @@ export class NoneEnrolledCoursesComponent {
   enroll(courseId: number) {
     this.courseService.getCourseById(courseId).subscribe((course) => {
       let courseName: string = course.name;
-
-      this.instructorService
-        .getInstructorForSpecificCourse(courseName)
-        .subscribe((instructorId) => {
-          if (typeof instructorId === 'number') {
-            this.instructorService
-              .addNewCourse(this.studentId, course, instructorId)
-              .subscribe(
-                () => {
-                  this.showSnackbar(`Successfully enrolled in ${courseName}`);
-                  this.router.navigate(['coursedetails', courseId]);
-                },
-                (error) => {
-                  console.error('Error enrolling course:', error);
-                }
-              );
-          } else {
-            console.error('Instructor ID not found for course:', courseName);
-          }
-        });
+  
+      // Get the instructorId asynchronously
+      this.instructorService.getInstructorForSpecificCourse(courseName).subscribe((instructorId) => {
+        console.log(this.studentId, course.id, instructorId);
+        if (typeof instructorId === 'number') {
+          this.instructorService
+            .addNewCourse(this.studentId, course, instructorId)
+            .subscribe(
+              () => {
+                this.showSnackbar(`Successfully enrolled in ${courseName}`);
+                // Use backticks for string interpolation
+                this.router.navigate([`/coursedetails/${courseId}`]);
+              },
+              (error) => {
+                console.error('Error enrolling course:', error);
+              }
+            );
+        } else {
+          console.error('Instructor ID not found for course:', courseName);
+        }
+      });
     });
   }
 

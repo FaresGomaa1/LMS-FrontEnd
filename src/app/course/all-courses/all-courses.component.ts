@@ -76,22 +76,15 @@ export class AllCoursesComponent implements OnInit {
   enroll(courseId: number) {
     this.courseService.getCourseById(courseId).subscribe((course) => {
       let courseName: string = course.name;
-
-      this.instructorService
-        .getInstructorForSpecificCourse(courseName)
-        .subscribe((instructorId) => {
+      this.instructorService.getInstructorForSpecificCourse(courseName).subscribe(
+        (instructorId) => {
           if (typeof instructorId === 'number') {
-            this.instructorService
-              .addNewCourse(this.studentId, course, instructorId)
+            this.instructorService.addNewCourse(this.studentId, course, instructorId)
               .subscribe(
                 () => {
                   this.showSnackbar(`Successfully enrolled in ${courseName}`);
-                  // Update enrolledCourses array after successful enrollment
                   this.enrolledCourses.push(course);
-                  // Filter out the enrolled courses from allCourses array again
-                  this.allCourses = this.allCourses.filter(
-                    (c) => c.id !== course.id
-                  );
+                  this.allCourses = this.allCourses.filter((c) => c.id !== course.id);
                 },
                 (error) => {
                   console.error('Error enrolling course:', error);
@@ -100,7 +93,8 @@ export class AllCoursesComponent implements OnInit {
           } else {
             console.error('Instructor ID not found for course:', courseName);
           }
-        });
+        }
+      );
     });
   }
 

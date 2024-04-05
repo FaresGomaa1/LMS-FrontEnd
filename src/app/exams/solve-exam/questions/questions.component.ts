@@ -10,7 +10,7 @@ import { IExam } from '../../iexam';
 @Component({
   selector: 'app-questions',
   templateUrl: './questions.component.html',
-  styleUrls: ['./questions.component.scss']
+  styleUrls: ['./questions.component.scss'],
 })
 export class QuestionsComponent implements OnInit {
   tokenKey = 'auth_token';
@@ -19,7 +19,8 @@ export class QuestionsComponent implements OnInit {
   questionForm: FormGroup;
   correctedAnswers: string[] = [];
   result: number = 0;
-  exam!:IExam;
+  exam!: IExam;
+  studentId!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +30,7 @@ export class QuestionsComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.questionForm = this.formBuilder.group({
-      answers: this.formBuilder.array([])
+      answers: this.formBuilder.array([]),
     });
   }
 
@@ -39,11 +40,12 @@ export class QuestionsComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
-    event.returnValue = 'Are you sure you want to leave? Your progress will be lost.';
+    event.returnValue =
+      'Are you sure you want to leave? Your progress will be lost.';
   }
 
   getIdFromUrl(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.id = +params['id'];
       if (!isNaN(this.id)) {
         this.filterQuestions();
@@ -56,7 +58,9 @@ export class QuestionsComponent implements OnInit {
   filterQuestions(): void {
     this.questionService.getAllQuestions().subscribe(
       (questions) => {
-        this.allQuestions = questions.filter(question => question.exam_ID === this.id);
+        this.allQuestions = questions.filter(
+          (question) => question.exam_ID === this.id
+        );
         this.initializeForm();
       },
       (error) => {
@@ -72,14 +76,14 @@ export class QuestionsComponent implements OnInit {
       answersArray.push(control);
     });
   }
-  
 
   getStudentId(): number {
     const token = localStorage.getItem(this.tokenKey);
     if (token) {
       const helper = new JwtHelperService();
       const decodedToken = helper.decodeToken(token);
-      return decodedToken.nameid; 
+      this.studentId = decodedToken.nameid;
+      return decodedToken.nameid;
     }
     return 0;
   }
@@ -90,16 +94,16 @@ export class QuestionsComponent implements OnInit {
       this.result = 0;
   
       this.questionService.getAllQuestions().subscribe((questions) => {
-        questions.forEach(question => {
-          if (question.exam_ID === this.id){
+        questions.forEach((question) => {
+          if (question.exam_ID === this.id) {
             this.correctedAnswers.push(question.correctAnswer);
           }
         });
   
         const userAnswers = this.questionForm.value.answers;
-        console.log(userAnswers);
   
         this.examService.getExamById(this.id).subscribe((exam) => {
+          this.exam = exam; // Assign exam object
           const questionDegree = exam.max_Degree / this.correctedAnswers.length;
           for (let i = 0; i < this.correctedAnswers.length; i++) {
             if (this.correctedAnswers[i] === userAnswers[i]) {
@@ -107,13 +111,34 @@ export class QuestionsComponent implements OnInit {
             }
           }
   
-          localStorage.setItem(`result${this.getStudentId()}:${this.id}`, this.result.toString());
-          localStorage.setItem(`exam${this.id}`, this.id?.toString());
-          this.router.navigate(['shared/exam']);
+          localStorage.setItem(
+            `result${this.getStudentId()}:${this.id}`,
+            this.result.toString()
+          );
+          localStorage.setItem(`exam${this.id}`, this.id.toString());
+          this.questionService
+          .addStudentResult(+this.getStudentId(), this.exam.id, this.result)
+          .subscribe(
+              () => {
+                  console.log('Result saved successfully');
+                  this.router.navigate(['shared/exam']);
+              },
+              (error) => {
+                  if (error.status === 200) {
+                      console.log('Result saved successfully');
+                      this.router.navigate(['shared/exam']);
+                  } else {
+                      console.error('Error saving result:', error);
+                  }
+              }
+          );
+      
+      
+      
         });
       });
     } else {
-      alert("You missed some questions");
+      alert('You missed some questions');
     }
   }
   

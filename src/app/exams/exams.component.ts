@@ -13,8 +13,11 @@ import { Router } from '@angular/router';
 export class ExamsComponent implements OnInit {
   studentId!: number;
   examIds: number[] = [];
+  studentExamIds: number[] = [];
   courseIds: number[] = [];
   studentExams: IExam[] = [];
+  studentSolvedExams: IExam[] = [];
+  Result: any[] = [];
   constructor(
     private router: Router,
     private examService: ExamService,
@@ -28,17 +31,43 @@ export class ExamsComponent implements OnInit {
     this.studentId = this.examService.getStudentId();
     this.studentService.getStudentById(this.studentId).subscribe((std) => {
       this.courseIds = std.courseIDs;
+      this.studentExamIds = std.examIDs;
       this.getExams();
+      this.getStudentResults();
     });
   }
-
+  getStudentResults() {
+    this.studentService.getStudentById(this.studentId).subscribe((std) => {
+      for (let i = 0; i < std.examIDs.length; i++) {
+        this.examService.getExamById(std.examIDs[i]).subscribe((exam) => {
+          this.studentSolvedExams.push(exam);
+          if(std.results[i] < exam.min_Degree){
+            this.Result.push(`Failed ${std.results[i]}`);
+          }
+          else {
+            this.Result.push(`Passed ${std.results[i]}`);
+          }
+        });
+      }
+    });
+  }
   getExams() {
     this.examService.getAllExam().subscribe((allExams) => {
       for (let i = 0; i < allExams.length; i++) {
         for (let j = 0; j < this.courseIds.length; j++) {
           if (allExams[i].course_ID === this.courseIds[j]) {
-            if (this.examService.isExamDatePassed(allExams[i].date, allExams[i].time, allExams[i].duration)){
-              this.studentExams.push(allExams[i]);
+            if (
+              this.examService.isExamDatePassed(
+                allExams[i].date,
+                allExams[i].time,
+                allExams[i].duration
+              )
+            ) {
+              for (let k = 0; k < this.studentExamIds.length; k++) {
+                if (this.studentExamIds[k] !== allExams[i].id) {
+                  this.studentExams.push(allExams[i]);
+                }
+              }
             }
           }
         }
@@ -74,6 +103,7 @@ export class ExamsComponent implements OnInit {
       examSecs
     );
     let examEndTime = examTimeInMins + exam.duration;
+
     if (
       currentDate.getFullYear() < examDate.getFullYear() ||
       currentDate.getMonth() + 1 < examDate.getMonth() + 1 ||

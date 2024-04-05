@@ -24,16 +24,17 @@ export class CourseService {
       .get<ICourses>(`${this.domainName}/Courses/${ID}`)
       .pipe(retry(2), catchError(this.errorHandlerService.handleError));
   }
-  isCourseEndDatePassed(examDate: Date): boolean {
+  isCourseEndDatePassed(courseDate: Date): boolean {
     let currentDate = new Date();
-    let examDate1 = new Date(examDate);
-    if (
-      (currentDate.getFullYear() > examDate1.getFullYear() ||
-        currentDate.getMonth() + 1 > examDate1.getMonth() + 1 ||
-        currentDate.getDay() > examDate1.getDay())
-    ) {
+    let courseDate1 = new Date(courseDate);
+    if (currentDate.getFullYear() > courseDate1.getFullYear()) {
       return false;
+    } else if (currentDate.getMonth() + 1 > courseDate1.getMonth() + 1) {
+      return false;
+    } else if (currentDate.getDate() > courseDate1.getDate()) {
+      return false;
+    } else {
+      return true;
     }
-    return true;
   }
 }
