@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +29,8 @@ import { StudentEditComponent } from './profile/student-edit/student-edit.compon
 import { AllCoursesComponent } from './course/all-courses/all-courses.component';
 import { InstructorProfileComponent } from './instructor-profile/instructor-profile.component';
 import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/none-enrolled-courses.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { InstructorSignUpComponent } from './log-in/instructor-sign-up/instructor-sign-up.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +53,8 @@ import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/non
     AllCoursesComponent,
     InstructorProfileComponent,
     NoneEnrolledCoursesComponent,
+    LandingPageComponent,
+    InstructorSignUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +65,7 @@ import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/non
     MatMenuModule,
     FormsModule,
     MatSnackBarModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -30,6 +30,11 @@ export class StudentService {
       .get<IStudent>(`${this.domainName}/Student/${ID}`)
       .pipe(catchError(this.errorHandlerService.handleError));
   }
+  getStudentByIdToEdit(ID: number): Observable<IStudent1> {
+    return this.http
+      .get<IStudent1>(`${this.domainName}/Student/${ID}`)
+      .pipe(catchError(this.errorHandlerService.handleError));
+  }
 
   updateStudent(student: any): Observable<IStudent> {
     return this.http

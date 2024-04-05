@@ -46,12 +46,12 @@
         >Profile</a
       >
     </div>
-    <a
+    <a id="checkLogin"
     (click)="deleteKey()"
-      routerLink="/login"
-      class="btn btn-success py-4 px-lg-5 d-none d-lg-block"
-      >Log-Out<i class="fa fa-arrow-right ms-3"></i
-    ></a>
+    routerLink="/login"
+    class="btn btn-success py-4 px-lg-5 d-none d-lg-block">
+    {{ key ? 'Log-Out' : 'Log-In' }}
+    <i class="fa fa-arrow-right ms-3"></i>
+  </a>  
   </div>
 </nav>
-<!-- Navbar End -->

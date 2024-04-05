@@ -30,7 +30,6 @@ export class ProfileComponent implements OnInit {
 
   initializeForm(student: IStudent): void {
     this.student = student;
-    console.log(this.student.name)
     this.instructorService.getAllInstructors().subscribe((ins)=>{
       for (let  i = 0; i < ins.length ; i++){
         for (let  j = 0; j < ins[i].courseName.length ; j++){
@@ -94,7 +93,7 @@ export class ProfileComponent implements OnInit {
     // Assuming you have the student object available
     const studentId = this.student?.id;
     if (studentId) {
-      this.router.navigate(['/shared/editProfile', studentId]);
+      window.location.href = `/shared/editProfile/${studentId}`;
     } else {
       console.error('Student ID is missing.');
     }

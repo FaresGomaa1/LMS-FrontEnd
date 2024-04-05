@@ -12,7 +12,7 @@ import { QuestionInExamService } from "src/app/instructor/service/question-in-ex
 
 @Component({
   selector: 'app-add-exam',
-  templateUrl: './add-exam.component.html'
+  templateUrl: './add-exam.component.html',
 })
 export class AddExamComponent implements OnInit, OnDestroy {
 

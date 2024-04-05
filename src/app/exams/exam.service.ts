@@ -1,4 +1,4 @@
-// exam.service.ts
+import { ConvertTimeService } from './../generalServices/conver-time.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IExam } from './iexam';
@@ -14,9 +14,12 @@ export class ExamService {
   baseUrl: string = 'http://localhost:5050/Exam';
   baseUrl2: string = 'http://localhost:5050/Courses';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private convertTimeService: ConvertTimeService
+  ) {}
 
-  getAllData(): Observable<IExam[]> {
+  getAllExam(): Observable<IExam[]> {
     return this.http.get<IExam[]>(this.baseUrl);
   }
 
@@ -24,7 +27,7 @@ export class ExamService {
     return this.http.get<IExam>(`${this.baseUrl}/${ID}`);
   }
 
-  getById(id: number): Observable<ICourses> {
+  getCourseById(id: number): Observable<ICourses> {
     return this.http.get<ICourses>(`${this.baseUrl2}/${id}`);
   }
 
@@ -37,7 +40,7 @@ export class ExamService {
     if (token) {
       const helper = new JwtHelperService();
       const decodedToken = helper.decodeToken(token);
-      return decodedToken.nameid; 
+      return decodedToken.nameid;
     }
     return 0;
   }
@@ -45,7 +48,7 @@ export class ExamService {
   checkIfResultExist() {
     const studentId = this.getStudentId();
     const regexPattern = new RegExp(`^result${studentId}:.*$`);
-  
+
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key && regexPattern.test(key)) {
@@ -55,9 +58,42 @@ export class ExamService {
         }
       }
     }
-    
+
     return false;
   }
-  
-  
+  isExamDatePassed(
+    examDate: Date,
+    examTime: string,
+    duration: number = 0
+  ): boolean {
+    let currentDate = new Date();
+    let examDate1 = new Date(examDate);
+    let examTime1 = examTime.split(':');
+    let currentHours = currentDate.getHours();
+    let currentMins = currentDate.getMinutes();
+    let currentSecs = currentDate.getSeconds();
+    let examHours = +examTime1[0];
+    let examMins = +examTime1[1];
+    let examSecs = +examTime1[2];
+    let currentTimeInMins = this.convertTimeService.convertTimeToMin(
+      currentHours,
+      currentMins,
+      currentSecs
+    );
+    let examTimeInMins = this.convertTimeService.convertTimeToMin(
+      examHours,
+      examMins,
+      examSecs
+    );
+    let examEndTime = examTimeInMins + duration;
+    if (
+      (currentDate.getFullYear() > examDate1.getFullYear() ||
+        currentDate.getMonth() + 1 > examDate1.getMonth() + 1 ||
+        currentDate.getDay() > examDate1.getDay()) &&
+      (currentTimeInMins > examEndTime )
+    ) {
+      return false;
+    }
+    return true;
+  }
 }

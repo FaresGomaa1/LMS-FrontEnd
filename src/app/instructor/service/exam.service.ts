@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
 import { IExam } from '../interface/i-exam';
@@ -14,7 +14,6 @@ export class ExamService {
 
    private exams: IExam[] = [];
   constructor(private httpClient: HttpClient) {}
-
   getAllExams(): Observable<IExam[]> {
     return this.httpClient.get<IExam[]>(this.baseURL).pipe(
       tap(exams => this.exams = exams) // Assign fetched exams to allExams property

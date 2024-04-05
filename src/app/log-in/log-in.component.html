@@ -32,12 +32,18 @@
         <button (click)="togglePanel(false)" class="ghost" id="signIn">
           Sign In
         </button>
+        <button (click)="togglePanel(false)"(click)="instructorSignUp()" class="ghost">
+          Are you Instructor?
+        </button>
       </div>
       <div class="overlay-panel overlay-right">
         <h1>Hello, Friend!</h1>
         <p>Enter your personal details and start journey with us</p>
         <button (click)="togglePanel(true)" class="ghost" id="signUp">
           Sign Up
+        </button>
+        <button class="ghost" (click)="goToHome()">
+          Home
         </button>
       </div>
     </div>

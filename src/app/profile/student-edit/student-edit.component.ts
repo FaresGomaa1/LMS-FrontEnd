@@ -1,8 +1,11 @@
+import { InstructorService } from './../../generalServices/instructor.service';
 import { StudentService } from './../../generalServices/student.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IStudent } from '../../Interfaces/istudent';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IStudent1 } from '../../Interfaces/student-for-add';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-student-edit',
@@ -11,57 +14,97 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class StudentEditComponent implements OnInit {
   studentId!: number;
-  studentInfo!: IStudent;
+  studentInfo: IStudent;
   studentForm!: FormGroup;
-  checkConfirmedPassword :boolean = true;
+  checkConfirmedPassword: boolean = true;
   constructor(
     private route: ActivatedRoute,
     private studentService: StudentService,
-    private fb: FormBuilder,
     private router: Router,
+    private formBuilder: FormBuilder,
+    private instructorService: InstructorService
   ) {
+    this.studentInfo = { 
+      id: 0, 
+      name: '', 
+      age: 0, 
+      title: '', 
+      phone: '', 
+      address: '', 
+      ssn: '', 
+      email: '', 
+      password: '', 
+      userAttachmentPath: '', 
+      courseName: [], 
+      courseIDs: [], 
+      groupName: [], 
+      examName: [], 
+      examIDs: [],
+      results: [],
+    };
+    
     this.getStudentId();
   }
+  
 
   ngOnInit(): void {
+    this.getStudentId();
+    this.initializeForm();
   }
-  createForm(student: any) {
-    this.studentForm = this.fb.group({
+  initializeForm() {
+    this.studentForm = this.formBuilder.group({
       id: [0, Validators.required],
-      name: [student.name, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)+$'),
-      ]],
-      age: [student.age, Validators.required],
-      title: [student.title],
-      phone: [student.phone, [
-        Validators.required,
-        Validators.minLength(11),
-        Validators.maxLength(11),
-        Validators.pattern('^01[0152]+[0-9]{8,}$'),
-      ]],
-      address: [student.address, [
-        Validators.required,
-        Validators.minLength(5),
-      ]],
-      ssn: [student.ssn],
-      email: [student.email, [
-        Validators.required,
-        Validators.email,
-      ]],
-      password: [student.password, [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
-      ]],
-      userAttachmentPath: [''],
-      imageFile: [null, Validators.required]
+      name: [
+        this.studentInfo.name,
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)+$'),
+        ],
+      ],
+
+      age: [this.studentInfo.age, Validators.required],
+      title: [
+        this.studentInfo.title,
+        [Validators.required, Validators.minLength(4)],
+      ],
+      phone: [
+        this.studentInfo.phone,
+        [
+          Validators.required,
+          Validators.minLength(11),
+          Validators.maxLength(11),
+          Validators.pattern('^01[0152]+[0-9]{8,}$'),
+        ],
+      ],
+      address: [
+        this.studentInfo.address,
+        [Validators.required, Validators.minLength(5)],
+      ],
+      ssn: [
+        this.studentInfo.ssn,
+        [Validators.required, Validators.pattern(/^\d{14}$/)],
+      ],
+      email: [this.studentInfo.email, [Validators.required, Validators.email]],
+      password: [
+        this.studentInfo.password,
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
+        ],
+      ],
+      userAttachmentPath: [this.studentInfo.userAttachmentPath],
+      imageFile: [null, Validators.required],
     });
   }
   comparePassword() {
-    let passwordValue = (document.getElementById("password") as HTMLInputElement).value;
-    let confirmPasswordValue = (document.getElementById("confirmPassword") as HTMLInputElement).value;
+    let passwordValue = (
+      document.getElementById('password') as HTMLInputElement
+    ).value;
+    let confirmPasswordValue = (
+      document.getElementById('confirmPassword') as HTMLInputElement
+    ).value;
     console.log(passwordValue);
     console.log(confirmPasswordValue);
 
@@ -71,8 +114,7 @@ export class StudentEditComponent implements OnInit {
       this.checkConfirmedPassword = false;
     }
   }
-  
-  
+
   getStudentId() {
     this.route.paramMap.subscribe((params) => {
       const idString = params.get('id');
@@ -80,10 +122,10 @@ export class StudentEditComponent implements OnInit {
         // Parse the student ID as a number
         this.studentId = parseInt(idString, 10);
         console.log('Student ID:', this.studentId);
-        this.studentService.getStudentById(this.studentId).subscribe((std)=>{
-          this.createForm(std);
-        })
-        
+        this.studentService.getStudentById(this.studentId).subscribe((std) => {
+          this.studentInfo = std;
+          this.initializeForm();
+        });
       } else {
         // Handle the case when 'id' parameter is null
         console.error('Student ID is null');
@@ -94,24 +136,25 @@ export class StudentEditComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       this.studentForm.patchValue({
-        imageFile: file
+        imageFile: file,
       });
     }
   }
+
   onSubmit() {
-    console.log(this.studentId);
-    console.log(this.studentInfo);
+    console.log(this.studentForm.value);
     const studentFormData = new FormData();
-    Object.keys(this.studentForm.value).forEach(key => {
+     Object.keys(this.studentForm.value).forEach((key) => {
       studentFormData.append(key, this.studentForm.get(key)?.value);
     });
   
+    // Submit FormData to studentService.Edit
     this.studentService.Edit(this.studentId, studentFormData).subscribe(
-      response => {
+      (response) => {
         this.router.navigate(['/shared/profile']); // Corrected navigation
         console.log('Edit successful', response);
       },
-      error => {
+      (error) => {
         // Handle error
         console.error('Edit failed', error);
         if (error && error.error && error.error.errors) {
@@ -126,5 +169,6 @@ export class StudentEditComponent implements OnInit {
       }
     );
   }
+  
   
 }

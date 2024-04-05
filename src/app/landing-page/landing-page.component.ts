@@ -8,27 +8,25 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-landing-page',
+  templateUrl: './landing-page.component.html',
+  styleUrls: ['./landing-page.component.scss']
 })
-export class HomeComponent implements OnInit {
-  tokenKey = 'auth_token';
+export class LandingPageComponent {
   allCourses: ICourses[] = [];
   allInstructors: IInstructor[] = [];
-
   constructor(
     private courserService: CourseService,
     private studentService: StudentService,
     private InstructorService: InstructorService,
-    private router: Router
+    private router: Router,
   ) {}
   ngOnInit(): void {
     this.courserService.getAllCourses().subscribe((courses) => {
       for (let i = 0; i < courses.length; i++) {
         if (this.courserService.isCourseEndDatePassed(courses[i].end_Date)) {
           this.allCourses.push(courses[i]);
-          if (this.allCourses.length === 3) {
+          if(this.allCourses.length === 3){
             break;
           }
         }
