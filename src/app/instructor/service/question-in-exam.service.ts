@@ -14,6 +14,8 @@ export class QuestionInExamService {
   }
 
   getSelectedQuestions(): IQuestion[] {
+    console.log(this.selectedQuestions)
+
       return this.selectedQuestions;
   }
 }

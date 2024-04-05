@@ -1,7 +1,9 @@
+import { CourseService } from './../../../service/course.service';
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ExamService } from 'src/app/instructor/service/exam.service';
 import { IExam } from 'src/app/instructor/interface/i-exam';
+import { ICourse } from 'src/app/instructor/interface/i-course';
 
 @Component({
   selector: 'app-courses-exam',
@@ -13,13 +15,34 @@ export class CoursesExamComponent {
   @Input() courseId: number=0;
   exams: IExam[] | undefined;
 
-  constructor(private route: ActivatedRoute, private examService: ExamService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private examService: ExamService, private router: Router , private CourseService: CourseService) { }
 
   ngOnInit(): void {
    // this.course_Id = this.route.snapshot.params['courseId'];
   
   //  console.log(this.course_Id);
     this.loadExams();
+    this. loadCourse();
+  }
+course!: ICourse;
+  loadCourse(): void {
+    this.CourseService.getCourseById(this.courseId).subscribe(
+      course => {
+        this.course = course;
+      },
+      error => {
+        console.error('Error fetching course:', error);
+      }
+    );
+  }
+
+  isCourseEnded(): boolean {
+    if (!this.course) {
+      return false; // Return false if course data is not loaded yet
+    }
+    const currentDateTime = new Date().getTime(); 
+    const courseEndDateTime = new Date(this.course.end_Date).getTime();
+    return currentDateTime > courseEndDateTime;
   }
 
   deleteExam(id: number) {

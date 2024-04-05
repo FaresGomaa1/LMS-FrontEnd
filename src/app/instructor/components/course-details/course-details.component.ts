@@ -79,7 +79,7 @@ loadCourseDetails() {
 }
 
 getCourseEnrolledStudentsCount(): void {
-  this.courseService.getCourseEnrolledStudentsCount(this.courseName).subscribe(
+  this.courseService.getCourseEnrolledStudentsCount(this.courseId).subscribe(
     count => {
       console.log('Enrolled students count:', count);
       this.numberOfStudentsEnrolled = count;

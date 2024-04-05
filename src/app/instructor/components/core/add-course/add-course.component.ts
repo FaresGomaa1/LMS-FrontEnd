@@ -185,7 +185,10 @@ export class AddCourseComponent implements OnInit , OnDestroy {
     };
   }
 
- 
+  closeModal() {
+    // Close the modal programmatically
+    $('#exampleModalCenter').modal('hide');
+  }
   
     onSubmit(e: Event) {
         e.preventDefault();
@@ -211,14 +214,10 @@ export class AddCourseComponent implements OnInit , OnDestroy {
               this.instructorService.addCourseToInstructor(this.instructorId, this.CourseForm.value.name)
                 .subscribe(() => {
                   console.log('Instructor course list updated');
-                 
+                  this.router.navigate(['/instructor/shared/InstructorCourses']);
                 });
             });
           }
-          else {
-                this.CourseForm.markAllAsTouched();
-              }
-
     }
 
     // ngOnDestroy(): void {

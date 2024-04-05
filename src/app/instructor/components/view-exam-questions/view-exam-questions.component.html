@@ -1,39 +1,88 @@
 <div *ngIf="questions && questions.length > 0">
   <h2>Exam Questions   
-    <a ngModel="exam_ID" [routerLink]="['/instructor//shared/addQuestion', exam_Id]" class="btn btn-primary mt-2">Add Questions</a>
+    <button (click)="deleteExam(exam.id, exam.course_ID)" class="btn btn-danger btn-sm">
+      <i class="fas fa-trash fa-xs"></i> 
+    </button>
+    
   </h2>
+<div class="text-center">
+  <div class="card-body">
+    <h1 class="card-title ">{{exam.name}}</h1>
+    <p class="card-text">Duration: {{ exam.duration }} minutes</p>
+   
+    <p class="card-text">
+      <small class="text-muted">
+        max : {{exam.max_Degree}} 
+        min : {{exam.min_Degree}} 
+        <i class="fas fa-calendar-alt"></i> {{exam.date}}  {{exam.time}}
+      </small>
+    </p>
+    <div class="d-flex justify-content-around">
+       
+    
+    </div>
+  </div>
 
-  <div class="table-responsive">
-    <table class="table table-striped table-bordered custom-table">
-      <thead class="thead-dark text-center">
-        <tr class="h5">
-          <th>Question</th>
-          <th>Question Type</th>
-          <th>Correct Answer</th>
-          <th *ngFor="let choice of getMaxChoices()">Choice {{ choice }}</th>
-          <th>Actions</th>
+</div>
+<div class="table-responsive container-fluid">
+  <table class="table table-striped table-bordered custom-table">
+    <thead class="thead-light text-center">
+      <tr class="h5">
+        <th>Question</th>
+        <th>Question Type</th>
+        <th>Correct Answer</th>
+        <th *ngFor="let choice of getMaxChoices()">Choice {{ choice }}</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let question of questions">
+        <td>{{ question.question }}</td>
+        <td>{{ question.questionType }}</td>
+        <td>{{ question.correctAnswer }}</td>
+    
+        <ng-container *ngFor="let choice of question.choosesName; let i = index">
+          <td>{{ choice }}</td>
+        </ng-container>
+     
+        <td *ngFor="let _ of getEmptyCells(getMaxChoices().length - question.choosesName.length)"></td>
+  
+        <td class="text-center">
+          <button (click)="Edit(question.id)" class="btn btn-success btn-sm mr-1" [disabled]="isExamDatePassed()">Edit</button>
+          <button (click)="deleteQuestion(question.id)" class="btn btn-danger btn-sm" [disabled]="isExamDatePassed()">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div *ngIf="questions && questions.length == 0">
+  <div class="text-center">
+    <div class="container-fluid mt-5 h2">No Questions available for this Exam.</div>
+  </div>
+</div>
+<div *ngIf="isExamDatePassed()">
+ 
+  <div>
+    <h2>Students' Results</h2>
+    <table class="table table-striped table-bordered">
+      <thead class="h4 text-center">
+        <tr>
+          <th>Student Name</th>
+          <th>Result</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let question of questions">
-          <td>{{ question.question }}</td>
-          <td>{{ question.questionType }}</td>
-          <td>{{ question.correctAnswer }}</td>
-          <ng-container *ngFor="let choice of question.choosesName; let i = index">
-            <td>{{ choice }}</td>
-          </ng-container>
-          <td class="text-center">
-            <a [routerLink]="['/instructor/shared/editQuestions', question.id]" class="btn btn-info btn-sm mr-1">Edit</a>
-            <button (click)="deleteQuestion(question.id)" class="btn btn-danger btn-sm">Delete</button>
-          </td>
+      <tbody class="h5 text-center">
+        <tr *ngFor="let student of students">
+          <td>{{ student.name }}</td>
+          <td>{{ student.results }}</td>
         </tr>
       </tbody>
     </table>
   </div>
-</div>
 
-<div *ngIf="questions && questions.length === 0">
-  <div class="text-center">
-    <div class="container-fluid mt-5 h2">No Questions available for this Exam.</div>
+  <div *ngIf="!students || students.length == 0">
+    <p>No students found for this exam.</p>
   </div>
 </div>
