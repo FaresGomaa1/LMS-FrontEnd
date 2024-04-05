@@ -1,65 +1,47 @@
+<!-- exam-add.component.html -->
+<form [formGroup]="ExamForm" (ngSubmit)="submitExam()">
+  <label for="name">Exam Name:</label>
+  <input type="text" id="name" formControlName="name">
+  
+  <label for="duration">Duration (minutes):</label>
+  <input type="number" id="duration" formControlName="duration">
+   
+  <label for="time">time:</label>
+  <input type="time" id="time" formControlName="time">
 
-<div class="container py-3">
-    <div>
-      <h2> All Exams </h2>
-    </div>
+    <label for="date">date:</label>
+    <input type="date" id="date" formControlName="date">
+     
   
-    <div class="text-center">
-      <h1> </h1>
-    </div>
+  <label for="max_Degree">Max Degree:</label>
+  <input type="number" id="maxDegree" formControlName="max_Degree">
   
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-6 col-md-4" *ngFor="let exam of exams">
-          <div class="card mb-3">
-            <a href="#">
-              <img class="card-img-top" src="https://picsum.photos/450/300?image=6" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">{{exam.name}}</h5>
-                <p class="card-text">Duration: {{ exam.duration }} minutes</p>
-                <p class="card-text">Number of Questions: {{ exam.numberOfQuestions }} question(s)</p>
-                <p class="card-text">
-                  <small class="text-muted">
-                    max : {{exam.max_Degree}} 
-                    min : {{exam.min_Degree}} 
-                    <i class="fas fa-calendar-alt"></i> {{exam.date}}  {{exam.time}}
-                  </small>
-                </p>
-                <div class="d-flex justify-content-around">
-                  <a [routerLink]="['/instructor/shared/editExam', exam.id]" class="btn btn-primary btn-sm">
-                    <i class="fas fa-edit fa-xs"></i>
-                  </a>
-                  <a [routerLink]="['/instructor/shared/viewQuestions', exam.id]" class="btn btn-primary btn-sm">
-                    <i class="fas fa-eye fa-xs"></i>
-                  </a>
-                  <a [routerLink]="['/instructor/shared/addQuestion', exam.id]" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus fa-xs"></i>
-                  </a>
-                  <button (click)="deleteExam(exam.id)" class="btn btn-danger btn-sm">
-                    <i class="fas fa-trash fa-xs"></i>
-                  </button>
-                </div>
-              </div>
-            </a>
+  <label for="min_Degree">Min Degree:</label>
+  <input type="number" id="min_Degree" formControlName="min_Degree">
+  
+  <div formArrayName="questions">
+    <div *ngFor="let question of questionsArray.controls; let i = index">
+      <div [formGroupName]="i">
+        <label for="question">Question {{ i + 1 }}:</label>
+        <input type="text" id="question" formControlName="question">
+        
+        <label for="questionType">Question Type:</label>
+        <input type="text" id="questionType" formControlName="questionType">
+        
+        <label for="correctAnswer">Correct Answer:</label>
+        <input type="text" id="correctAnswer" formControlName="correctAnswer">
+        
+        <label for="choosesName">Choices:</label>
+        <div formArrayName="choosesName">
+          <div *ngFor="let choice of questionsArray.at(i).get('choosesName')?.value; let j = index">
+            <input type="text" [formControlName]="j">
           </div>
         </div>
-      </div>
-  
-      <div *ngIf="!(exams && exams.length > 0)" class="container text-center mt-5">
-        <div class="card col-6">
-          <div class="row">
-            <div class="col-sm-7">
-              <div class="card-block">
-                <p>No exams available for this course.</p>
-                <p>Add Exams</p>
-              </div>
-            </div>
-            <div class="col-sm-5">
-              <img class="d-block" src="https://picsum.photos/150?image=380" alt="">
-            </div>
-          </div>
-        </div>
+         
+        <button type="button" (click)="addQuestion()">Remove Question</button>
+        <button type="button" (click)="removeQuestion(i)">Remove Question</button>
       </div>
     </div>
   </div>
-  
+  <button type="submit">Add Exam</button>
+</form>

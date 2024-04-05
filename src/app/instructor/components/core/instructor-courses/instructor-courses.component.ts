@@ -18,8 +18,21 @@ export class InstructorCoursesComponent implements OnInit {
   public instructor: IInstructor | undefined;
 
   constructor(private instructorcourseService: InstructorCourseService ) { }
+  toggleDescription(course: ICourse) {
+    course.showFullDescription = !course.showFullDescription;
+    if (course.showFullDescription) {
+      setTimeout(() => {
+        this.scrollToEnd();
+      }, 0); // Using setTimeout to ensure scrolling occurs after view updates
+    }
+  }
 
- 
+  scrollToEnd() {
+    const element = document.getElementById('full-description');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+    }
+  }
   ngOnInit(): void {
     const token = localStorage.getItem(this.tokenKey);
     if (token) {

@@ -28,7 +28,26 @@
               <tr *ngFor="let course of instructorCourses" [ngClass]="{ 'disabled-row': isCourseEnded(course.end_Date) }">
                 
                   <td>{{ course.name }}</td>
-                  <td>{{ course.description }}</td>
+                  <td>
+                    <ng-container *ngIf="course.description.split(' ').length > 3">
+                      <span *ngIf="!course.showFullDescription">
+                        {{ course.description.split(' ').slice(0, 3).join(' ') }}...
+                        <a href="javascript:void(0)" (click)="toggleDescription(course)" class="text-success">See more</a>
+                      </span>
+                      <span *ngIf="course.showFullDescription">{{ course.description }}
+                        <a href="javascript:void(0)" (click)="toggleDescription(course)" class="  text-success">See less</a>
+                      </span>
+                    </ng-container>
+                    <ng-container *ngIf="course.description.split(' ').length <= 3">
+                      {{ course.description }}
+                    </ng-container>
+                  </td>
+                  
+                  
+                  
+                  
+                  
+                  
                   <td>{{ course.start_Date }}</td>
                   <td>{{ course.end_Date }}</td>
                   <td>  <a  (click)="openMaterialtLink(course)" class="btn btn-green" >

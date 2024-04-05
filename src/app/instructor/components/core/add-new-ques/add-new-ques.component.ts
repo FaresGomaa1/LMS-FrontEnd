@@ -1,19 +1,15 @@
-import { FormBuilder, FormArray, Validators, AbstractControl, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { Location } from '@angular/common';
-import { QuestionService } from 'src/app/instructor/service/question.service';
 import { ExamService } from 'src/app/instructor/service/exam.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { QuestionInExamService } from 'src/app/instructor/service/question-in-exam.service';
 import { Component, OnInit } from '@angular/core';
-import { PopupQuestionComponent } from '../popup-question/popup-question.component';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionService } from 'src/app/instructor/service/question.service';
 
 @Component({
-  selector: 'app-add-question',
-  templateUrl: './add-question.component.html',
-  styleUrls: ['./add-question.component.scss']
+  selector: 'app-add-new-ques',
+  templateUrl: './add-new-ques.component.html',
+  styleUrls: ['./add-new-ques.component.scss']
 })
-export class AddQuestionComponent implements OnInit {
+export class AddNewQuesComponent implements OnInit {
   QuestionForm: FormGroup; 
   numOfQuestions: { value: number, label: string }[] = [
     { value: 2, label: '2 choices' },
@@ -24,16 +20,13 @@ export class AddQuestionComponent implements OnInit {
   ];
   
   allDataQuestion: any[] = [];
-  // location: any;
-  // dialog: MatDialog;
+ 
   constructor(
       private quesServices: QuestionService,
       private router: Router,
       private actRoute: ActivatedRoute, 
       private fb: FormBuilder,
-      private questionInExamService: QuestionInExamService,
-      private dialog: MatDialog,
-      private location: Location
+      private ExamService : ExamService
   ) {
       this.QuestionForm = this.fb.group({
           question: ['', [Validators.required, Validators.minLength(3)]],
@@ -56,10 +49,11 @@ export class AddQuestionComponent implements OnInit {
     };
   }
   
-
+examId!:number;
   ngOnInit(): void {
    
 
+    this.examId = this.actRoute.snapshot.params['examId'];
       
 
       this.QuestionForm.get('selectNumber')?.valueChanges.subscribe(
@@ -93,52 +87,24 @@ export class AddQuestionComponent implements OnInit {
       return Array.from({ length: num }, (_, index) => index);
   }
 
-  openPopup() {
-      const dialogRef = this.dialog.open(PopupQuestionComponent, {
-          width: '400px',
-          height: '230px',
-      });
-
-      dialogRef.afterClosed().subscribe((result) => {
-          if (result) {
-            console.log(this.allDataQuestion + " returned from popup")
-              this.questionInExamService.setSelectedQuestions(
-                  this.allDataQuestion
-              );
-             
-          } else {
-              this.questionInExamService.setSelectedQuestions(
-                this.allDataQuestion
-            );
-            console.log(JSON.stringify(this.questionInExamService.getSelectedQuestions()), "returned from");
-              this.location.back();
-          }
-      });
-  }
 
  
 
   onSubmit(e: Event) {
       e.preventDefault();
-console.log(this.QuestionForm.value);
+      console.log(this.QuestionForm.value);
 
       if (this.QuestionForm.valid) {
           const questionData = this.QuestionForm.value;
           // const courseId = questionData.courseName.id;
 
           const questions = {
-              ...questionData,
-             
+              ...questionData
           };
 
           console.log(questions);
-          this.allDataQuestion.push(questions);
-          console.log(this.allDataQuestion);
-
+    
          
-          this.QuestionForm.reset();
-
-          this.openPopup(); 
       } else {
       }
   }

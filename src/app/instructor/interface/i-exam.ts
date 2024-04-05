@@ -4,18 +4,19 @@ import { IQuestion } from "./iquestion";
 export interface IExam {
   id: number;
   name: string;
-  duration: number;
-  time: string;
-  date: Date;
   max_Degree: number;
   min_Degree: number;
-  allQuestion: {
-    id: number;
-    question: string;
-    questionType: string;
-    correctAnswer: string;
-    choosesName: string[];
-  }[];
+  duration: number;
+  time: Time;
+  date: Date;
   course_ID: number;
-  numberOfQuestions: number;
+  courseName: string;
+  allQuestion: {
+      question: string;
+      questionType: string;
+      correctAnswer: string;
+      choosesName: string[];
+  }[];
+  questionIDs: string[];
+  numOfQuestions: number;
 }

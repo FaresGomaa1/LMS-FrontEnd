@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ICourse } from 'src/app/instructor/interface/i-course';
@@ -16,61 +17,84 @@ export class AllExamsComponent implements OnInit {
   exams: IExam[] | undefined;
   tokenKey = 'auth_token';
   userId: number = 0;
-  constructor(private route: ActivatedRoute, private examService: ExamService) { }
+  ExamForm!: FormGroup;
+  constructor(private route: ActivatedRoute, private examService: ExamService ,   private formBuilder: FormBuilder) {
+   
+  }
 
+  public instructor: IInstructor | undefined;
   ngOnInit(): void {
     const token = localStorage.getItem(this.tokenKey);
     if (token) {
       const helper = new JwtHelperService();
       const decodedToken = helper.decodeToken(token);
       this.userId = decodedToken.nameid;
-    }
-    this.loadExams();
+    }     
+
+    
+      this.ExamForm = this.formBuilder.group({
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        duration: ['', [Validators.required, Validators.min(1)]],
+        time: ['', [Validators.required]],
+        date: ['', [Validators.required ]],
+        max_Degree: ['', [Validators.required]],
+        min_Degree: ['', [Validators.required]],
+        course_ID: [1],
+        courseName: ['dotnet'],
+        questions: this.formBuilder.array([])
+      });
+   
   }
 
+  createQuestion(): FormGroup {
+    return this.formBuilder.group({
+      question: ['', Validators.required],
+      questionType: ['', Validators.required], // Add form control for question type
+      correctAnswer: ['', Validators.required], // Add form control for correct answer
+      choosesName: this.formBuilder.array([this.formBuilder.control('')]), // Add form array for multiple choices
+      // Add more form controls for other question properties as needed
+    });
+  }
+   
+  formatTime(time: string): string {
+    const [hours, minutes] = time.split(':');
+    const formattedTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+    return formattedTime;
+  }
 
+  get questionsArray(): FormArray {
+    return this.ExamForm.get('questions') as FormArray;
+  }
+
+  addQuestion(): void {
+    this.questionsArray.push(this.createQuestion());
+  }
+
+  removeQuestion(index: number): void {
+    (this.ExamForm.get('questions') as FormArray).removeAt(index);
+  }
+
+  submitExam(): void {
+    const formattedTime = this.formatTime(this.ExamForm.get('time')?.value);
+    this.ExamForm.get('time')?.setValue(formattedTime);
   
-
-  deleteExam(id: number) {
-    if (confirm('Are you sure you want to delete this question?')) {
-    this.examService.deleteExam(id)
-      .subscribe(() => {
-        console.log(`Exam with ID ${id} deleted successfully.`);
-        
-        this.loadExams();
-      }, error => {
-        console.error('Error deleting question:', error);
-      });}
+    if (this.ExamForm.valid) {
+      const examData: IExam = this.ExamForm.value;
+      this.examService.addExam(examData).subscribe(
+        (response) => {
+          // Handle success
+          console.log('Exam added successfully:', response);
+        },
+        (error) => {
+          // Handle error
+          console.error('Failed to add exam:', error);
+        }
+      );
+    }
+  }
+ 
+   
+  
   }
 
  
-  public instructor: IInstructor | undefined;
-  loadExams() {
-    const examsForInstructor = getExamsForInstructor(this.userId);
-    console.log(examsForInstructor);
-  }
-  
-  }
-
-  const instructors: IInstructor[] = [];  
-const courses: ICourse[] = [];  
-const exams: IExam[] = [];  
-
-// Function to get all exams for a given instructor ID
-function getExamsForInstructor(instructorId: number): IExam[] {
-    const instructor = instructors.find(instructor => instructor.id == instructorId);
-    if (!instructor) return []; 
-    
-    const instructorCourseNames = instructor.courseName;
-    const instructorExams: IExam[] = [];
-    
-    instructorCourseNames.forEach(courseName => {
-        const course = courses.find(course => course.name == courseName);
-        if (course) {
-            const examsForCourse = exams.filter(exam => exam.course_ID == course.id);
-            instructorExams.push(...examsForCourse);
-        }
-    });
-    
-    return instructorExams;
-}

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
 import { IExam } from '../interface/i-exam';
 import { IQuestion } from '../interface/iquestion';
 import { ICourse } from '../interface/i-course';
@@ -12,28 +12,29 @@ export class ExamService {
    baseURL: string = 'http://localhost:5050/Exam';
    courseURL: string = 'http://localhost:5050/Course';
 
+   private exams: IExam[] = [];
   constructor(private httpClient: HttpClient) {}
   getAllExams(): Observable<IExam[]> {
-    return this.httpClient.get<IExam[]>(this.baseURL);
+    return this.httpClient.get<IExam[]>(this.baseURL).pipe(
+      tap(exams => this.exams = exams) // Assign fetched exams to allExams property
+    );
   }
+
 
   getExamById(id: number): Observable<IExam> {
     return this.httpClient.get<IExam>(`${this.baseURL}/${id}`);
   }
-  
+ 
 
-  addExam(examData: any): Observable<number> {
-    return this.httpClient.post<any>(this.baseURL, examData).pipe(
-      map(response => response.id) 
-    );
-  }
-  createExam(exam: any): Observable<IExam> {
-    const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.post<IExam>(this.baseURL, exam, { headers: headers });
-  }
-  // addExam(examData: IExam): Observable<IExam> {
-  //   return this.httpClient.post<IExam>(this.baseURL, examData);
+  // addExam(examData: any): Observable<number> {
+  //   return this.httpClient.post<any>(this.baseURL, examData).pipe(
+  //     map(response => response.id) 
+  //   );
   // }
+
+  addExam(examData: IExam): Observable<IExam> {
+    return this.httpClient.post<IExam>(this.baseURL, examData);
+  }
 
   getExamsByInstructorId(instructorId: number): Observable<IExam[]> {
     // Fetch courses associated with the instructor
@@ -46,7 +47,9 @@ export class ExamService {
       })
     );
   }
+  baseURL2: string = 'http://localhost:5050/Question';  
 
+  
   
   updateExam(id: number, exam: IExam): Observable<IExam> {
     return this.httpClient.put<IExam>(`${this.baseURL}/${id}`, exam);

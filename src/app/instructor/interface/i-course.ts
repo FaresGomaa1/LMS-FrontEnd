@@ -8,4 +8,5 @@ export interface ICourse {
     material: string;
     userAttachmentPath?: string;
     imageFile: File;
+    showFullDescription?: boolean; 
 }

@@ -10,3 +10,12 @@
 {
     width: 150px;
 }
+input[readonly] {
+    background-color: #e9ecef; /* Use a light gray color */
+    cursor: not-allowed; /* Change cursor to not-allowed */
+  }
+  button[disabled] {
+    opacity: 0.5; /* Reduce opacity to visually indicate the button is disabled */
+    pointer-events: none; /* Disable pointer events to prevent interaction */
+  }
+    

@@ -1,102 +1,109 @@
 
 
-<div class="container  col-6">
-<form [formGroup]="ExamForm"  (ngSubmit)="onSubmit($event)" class="mt-5">
-    <div class="form-group">
-      <label for="examName">Exam Name</label>
-      <span class="p-float-label">
-        <input pInputText type="text"  id="examName" formControlName="name" class="form-control"
-          placeholder="Enter exam name" required [ngClass]="{
-            'is-valid': nameControl.valid,
-            'is-invalid': nameControl.invalid && nameControl.touched
-          }" />
-        <div class="invalid-feedback error-message" *ngIf="nameControl.errors && nameControl.touched">
-          <ng-container *ngIf="nameControl.hasError('required')">Exam name is required</ng-container>
-          <ng-container *ngIf="nameControl.hasError('minLength')">Exam name is too long</ng-container>
-        </div>
-      </span>
-    </div>
 
-    <div class="container">
-        <h3>Enter Number of Questions:</h3>
-        <input  type="number"  formControlName="numberOfQuestions" class="form-control"
-        placeholder="Enter exam name" required [ngClass]="{
-            'is-valid': numberquestionControl.valid,
-            'is-invalid': numberquestionControl.invalid && numberquestionControl.touched
-          }"  >
-        <div class="invalid-feedback error-message" *ngIf="numberquestionControl.errors && numberquestionControl.touched">
-            <ng-container *ngIf="numberquestionControl.hasError('required')">Number of questions is required</ng-container>
-            <ng-container *ngIf="numberquestionControl.hasError('min')">Number of questions must be at least 1</ng-container>
-        </div>
-    
+<div class="grid container-fluid">
+  <div class="col-10 ">
+      <div class="card">
+          <div class="container-fluid text-center m-3">
+              <h1> Edit Exam Data</h1>
+            </div>
+         
+          <form class="row g-3" [formGroup]="ExamForm" (ngSubmit)="onSubmit($event)">
 
-     
-    </div>
-  
-    <div class="form-group">
-      <h3>Enter Time</h3>
-      <input type="time" formControlName="time" class="form-control"
-        placeholder="Enter exam time" required [ngClass]="{
-              'is-valid': timeControl.valid,
-              'is-invalid': timeControl.invalid && timeControl.touched
-            }">
-      <div class="invalid-feedback error-message" *ngIf="timeControl.errors && timeControl.touched">
-        <ng-container *ngIf="timeControl.hasError('required')">Time is required</ng-container>
-      </div>
-    </div>
+              <label for="name">Name</label>
+              <span class="p-float-label mb-4">
+                  <input pInputText type="text" id="name" formControlName="name" class="form-control"
+                      placeholder="EX: PHP" required  
+                      [ngClass]="{'is-valid': getFormControl('name').valid, 'is-invalid': getFormControl('name').invalid && getFormControl('name').touched}" />
+                  <div class="invalid-feedback error-message"
+                      *ngIf="getFormControl('name').errors && getFormControl('name').touched">
+                      <ng-container *ngIf="getFormControl('name').hasError('required')">Name is
+                          required</ng-container>
+                      <ng-container *ngIf="getFormControl('name').hasError('minlength')">Name must be at least 3
+                          characters</ng-container>
+
+                  </div>
+              </span>
+
+              <label for="duration">Duration</label>
+              <span class="p-float-label mb-4">
+                  <input pInputText type="number" id="duration" formControlName="duration" class="form-control"
+                      placeholder="Enter duration" required  
+                      [ngClass]="{'is-valid': getFormControl('duration').valid, 'is-invalid': getFormControl('duration').invalid && getFormControl('duration').touched}" />
+                  <div class="invalid-feedback error-message"
+                      *ngIf="getFormControl('duration').errors && getFormControl('duration').touched">
+                      <ng-container *ngIf="getFormControl('duration').hasError('required')">duration is
+                          required</ng-container>
+                  </div>
+              </span>
+              <label for="time">Time</label>
+              <span class="p-float-label mb-4">
+                  <input pInputText type="time" id="time" (change)="getTime($event)" formControlName="time"
+                      class="form-control" placeholder="Enter time" required  
+                      [ngClass]="{'is-valid': getFormControl('time').valid, 'is-invalid': getFormControl('time').invalid && getFormControl('time').touched}" />
+                  <div class="invalid-feedback error-message"
+                      *ngIf="getFormControl('time').errors && getFormControl('time').touched">
+                      <ng-container *ngIf="getFormControl('time').hasError('required')">time is
+                          required</ng-container>
+                  </div>
+              </span>
+
+              <label for="date">Date</label>
+              <span class="p-float-label mb-4">
+                  <input pInputText type="date" id="date" formControlName="date" class="form-control" required  
+                      [ngClass]="{'is-valid': getFormControl('date').valid, 'is-invalid': getFormControl('date').invalid && getFormControl('date').touched}" />
+                  <div class="invalid-feedback error-message"
+                      *ngIf="getFormControl('date').errors && getFormControl('date').touched">
+                      <ng-container *ngIf="getFormControl('date').hasError('required')">Date is
+                          required</ng-container>
+                      <ng-container *ngIf="getFormControl('date').hasError('past')">Please enter a future date
+                      </ng-container>
+                  </div>
+              </span>
+
+              <label for="min_Degree">Min Degree</label>
+              <span class="p-float-label mb-4">
+                  <input pInputText type="number" min="0" id="min_Degree" formControlName="min_Degree"
+                      class="form-control" placeholder="Enter min_Degree" required 
+                      [ngClass]="{'is-valid': getFormControl('min_Degree').valid, 'is-invalid': getFormControl('min_Degree').invalid && getFormControl('min_Degree').touched}" />
+                  <div class="invalid-feedback error-message"
+                      *ngIf="getFormControl('min_Degree').errors && getFormControl('min_Degree').touched">
+                      <ng-container *ngIf="getFormControl('min_Degree').hasError('required')">Min Degree is
+                          required</ng-container>
+                      <ng-container *ngIf="getFormControl('min_Degree').hasError('min')">Min Degree must be a positive
+                          number</ng-container>
+                      <ng-container *ngIf="getFormControl('min_Degree').hasError('minGreaterThanMax')">Min Degree
+                          cannot be greater
+                          than Max Degree</ng-container>
+                  </div>
+              </span>
+
+              <label for="max_Degree">Max Degree</label>
+              <span class="p-float-label mb-4 ">
+                  <input pInputText type="number" min="0" max="200" id="max_Degree" formControlName="max_Degree"
+                      class="form-control" placeholder="Enter max_Degree" required  
+                      [ngClass]="{'is-valid': getFormControl('max_Degree').valid, 'is-invalid': getFormControl('max_Degree').invalid && getFormControl('max_Degree').touched}" />
+                  <div class="invalid-feedback error-message"
+                      *ngIf="getFormControl('max_Degree').errors && getFormControl('max_Degree').touched">
+                      <ng-container *ngIf="getFormControl('max_Degree').hasError('required')">Max Degree is
+                          required</ng-container>
+                      <ng-container *ngIf="getFormControl('max_Degree').hasError('min')">Max Degree must be a positive
+                          number</ng-container>
+                      <ng-container *ngIf="getFormControl('max_Degree').hasError('max')">Max Degree must be less than
+                          200</ng-container>
+                  </div>
+              </span>
 
 
-    <div class="form-group">
-      <label for="examDuration">Duration (in minutes)</label>
-      <input  pInputText type="number" id="examDuration" formControlName="duration" class="form-control"
-        placeholder="Enter exam duration" required [ngClass]="{
-          'is-valid': durationControl.valid,
-          'is-invalid': durationControl.invalid && durationControl.touched
-        }" />
-      <div class="invalid-feedback error-message" *ngIf="durationControl.errors && durationControl.touched">
-        <ng-container *ngIf="durationControl.hasError('required')">Duration is required</ng-container>
+             
+
+             
+
+            
+              <button pButton label="Submit"   type="submit" class="btn btn-success">Submit Exam</button>
+          </form>
+
       </div>
-    </div>
-  
-    <div class="form-group">
-      <label for="examDate">Exam Date</label>
-      <input   pInputText type="date" id="examDate" formControlName="date" class="form-control"
-        placeholder="Select exam date" required [ngClass]="{
-          'is-valid': dateControl.valid,
-          'is-invalid': dateControl.invalid && dateControl.touched
-        }" />
-      <div class="invalid-feedback error-message" *ngIf="dateControl.errors && dateControl.touched">
-        <ng-container *ngIf="dateControl.hasError('required')">Exam date is required</ng-container>
-      </div>
-    </div>
-  
-    <div class="form-group">
-      <label for="examMaxDegree">Max Degree</label>
-      <input   pInputText type="number" id="examMaxDegree" formControlName="max_Degree" class="form-control"
-        placeholder="Enter max degree" required [ngClass]="{
-          'is-valid': maxControl.valid,
-          'is-invalid': maxControl.invalid && maxControl.touched
-        }" />
-      <div class="invalid-feedback error-message" *ngIf="maxControl.errors && maxControl.touched">
-        <ng-container *ngIf="maxControl.hasError('required')">Max degree is required</ng-container>
-      </div>
-    </div>
-  
-    <div class="form-group">
-      <label for="examMinDegree">Min Degree</label>
-      <input   pInputText type="number" id="examMinDegree" formControlName="min_Degree" class="form-control"
-        placeholder="Enter min degree" required [ngClass]="{
-          'is-valid': minControl.valid,
-          'is-invalid': minControl.invalid && minControl.touched
-        }" />
-      <div class="invalid-feedback error-message" *ngIf="minControl.errors && minControl.touched">
-        <ng-container *ngIf="minControl.hasError('required')">Min degree is required</ng-container>
-      </div>
-    </div>
-  
-  
-    <button type="submit" class="btn btn-primary" [disabled]="formSubmitted" #submitBtn>Submit</button>
-  </form>
-  
+  </div>
 </div>
- 
+

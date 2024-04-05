@@ -1,0 +1,99 @@
+
+
+<div class="grid p-fluid">
+    <div class="col-12">
+        <div class="card">
+          <div class="container-fluid text-center m-3">
+            <h1>Add Question </h1>
+          </div>
+            <form class="row g-3" [formGroup]="QuestionForm" (ngSubmit)="onSubmit($event)">
+  
+                <label for="question">Question</label>
+                <span class="p-float-label mb-4">
+                    <input pInputText type="text" id="question" formControlName="question" class="form-control"
+                        placeholder="question..." required
+                        [ngClass]="{'is-valid': getFormControl('question').valid, 'is-invalid': getFormControl('question').invalid && getFormControl('question').touched}" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('question').errors && getFormControl('question').touched">
+                        <ng-container *ngIf="getFormControl('question').hasError('required')">question is
+                            required</ng-container>
+                        <ng-container *ngIf="getFormControl('question').hasError('minlength')">question must be at least
+                            3
+                            characters</ng-container>
+                    </div>
+                </span>
+  
+              <div class="form-group">
+                  <label for="numQues">Choose number of choices</label>
+                  <div class="input-group mb-4">
+                    <select id="numQues" class="form-control white" formControlName="selectNumber">
+                      <option *ngFor="let option of numOfQuestions" [value]="option.value">{{ option.label }}</option>
+                      </select>
+                  </div>
+                  <div class="invalid-feedback error-message" *ngIf="QuestionForm.get('selectNumber')?.errors && QuestionForm.get('selectNumber')?.touched">
+                      <ng-container *ngIf="QuestionForm.get('selectNumber')?.hasError('required')">Number of choices is required</ng-container>
+                  </div>
+              </div>
+  
+  
+  
+  
+              
+              <div *ngFor="let index of getArrayFromNumber(QuestionForm.get('selectNumber')?.value)">
+                <div class="form-group">
+                  <label for="choosesName{{index}}">Choose {{ index + 1 }}</label>
+                  <div class="input-group mb-4">
+                    <input type="text" [id]="'choosesName' + index"
+                           [formControl]="getChooseControl(index)" class="form-control"
+                           placeholder="Choose {{ index + 1 }}..." required
+                           [ngClass]="{'is-valid': getChooseControl(index).valid, 'is-invalid': getChooseControl(index).invalid && getChooseControl(index).touched}" />
+                  </div>
+                  <div class="invalid-feedback error-message"
+                       *ngIf="getChooseControl(index)?.errors && getChooseControl(index)?.touched">
+                    <ng-container *ngIf="getChooseControl(index)?.hasError('required')">Choose is required</ng-container>
+                  </div>
+                </div>
+              </div>
+              
+            
+  
+  
+  
+                <label for="questionType">Question Type</label>
+                <span class="p-float-label mb-4">
+                    <input pInputText type="text" id="questionType" formControlName="questionType" class="form-control"
+                        placeholder="questionType..." required
+                        [ngClass]="{'is-valid': getFormControl('questionType').valid, 'is-invalid': getFormControl('questionType').invalid && getFormControl('questionType').touched}" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('questionType').errors && getFormControl('questionType').touched">
+                        <ng-container *ngIf="getFormControl('questionType').hasError('required')">questionType is
+                            required</ng-container>
+                    </div>
+                </span>
+  
+                <label for="correctAnswer">Correct Answer</label>
+                <span class="p-float-label mb-4">
+                    <input pInputText type="text" id="correctAnswer" formControlName="correctAnswer"
+                        class="form-control" placeholder="correctAnswer..." required
+                        [ngClass]="{'is-valid': getFormControl('correctAnswer').valid, 'is-invalid': getFormControl('correctAnswer').invalid && getFormControl('correctAnswer').touched}" />
+                    <div class="invalid-feedback error-message"
+                        *ngIf="getFormControl('correctAnswer').errors && getFormControl('correctAnswer').touched">
+                        <ng-container *ngIf="getFormControl('correctAnswer').hasError('required')">correctAnswer is
+                            required</ng-container>
+                        <ng-container *ngIf="getFormControl('correctAnswer').hasError('minlength')">correctAnswer must
+                            be at least 3
+                            characters</ng-container>
+                    </div>
+                </span>
+  
+           
+  
+                <button pButton label="Submit" type="submit" class="btn btn-success mb-4"> Add Question</button>
+  
+  
+            </form>
+  
+        </div>
+    </div>
+  </div>
+  
