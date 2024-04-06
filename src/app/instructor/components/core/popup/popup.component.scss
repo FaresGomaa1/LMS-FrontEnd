@@ -1,0 +1,99 @@
+img {
+    width: 150px;
+    height: 150px;
+    border-radius: 75px;
+    object-fit: cover;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.boldData {
+    font-weight: bold;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.mb-3 {
+    margin-bottom: 18px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+
+.btn {
+    padding: 7px 15px;
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+
+}
+
+.btn-primary {
+    color: #f1ecec;
+    background: #1100C1C9;
+    border: 1px solid #685DD8;
+    box-shadow: rgba(38, 28, 126, 0.1) 0px 4px 6px -1px, rgba(24, 32, 146, 0.06) 0px 2px 4px -1px;
+}
+
+.btn-primary:active {
+    color: #dad7d7;
+    box-shadow: inset 4px 4px 12px #4739e4, inset -4px -4px 12px rgb(42, 13, 146);
+}
+
+.btn-danger {
+    color: #f1ecec;
+    background: #b40101f5;
+    border: 1px solid #910303;
+    box-shadow: rgba(38, 28, 126, 0.1) 0px 4px 6px -1px, rgba(24, 32, 146, 0.06) 0px 2px 4px -1px;
+}
+
+.btn-danger:active {
+    color: #dad7d7;
+    box-shadow: inset 4px 4px 12px #f03636, inset -4px -4px 12px rgb(167, 20, 27);
+}
+
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+
+.me-5{
+    margin-right: 20px;
+}

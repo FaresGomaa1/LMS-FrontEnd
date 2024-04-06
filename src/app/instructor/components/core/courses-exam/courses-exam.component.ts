@@ -4,6 +4,8 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ExamService } from 'src/app/instructor/service/exam.service';
 import { IExam } from 'src/app/instructor/interface/i-exam';
 import { ICourse } from 'src/app/instructor/interface/i-course';
+import { PopupComponent } from '../popup/popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-courses-exam',
@@ -15,7 +17,9 @@ export class CoursesExamComponent {
   @Input() courseId: number=0;
   exams: IExam[] | undefined;
 
-  constructor(private route: ActivatedRoute, private examService: ExamService, private router: Router , private CourseService: CourseService) { }
+  constructor(private route: ActivatedRoute, private examService: ExamService, 
+    private dialog: MatDialog,
+    private router: Router , private CourseService: CourseService) { }
 
   ngOnInit(): void {
    // this.course_Id = this.route.snapshot.params['courseId'];
@@ -45,17 +49,20 @@ course!: ICourse;
     return currentDateTime > courseEndDateTime;
   }
 
+  openPopupExam(examId: number) {
+    const dialogRef = this.dialog.open(PopupComponent, {
+        width: '400px',
+        height: '230px',
+        data: { id: examId, objectType: 'exam' },
+    });
+
+     dialogRef.componentInstance.itemDeleted.subscribe(() => {
+      this.loadExams();
+     });
+}
+
   deleteExam(id: number) {
-    if (confirm('Are you sure you want to delete this exam?')) {
-      this.examService.deleteExam(id)
-        .subscribe(() => {
-          console.log(`Exam with ID ${id} deleted successfully.`);
-          // Reload exams data after deletion
-          this.loadExams();
-        }, error => {
-          console.error('Error deleting exam:', error);
-        });
-    }
+   this.openPopupExam(id);
   }
   
   

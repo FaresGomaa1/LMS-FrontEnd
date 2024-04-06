@@ -8,6 +8,8 @@ import { IExam } from '../../interface/i-exam';
 import { IQuestion } from '../../interface/iquestion';
 import { IStudent } from '../../interface/istudent';
 import { map, tap } from 'rxjs';
+import { PopupComponent } from '../core/popup/popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-view-exam-questions',
@@ -21,7 +23,7 @@ export class ViewExamQuestionsComponent {
   currentDate: Date = new Date();
   students: IStudent[];
   constructor(private route: ActivatedRoute, private rou : Router, private examService: ExamService , 
-    private CourseService : CourseService
+    private CourseService : CourseService ,    private dialog: MatDialog
     ,private QuestionService : QuestionService) {
       this.students = [];
      }
@@ -37,18 +39,20 @@ export class ViewExamQuestionsComponent {
     this.loadStudentsResults(this.exam_Id);  
   }
   
-  
+  openPopupExam(examId: number, course_ID: number ) {
+    const dialogRef = this.dialog.open(PopupComponent, {
+        width: '400px',
+        height: '230px',
+        data: { id: examId, objectType: 'exam' },
+    });
+
+     dialogRef.componentInstance.itemDeleted.subscribe(() => {
+      this.rou.navigate(['/instructor/shared/courseDetails',course_ID ]);
+     });
+}
  
   deleteExam(id: number, course_ID: number) {
-    if (confirm('Are you sure you want to delete this exam?')) {
-      this.examService.deleteExam(id)
-        .subscribe(() => {
-          console.log(`Exam with ID ${id} deleted successfully.`);
-           this.rou.navigate(['/instructor/shared/courseDetails', course_ID]);
-        }, error => {
-          console.error('Error deleting exam:', error);
-        });
-    }
+    this.openPopupExam(id, course_ID);
   }
   
   getMaxChoices(): number[] {
@@ -130,6 +134,18 @@ export class ViewExamQuestionsComponent {
     return this.currentPage < totalPages;
   }
 
+  openPopupQuestion(questionId: number) {
+    const dialogRef = this.dialog.open(PopupComponent, {
+        width: '400px',
+        height: '230px',
+        data: { id: questionId, objectType: 'question' },
+    });
+
+     dialogRef.componentInstance.itemDeleted.subscribe(() => {
+      this.loadQuestions();
+     });
+}
+
   loadStudentsResults(examId: number) {
     console.log('Exam ID:', examId);  
    
@@ -205,16 +221,10 @@ nextPage2(): void {
     return Array(count).fill(null);
   }
   deleteQuestion(id: number) {
-    if (confirm('Are you sure you want to delete this question?')) {
-      this.QuestionService.deleteQuestion(id)
-        .subscribe(() => {
-          console.log(`Question with ID ${id} deleted successfully.`);
-          // Refresh the list of questions after deletion
-          this.loadQuestions();
-        }, error => {
-          console.error('Error deleting question:', error);
-        });
-    }}
+
+
+    this.openPopupQuestion(id) 
+  }
   
 
   loadQuestions() {

@@ -26,6 +26,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AddQuestionComponent } from './components/core/add-question/add-question.component';
 import { AddNewQuesComponent } from './components/core/add-new-ques/add-new-ques.component';
 import { CourseStudentsComponent } from './components/core/course-students/course-students.component';
+import { PopupComponent } from './components/core/popup/popup.component';
 
 const instructorRoutes: Routes = [
   {path: '', redirectTo: 'shared/profile', pathMatch: 'full'},
@@ -81,6 +82,7 @@ const instructorRoutes: Routes = [
     AllExamsComponent,
     AddNewQuesComponent,
     CourseStudentsComponent,
+    PopupComponent,
   ],
   imports: [
     CommonModule,
