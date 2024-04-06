@@ -45,7 +45,7 @@ export class EventService {
           if (instructor) {
             return this.courseService.getAllCourses()
               .pipe(
-                map(courses => courses.filter(course => instructor.courseName.includes(course.name)))
+                map(courses => courses.filter(course => instructor.courseIDs.includes(course.id)))
               );
           }
           return [];
@@ -58,10 +58,10 @@ export class EventService {
     return this.getInstructorCourses(instructorId)
       .pipe(
         switchMap(courses => {
-          const courseNames = courses.map(course => course.name);
+          const coursesIDs = courses.map(course => course.id);
           return this.getAllEvents().pipe(
             map(events => events.filter(event => {
-              return event.coursesName.some(courseName => courseNames.includes(courseName));
+              return event.coursesIDs.some(id => coursesIDs.includes(id));
             }))
           );
         })

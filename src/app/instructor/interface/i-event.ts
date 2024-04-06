@@ -6,4 +6,5 @@ export interface IEvent {
     description: string;
     hyperLink:string;
     coursesName:string[]
+    coursesIDs: number[]
 }

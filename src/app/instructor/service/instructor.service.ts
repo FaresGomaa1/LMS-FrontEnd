@@ -26,11 +26,11 @@ export class InstructorService implements OnInit {
 
   }}
 
-  addCourseToInstructor(id: number = this.userId, courseName: string): Observable<any> {
+  addCourseToInstructor(id: number = this.userId, courseid: number): Observable<any> {
     const url = 'http://localhost:5050/Instructor/addCourse';
     const payload = {
       instructorId: id,
-      courseName: [courseName]
+      courseIDs: [courseid]
     };
     
     return this.HttpClient.post(url, payload);

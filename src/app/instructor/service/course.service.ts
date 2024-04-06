@@ -21,7 +21,18 @@ export class CourseService {
     return this.http.get<ICourse>(`${this.baseURL}/${id}`);
   }
 
- 
+  getLastCourseWithName(name: string): Observable<ICourse | null> {
+    return this.http.get<ICourse[]>(`${this.baseURL}?name=${name}`).pipe(
+      map(courses => {
+        if (courses && courses.length > 0) {
+          return courses.reduce((prev, current) => (current.id > prev.id ? current : prev));
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
   getCourseByName(name: string): Observable<ICourse[]> {
     const params = new HttpParams().set('name', name);
     return this.http.get<ICourse[]>(this.baseURL, { params });
@@ -31,8 +42,8 @@ export class CourseService {
 
   addCourse(course: FormData, instructorId: number): Observable<ICourse> {
     // Append instructorId as a query parameter
-    const params = new HttpParams().set('instructorId', instructorId.toString());
-    return this.http.post<ICourse>(this.baseURL, course, { params });
+  //  const params = new HttpParams().set('instructorId', instructorId.toString());
+    return this.http.post<ICourse>(this.baseURL, course);
   }
   updateCourse(course: ICourse, id: number): Observable<ICourse> {
     return this.http.put<ICourse>(`${this.baseURL}/${id}`, course);

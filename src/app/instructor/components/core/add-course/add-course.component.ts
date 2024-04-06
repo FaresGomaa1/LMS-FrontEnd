@@ -207,17 +207,48 @@ export class AddCourseComponent implements OnInit , OnDestroy {
         }
 
         console.log(formData);
+        // if (this.CourseForm.valid) {
+        //   this.CourseService.addCourse(formData, this.instructorId).subscribe((addedCourse) => {
+        //     console.log('Success');
+        //     const courseId = addedCourse.id; // Accessing the ID of the added course
+        //     console.log(courseId);
+
+        //     this.instructorService.addCourseToInstructor(this.instructorId, courseId)
+        //       .subscribe(() => {
+        //         console.log('Instructor course list updated');
+        //         this.router.navigate(['/instructor/shared/InstructorCourses']);
+        //       });
+        //   });
+        // }
 
         if (this.CourseForm.valid) {
-            this.CourseService.addCourse(formData, this.instructorId).subscribe(() => {
-              console.log('Success');
-              this.instructorService.addCourseToInstructor(this.instructorId, this.CourseForm.value.name)
-                .subscribe(() => {
-                  console.log('Instructor course list updated');
-                  this.router.navigate(['/instructor/shared/InstructorCourses']);
-                });
+          this.CourseService.addCourse(formData, this.instructorId).subscribe(() => {
+            console.log('Success');
+            
+            // Fetch the last course with the specified name
+            this.CourseService.getAllCourses().subscribe((courses: ICourse[]) => {
+              if (courses && courses.length > 0) {
+                const lastCourse = courses[courses.length - 1]; // Get the last course
+                const courseId = lastCourse.id;
+                this.instructorService.addCourseToInstructor(this.instructorId, courseId)
+                  .subscribe(() => {
+                    console.log('Instructor course list updated');
+                    this.router.navigate(['/instructor/shared/InstructorCourses']);
+                  });
+              } else {
+                console.log('No courses found.');
+              }
             });
-          }
+            
+            
+          });
+        }
+        
+        
+
+      
+        
+        
     }
 
     // ngOnDestroy(): void {
