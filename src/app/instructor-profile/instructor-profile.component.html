@@ -25,8 +25,8 @@
         <div class="card-body">
           <h5 class="card-title larger-font">Courses</h5>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item larger-font" *ngFor="let course of instructor.courseName">
-              <span class="course-name">{{ course }}</span>
+            <li class="list-group-item larger-font" *ngFor="let course of instructorCourse">
+              <span class="course-name" (click)="checkEnrollment(course.id)">{{ course }}</span>
             </li>
           </ul>
         </div>
