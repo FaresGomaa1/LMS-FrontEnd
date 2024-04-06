@@ -15,7 +15,7 @@ export class InstructorProfileComponent implements OnInit {
   tokenKey = 'auth_token';
   instructorId!: number;
   instructor!: IInstructor;
-  instructorCourse: any
+  instructorCourse: any[] = []
 studentId!:number
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +47,7 @@ studentId!:number
             for(let i = 0; i < ins.courseIDs.length; i++){
               this.courseService.getCourseById(ins.courseIDs[i]).subscribe((course)=>{
                 this.instructorCourse.push(course)
+                console.log(this.instructorCourse)
               })
             }
           });

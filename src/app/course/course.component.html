@@ -24,7 +24,7 @@
             <h2 class="card-title" style="font-weight: bold">{{ course.name }}</h2>
           </div>
           <p class="card-text description">{{ course.description }}</p>
-          <a href="{{ 'http://localhost:4200/coursedetails/' + course.id }}" target="_blank" class="btn btn-success me-2">View Details</a>
+          <a [routerLink]="['/coursedetails/', course.id]" target="_blank" class="btn btn-success me-2">View Details</a>
         </div>
       </div>
     </div>
