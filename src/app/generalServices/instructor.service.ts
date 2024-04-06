@@ -55,15 +55,14 @@ export class InstructorService {
     );
   }
 
-  getInstructorForSpecificCourse(courseName: string): Observable<number> {
+  getInstructorForSpecificCourse(courseId: number): Observable<number> {
     return this.getAllInstructors().pipe(
       map((allInstructors) => {
         let instructorId: number = 0;
         for (let i = 0; i < allInstructors.length; i++) {
-          for (let j = 0; j < allInstructors[i].courseName.length; j++) {
-            if (allInstructors[i].courseName[j] === courseName) {
+          for (let j = 0; j < allInstructors[i].courseIDs.length; j++) {
+            if (allInstructors[i].courseIDs[j] === courseId) {
               instructorId = allInstructors[i].id;
-              console.log("getInstructorForSpecificCourse",instructorId)
               return instructorId; 
             }
           }

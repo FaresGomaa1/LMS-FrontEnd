@@ -63,11 +63,12 @@ export class ExamsComponent implements OnInit {
                 allExams[i].duration
               )
             ) {
-              for (let k = 0; k < this.studentExamIds.length; k++) {
-                if (this.studentExamIds[k] !== allExams[i].id) {
+              for (let k = 0; k < this.studentExamIds.length; k++){
+                if (this.studentExamIds[k] !== allExams[i].id){
                   this.studentExams.push(allExams[i]);
                 }
               }
+             
             }
           }
         }
@@ -103,17 +104,16 @@ export class ExamsComponent implements OnInit {
       examSecs
     );
     let examEndTime = examTimeInMins + exam.duration;
-
     if (
       currentDate.getFullYear() < examDate.getFullYear() ||
       currentDate.getMonth() + 1 < examDate.getMonth() + 1 ||
-      currentDate.getDay() < examDate.getDay()
+      currentDate.getDate() < examDate.getDate()
     ) {
       return false;
     } else if (
       currentDate.getFullYear() == examDate.getFullYear() ||
       currentDate.getMonth() + 1 == examDate.getMonth() + 1 ||
-      currentDate.getDay() == examDate.getDay()
+      currentDate.getDate() == examDate.getDate()
     ) {
       if (currentTimeInMins < examTimeInMins) {
         return false;

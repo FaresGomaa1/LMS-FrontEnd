@@ -11,4 +11,5 @@ export interface IInstructor {
   imageFile: string;
   specialization: string;
   courseName: string[];
+  courseIDs: number[];
   }
