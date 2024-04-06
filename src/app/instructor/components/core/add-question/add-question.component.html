@@ -42,12 +42,12 @@
             <div *ngFor="let index of getArrayFromNumber(QuestionForm.get('selectNumber')?.value)">
               <div class="form-group">
                 <label for="choosesName{{index}}">Choose {{ index + 1 }}</label>
-                <div class="input-group mb-4">
+               
                   <input type="text" [id]="'choosesName' + index"
                          [formControl]="getChooseControl(index)" class="form-control"
                          placeholder="Choose {{ index + 1 }}..." required
                          [ngClass]="{'is-valid': getChooseControl(index).valid, 'is-invalid': getChooseControl(index).invalid && getChooseControl(index).touched}" />
-                </div>
+             
                 <div class="invalid-feedback error-message"
                      *ngIf="getChooseControl(index)?.errors && getChooseControl(index)?.touched">
                   <ng-container *ngIf="getChooseControl(index)?.hasError('required')">Choose is required</ng-container>
@@ -83,6 +83,9 @@
                       <ng-container *ngIf="getFormControl('correctAnswer').hasError('minlength')">correctAnswer must
                           be at least 3
                           characters</ng-container>
+                          <ng-container *ngIf="getFormControl('correctAnswer').hasError('incorrectAnswer')">correctAnswer must
+                            be one of the choises
+                            characters</ng-container>
                   </div>
               </span>
 

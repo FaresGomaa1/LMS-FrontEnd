@@ -40,7 +40,7 @@ export class EditProfileComponent implements OnInit , OnDestroy {
         ]),
         password: new FormControl('', [
           Validators.required,
-          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&#^()_]{8,}$/)
       ]),
       email: new FormControl('', [
         Validators.required ,   Validators.email
@@ -101,7 +101,7 @@ export class EditProfileComponent implements OnInit , OnDestroy {
                                           instructor.phone
                                         );
                       this.selectedFile = instructor.imageFile;
-                      this.courses = instructor.courseName;
+                      this.courses = instructor.courseIDs;
                   }
               );
           })
@@ -110,7 +110,7 @@ export class EditProfileComponent implements OnInit , OnDestroy {
   
  
 
-  courses: string[] = [];
+  courses: number[] = [];
   getInstructorById(): void {
     this.myActionSub = this.instuctorServce.getById(this.instructorId).subscribe(
       (instructor: IInstructor) => {
@@ -128,7 +128,7 @@ export class EditProfileComponent implements OnInit , OnDestroy {
         });
         // this.courses = instructor.courseName;  
         this.selectedFile = instructor.imageFile;
-        this.courses = instructor.courseName;
+        this.courses = instructor.courseIDs;
       },
       error => {
         console.error('Error fetching instructor:', error);
@@ -153,7 +153,7 @@ onSubmit(): void {
     formData.append('imageFile', this.selectedFile);
 
     for (const course of this.courses) {
-      formData.append('courseName[]', course);
+      formData.append('courseIDs[]', course.toString());
   }
     this.instuctorServce.Update(this.instructorId, formData).subscribe(
       () => {

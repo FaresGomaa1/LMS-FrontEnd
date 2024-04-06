@@ -26,11 +26,7 @@ export class ExamService {
   }
  
 
-  // addExam(examData: any): Observable<number> {
-  //   return this.httpClient.post<any>(this.baseURL, examData).pipe(
-  //     map(response => response.id) 
-  //   );
-  // }
+ 
 
   addExam(examData: IExam): Observable<IExam> {
     return this.httpClient.post<IExam>(this.baseURL, examData);
@@ -50,10 +46,36 @@ export class ExamService {
   baseURL2: string = 'http://localhost:5050/Question';  
 
   
-  
-  updateExam(id: number, exam: IExam): Observable<IExam> {
-    return this.httpClient.put<IExam>(`${this.baseURL}/${id}`, exam);
+   
+  updateExam(id: number, exam: IExam): Observable<IExam> { 
+    const { allQuestion, ...examWithoutQuestions } = exam;
+   
+    return this.httpClient.put<IExam>(`${this.baseURL}/${id}`, {
+      ...examWithoutQuestions,
+      allQuestion: []
+    });
   }
+
+  updateExamWithQuestions(id: number, exam: IExam, newQuestion: any): Observable<IExam> {
+    const { allQuestion, ...examWithoutQuestions } = exam;
+  
+   
+    const updatedQuestions = [
+      {
+        question: newQuestion.question,
+        questionType: newQuestion.questionType,
+        correctAnswer: newQuestion.correctAnswer,
+        choosesName: newQuestion.choosesName  
+      }
+    ];
+  
+    return this.httpClient.put<IExam>(`${this.baseURL}/${id}`, {
+      ...examWithoutQuestions,
+      allQuestion: updatedQuestions
+    });
+  }
+  
+  
 
   deleteExam(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.baseURL}/${id}`);

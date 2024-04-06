@@ -40,22 +40,29 @@ export class AddQuestionComponent implements OnInit {
           selectNumber: ['', Validators.required],
           choosesName: this.fb.array([]),
           questionType: ['', Validators.required],
-          correctAnswer: ['', [Validators.required]]
+          correctAnswer: ['', [Validators.required ]]
           // courseName: ['', Validators.required],
+      });
+      this.QuestionForm.get('choosesName')?.valueChanges.subscribe(() => {
+        this.QuestionForm.get('correctAnswer')?.setValidators(this.correctAnswerValidator(this.choosesName));
+        this.QuestionForm.get('correctAnswer')?.updateValueAndValidity();
       });
   }
 
-  correctAnswerValidator(choicesArray: FormArray): ValidatorFn {
+  correctAnswerValidator(choosesName: FormArray): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const correctAnswer = control.value;
-      const isCorrectAnswerValid = choicesArray.value.includes(correctAnswer);
-      if (!correctAnswer || !isCorrectAnswerValid) {
-        return { incorrectAnswer: true };
+      const choices = choosesName.value;
+  
+      if (choices.includes('a')) {
+        return null; // valid
+      } else {
+        return { 'incorrectAnswer': true }; // invalid
       }
-      return null;
     };
   }
   
+
 
   ngOnInit(): void {
    
@@ -140,9 +147,18 @@ console.log(this.QuestionForm.value);
 
           this.openPopup(); 
       } else {
+        this.markFormGroupTouched(this.QuestionForm);
       }
   }
-
+  markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+        if (control instanceof FormGroup) {
+            this.markFormGroupTouched(control);
+        } else {
+            control.markAsTouched();
+        }
+    });
+}
   ngOnDestroy(): void {}
 
 }

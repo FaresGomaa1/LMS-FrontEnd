@@ -18,7 +18,7 @@ export class EditExamComponent implements OnInit, OnDestroy {
   id: number = 0;
   selectTime: any;
   private myActionSub: Subscription | undefined;
-  allQuestions: IQuestion[] = [];
+  allQuestions: any[] = [];
   constructor(
     private examService: ExamService,
     private router: Router,
@@ -58,9 +58,10 @@ export class EditExamComponent implements OnInit, OnDestroy {
           max_Degree: exam.max_Degree,
           min_Degree: exam.min_Degree,
           courseName: exam.courseName,
-          date: exam.date
+          date: exam.date,
+          course_ID : exam.course_ID
         });
- 
+        this.allQuestions= exam.allQuestion;
       });
     });
   }
@@ -104,27 +105,21 @@ export class EditExamComponent implements OnInit, OnDestroy {
     const formattedTime = this.formatTime(this.ExamForm.get('time')?.value);
     this.ExamForm.get('time')?.setValue(formattedTime);
     console.log(this.ExamForm.value);
-
-    if (this.ExamForm.valid) {
-        console.log(2);
-
-      const examData = this.ExamForm.value;
-      
+    console.log(this.allQuestions);
  
 
-      const examPayload = {
-        ...examData,
-        course_ID: examData.course_ID, 
+if (this.ExamForm.valid) {
+  const examData = this.ExamForm.value;
+  const examPayload = {
+    ...examData
+  };
 
-      };
- 
-      this.examService.updateExam(this.id, examPayload).subscribe(() => {
- 
-        this.router.navigate(['/exam']);
-      }, (error) => {
-        console.error('Error updating exam:', error);
-       
-      });
+  this.examService.updateExam(this.id, examPayload).subscribe(() => {
+    this.router.navigate(['/instructor/shared/viewQuestions', this.id]);
+  }, (error) => {
+    console.error('Error updating exam:', error);
+  });
+
     } else {
       
     }

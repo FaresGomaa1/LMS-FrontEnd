@@ -11,7 +11,7 @@ import { InstructorService } from 'src/app/instructor/service/instructor.service
   styleUrls: ['./instructor-courses.component.scss']
 })
 export class InstructorCoursesComponent implements OnInit {
-  instructorCourses: ICourse[] | undefined;
+  instructorCourses: ICourse[] =[];
   
   tokenKey = 'auth_token';
   userId: number = 0;
@@ -81,6 +81,61 @@ export class InstructorCoursesComponent implements OnInit {
         console.log("erroorrr");
       }
     );
+  }
+
+  calculateEndIndex(): number {
+    return Math.min(this.currentPage * this.coursesPerPage, this.instructorCourses.length);
+  }
+
+  // Method to calculate the start index for pagination
+  calculateStartIndex(): number {
+    return (this.currentPage - 1) * this.coursesPerPage + 1;
+  }
+
+  currentPage: number = 1;
+  coursesPerPage: number = 7;
+  get paginatedCourses(): ICourse[] {
+    const startIndex = (this.currentPage - 1) * this.coursesPerPage;
+    const endIndex = Math.min(startIndex + this.coursesPerPage, this.instructorCourses.length);
+    return this.instructorCourses.slice(startIndex, endIndex);
+  }
+
+  getStartIndex(): number {
+    return (this.currentPage - 1) * this.coursesPerPage + 1;
+  }
+  
+  getEndIndex(): number {
+    return Math.min(this.currentPage * this.coursesPerPage, this.instructorCourses.length);
+  }
+  
+
+
+  hasNextPage(): boolean {
+    return (this.currentPage * this.coursesPerPage) < this.instructorCourses.length;
+  }
+
+  hasPrevPage(): boolean {
+    return this.currentPage > 1;
+  }
+
+  nextPage(): void {
+    if (this.hasNextPage()) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage(): void {
+    if (this.hasPrevPage()) {
+      this.currentPage--;
+    }
+  }
+
+  noCourses: boolean = false;
+
+ 
+
+  totalPages() {
+    return Math.ceil(this.instructorCourses.length / this.coursesPerPage) ;
   }
 
   openMaterialtLink(course: ICourse): void {

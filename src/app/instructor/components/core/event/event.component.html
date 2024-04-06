@@ -4,9 +4,9 @@
       <div class="col-12 col-sm-8 col-lg-6">
         <!-- Section Heading-->
         <div class="section_heading text-center">
-          <h1>Your Events</h1>
-          <h3>Our Upcoming and past Events will be Here</h3>
-          <div class="line"></div>
+          <h1 style="font-family: 'Roboto', sans-serif; font-size: 36px; color: #333;">Your Events</h1>
+          <h3 style="font-family: 'Roboto', sans-serif; font-size: 24px; color: #666;">Our Upcoming and Past Events</h3>
+          <div class="line" style="background-color: #143f21; height: 3px; width: 50px; margin: 20px auto;"></div>
         </div>
       </div>
     </div>
@@ -17,27 +17,29 @@
           <!-- Single Timeline Content-->
           <div class="single-timeline-area" *ngFor="let event of sortedEvents">
             <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s">
-              <p>{{ event.start_Date }}</p>
+              <p style="font-family: 'Roboto', sans-serif; font-size: 18px; color: #333;">{{ event.start_Date }}</p>
             </div>
             <div class="row">
               <div class="col-12 col-md-6 col-lg-12">
                 <div class="single-timeline-content d-flex wow fadeInLeft" [attr.data-wow-delay]="event.name" style="visibility: visible; animation-delay: 3" [ngClass]="{ 'event-past': isEventPast(event) }">
                   <div class="timeline-icon"><i class="fa {{ event.name }}" aria-hidden="true"></i></div>
                   <div class="timeline-text">
-                    <h6 style="font-size: 20px">{{ event.name }}</h6>
-                    <h6 style="font-size: 20px">{{ event.description }}</h6>
-                    <small> 
+                    <h4 style="font-size: 24px; font-family: 'Roboto', sans-serif; color: #333;">{{ event.name }}</h4>
+                    <p style="font-size: 18px; font-family: 'Roboto', sans-serif; color: #666;" class="mb-2">{{ event.description }}</p>
+                    <p style="font-size: 18px; font-family: 'Roboto', sans-serif; color: #666;"> Event in Course : {{ event.coursesName }}</p>
+                    <small style="font-size: 16px; font-family: 'Roboto', sans-serif; color: #888;"> 
                       <i class="fas fa-calendar-alt"></i> Ended on {{ event.end_Date }} 
                     </small>
-                    <button class="btn m-5"  style="background-color: rgb(122, 221, 122);" [disabled]="isEventFuture(event) || isEventPast(event)" (click)="openEventLink(event)">
+                    <button class="btn m-5"  style="background-color: #28a745; font-family: 'Roboto', sans-serif; font-size: 16px; color: #fff; padding: 8px 16px; border: none; border-radius: 4px;" [disabled]="isEventFuture(event) || isEventPast(event)" (click)="openEventLink(event)">
                       {{ isEventPast(event) ? 'Event Closed' : 'Go to Event' }}
-                    </button></div>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div *ngIf="events?.length == 0" class="text-center">
-            <p>No events available.</p>
+            <p style="font-family: 'Roboto', sans-serif; font-size: 18px; color: #333;">No events available.</p>
           </div>
         </div>
       </div>

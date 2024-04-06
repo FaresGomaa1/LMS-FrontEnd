@@ -1,50 +1,4 @@
-// .events-list {
-//   .event {
-//     background-color: #f9f9f9;
-//     margin-bottom: 20px;
-//     padding: 20px;
-//     border-radius: 10px;
-//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-//     transition: all 0.3s ease;
-    
-//     &:hover {
-//       box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-//     }
 
-//     .event-header {
-//       display: flex;
-//       justify-content: space-between;
-//       align-items: center;
-//       margin-bottom: 10px;
-
-//       h3 {
-//         margin: 0;
-//         font-size: 1.5rem;
-//         color: #333;
-//       }
-
-//       .event-date {
-//         font-size: 1rem;
-//         color: #666;
-//         i {
-//           margin-right: 5px;
-//         }
-//       }
-//     }
-
-//     .event-body {
-//       p {
-//         margin: 0;
-//         font-size: 1rem;
-//         color: #555;
-//       }
-//     }
-//   }
-// }
- 
-// .event-past .event-header h3 {
-//   color: red; /* Change color to red for past events */
-// }
 
 body {
   margin-top: 20px;
@@ -109,6 +63,78 @@ body {
   z-index: 5;
   margin-top: -5.5px;
 }
+
+.custom-font {
+  font-family: 'Arial', sans-serif; /* Choose your desired font family */
+  font-size: 16px; /* Adjust the font size as needed */
+  font-weight: bold; /* Set the font weight if desired */
+  color: #333; /* Set the font color */
+  /* Add any other desired font styles */
+}
+
+.apland-timeline-area {
+  margin-top: 40px;
+}
+
+.single-timeline-area {
+  margin-bottom: 30px;
+}
+
+.timeline-date p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.single-timeline-content {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.single-timeline-content .timeline-icon {
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.event-name {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.event-courses{
+  font-size: 30px;
+  margin-bottom: 10px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.event-description {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.event-date {
+  font-size: 16px;
+  color: #0c4439;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn.disabled {
+  background-color: #ccc;
+}
+
+.btn:hover {
+  background-color: #88db87;
+  color: #fff;
+}
+
 .single-timeline-area .timeline-date p {
   margin-bottom: 0;
   color: #020710;
@@ -164,7 +190,7 @@ body {
 }
 .single-timeline-area .single-timeline-content:hover .timeline-text h6,
 .single-timeline-area .single-timeline-content:focus .timeline-text h6 {
-  color: #3f43fd;
+  color: #579765;
 }
 .event-past .timeline-text {
   color: rgb(126, 22, 22);

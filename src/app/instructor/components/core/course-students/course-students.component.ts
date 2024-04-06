@@ -20,11 +20,41 @@ export class CourseStudentsComponent {
 
     this.getCourseStudents(this.courseId);
   }
+ 
+  currentPage: number = 1;
+  studentsPerPage: number = 7;
+
+  get paginatedStudents() {
+    const startIndex = (this.currentPage - 1) * this.studentsPerPage;
+    const endIndex = startIndex + this.studentsPerPage;
+    return this.courseStudents.slice(startIndex, endIndex);
+  }
+
+  prevPage() {
+    if (this.hasPrevPage()) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage()) {
+      this.currentPage++;
+    }
+  }
+
+  hasPrevPage(): boolean {
+    return this.currentPage > 1;
+  }
+
+  hasNextPage(): boolean {
+    return this.currentPage < Math.ceil(this.courseStudents.length / this.studentsPerPage);
+  }
+
 
   getCourseStudents(id: number): void {
     console.log(id);
     (id);
-    this.studentService.getStudentsByCourseId(id) // Pass the id parameter here
+    this.studentService.getStudentsByCourseId(id) 
       .subscribe(
         students => {
           this.courseStudents = students;

@@ -92,6 +92,44 @@ export class ViewExamQuestionsComponent {
     }
     return false;
   }
+
+ 
+  currentPage = 1;
+  pageSize = 7; // Number of questions per page
+
+   
+  getPaginatedQuestions(): any[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.questions.slice(startIndex, endIndex);
+  }
+
+   
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  
+  nextPage() {
+    const totalPages = Math.ceil(this.questions.length / this.pageSize);
+    if (this.currentPage < totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  // Function to check if there's a previous page
+  hasPrevPage(): boolean {
+    return this.currentPage > 1;
+  }
+
+  
+  hasNextPage(): boolean {
+    const totalPages = Math.ceil(this.questions.length / this.pageSize);
+    return this.currentPage < totalPages;
+  }
+
   loadStudentsResults(examId: number) {
     console.log('Exam ID:', examId);  
    
@@ -118,7 +156,49 @@ export class ViewExamQuestionsComponent {
   
   
   
-  
+  currentPage2: number = 1; 
+studentsPerPage: number = 7; 
+
+ 
+getStartIndex(): number {
+  return (this.currentPage2 - 1) * this.studentsPerPage + 1;
+}
+
+ 
+getEndIndex(): number {
+  return Math.min(this.currentPage2 * this.studentsPerPage, this.students.length);
+}
+
+ 
+getPaginatedStudents(): any[] {
+  const startIndex = (this.currentPage2 - 1) * this.studentsPerPage;
+  const endIndex = startIndex + this.studentsPerPage;
+  return this.students.slice(startIndex, endIndex);
+}
+
+ 
+hasPrevPage2(): boolean {
+  return this.currentPage2 > 1;
+}
+
+ 
+hasNextPage2(): boolean {
+  return this.currentPage2 < Math.ceil(this.students.length / this.studentsPerPage);
+}
+
+ 
+prevPage2(): void {
+  if (this.hasPrevPage()) {
+    this.currentPage2--;
+  }
+}
+
+ 
+nextPage2(): void {
+  if (this.hasNextPage()) {
+    this.currentPage2++;
+  }
+}
   
 
   getEmptyCells(count: number): any[] {

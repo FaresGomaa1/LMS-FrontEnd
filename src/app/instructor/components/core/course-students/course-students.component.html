@@ -1,5 +1,6 @@
-<div *ngIf="courseStudents.length > 0" class="container">
-    <h2 class="text-center">Students in the Course</h2>
+<div class="container">
+  <h2 class="text-center">Students in the Course</h2>
+  <div *ngIf="courseStudents.length > 0" class="table-responsive">
     <table class="table table-bordered">
       <thead class="table header">
         <tr> 
@@ -12,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let student of courseStudents"> 
+        <tr *ngFor="let student of paginatedStudents"> 
           <td>{{ student.name }}</td>
           <td>{{ student.age }}</td>
           <td>{{ student.title }}</td>
@@ -21,10 +22,16 @@
           <td><a href="mailto:{{ student.email }}" class="btn btn-success">Send Email</a></td>
         </tr>
       </tbody>
+
     </table>
+    <div class="text-center">
+      <button class="btn btn-default" (click)="prevPage()" [disabled]="!hasPrevPage()">Previous</button>
+      <button class="btn btn-default" (click)="nextPage()" [disabled]="!hasNextPage()">Next</button>
+    </div>
   </div>
-  
-  <div *ngIf="courseStudents.length === 0" class="container text-center">
+  <div *ngIf="courseStudents.length === 0" class="text-center">
     <h1>No students found in the course.</h1>
   </div>
-  
+  <!-- Pagination controls -->
+
+</div>

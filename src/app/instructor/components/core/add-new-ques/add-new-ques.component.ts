@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from 'src/app/instructor/service/question.service';
+import { IExam } from 'src/app/instructor/interface/i-exam';
 
 @Component({
   selector: 'app-add-new-ques',
@@ -36,6 +37,22 @@ export class AddNewQuesComponent implements OnInit {
           correctAnswer: ['', [Validators.required]]
           // courseName: ['', Validators.required],
       });
+
+      this.ExamForm = new FormGroup({
+        name: new FormControl('', [
+          Validators.required,
+          Validators.minLength(3),
+        ]),
+        duration: new FormControl('', Validators.required),
+        time: new FormControl('', Validators.required),
+        max_Degree: new FormControl('', Validators.required),
+        min_Degree: new FormControl('', Validators.required),
+        course_ID: new FormControl('', Validators.required),
+     //   courseName: new FormControl('', Validators.required),
+        date: new FormControl('', [
+          Validators.required 
+        ]),
+        });
   }
 
   correctAnswerValidator(choicesArray: FormArray): ValidatorFn {
@@ -48,13 +65,28 @@ export class AddNewQuesComponent implements OnInit {
       return null;
     };
   }
-  
+  ExamForm!: FormGroup;
 examId!:number;
+allQuestions: any[] = [];
   ngOnInit(): void {
    
-
-    this.examId = this.actRoute.snapshot.params['examId'];
-      
+    this.actRoute.params.subscribe((params) => {
+      this.examId = params['examId'];
+      this.ExamService.getExamById(this.examId).subscribe((exam: IExam) => {
+     
+        this.ExamForm.patchValue({
+          name: exam.name,
+          duration: exam.duration,
+          time: exam.time,
+          max_Degree: exam.max_Degree,
+          min_Degree: exam.min_Degree,
+          courseName: exam.courseName,
+          date: exam.date,
+          course_ID : exam.course_ID
+        });
+        this.allQuestions= exam.allQuestion;
+      });
+    });
 
       this.QuestionForm.get('selectNumber')?.valueChanges.subscribe(
           (value: number) => {
@@ -91,24 +123,33 @@ examId!:number;
  
 
   onSubmit(e: Event) {
-      e.preventDefault();
-      console.log(this.QuestionForm.value);
-
-      if (this.QuestionForm.valid) {
-          const questionData = this.QuestionForm.value;
-          // const courseId = questionData.courseName.id;
-
-          const questions = {
-              ...questionData
-          };
-
-          console.log(questions);
-    
-         
-      } else {
-      }
+    e.preventDefault();
+  
+    if (this.QuestionForm.valid) {
+      const questionData = this.QuestionForm.value;
+  
+      // Construct the new question object
+      const newQuestion = {
+        question: questionData.question,
+        questionType: questionData.questionType,
+        correctAnswer: questionData.correctAnswer,
+        choosesName: questionData.choosesName
+      };
+  
+      // Get the exam data from the form
+      const examData = this.ExamForm.value;
+  
+      // Update exam with new question
+      this.ExamService.updateExamWithQuestions(this.examId, examData, newQuestion).subscribe(() => {
+        this.router.navigate(['/instructor/shared/viewQuestions', this.examId]);
+      }, (error) => {
+        console.error('Error updating exam:', error);
+      });
+    }
+  }
+  
+      ngOnDestroy(): void {};
   }
 
-  ngOnDestroy(): void {}
 
-}
+
