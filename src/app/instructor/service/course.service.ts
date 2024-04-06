@@ -75,11 +75,26 @@ export class CourseService {
     );
   }
 
-  getStudentsByCourseId(courseId: number): Observable<IStudent[]> {
-    const url = `http://localhost:5050/Student?courseId=${courseId}`;  
-    return this.http.get<IStudent[]>(url);
+  // getStudentsByCourseId(courseId: number): Observable<IStudent[]> {
+  //   const url = `http://localhost:5050/Student?courseId=${courseId}`;  
+  //   return this.http.get<IStudent[]>(url);
+  // }
+
+  containsCourseId(examIds: number[] =[], courseId: number): boolean {
+    for (const id of examIds) {
+      if (id == courseId) {
+        return true;
+      }
+    }
+    return false;
   }
- 
+  
+  getStudentsByCourseId(courseId: number): Observable<IStudent[]> {
+    return this.getAllStudents().pipe(
+      map(students => students.filter(student => this.containsCourseId(student.courseIDs , courseId)))
+    );
+  }
+  
   getCourseEnrolledStudentsDetails(courseId: number): Observable<IStudent[]> {
     return this.getStudentsByCourseId(courseId).pipe(
       catchError(error => {
