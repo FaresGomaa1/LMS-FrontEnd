@@ -41,10 +41,9 @@ export class ExamsComponent implements OnInit {
       for (let i = 0; i < std.examIDs.length; i++) {
         this.examService.getExamById(std.examIDs[i]).subscribe((exam) => {
           this.studentSolvedExams.push(exam);
-          if(std.results[i] < exam.min_Degree){
+          if (std.results[i] < exam.min_Degree) {
             this.Result.push(`Failed ${std.results[i]}`);
-          }
-          else {
+          } else {
             this.Result.push(`Passed ${std.results[i]}`);
           }
         });
@@ -53,28 +52,23 @@ export class ExamsComponent implements OnInit {
   }
   getExams() {
     this.examService.getAllExam().subscribe((allExams) => {
-      for (let i = 0; i < allExams.length; i++) {
-        for (let j = 0; j < this.courseIds.length; j++) {
-          if (allExams[i].course_ID === this.courseIds[j]) {
-            if (
-              this.examService.isExamDatePassed(
-                allExams[i].date,
-                allExams[i].time,
-                allExams[i].duration
-              )
-            ) {
-              for (let k = 0; k < this.studentExamIds.length; k++){
-                if (this.studentExamIds[k] !== allExams[i].id){
-                  this.studentExams.push(allExams[i]);
-                }
-              }
-             
+      // Filter out exams that are not in studentExamIds
+      const newExams = allExams.filter(exam => !this.studentExamIds.includes(exam.id));
+  
+      // Push filtered exams into studentExams
+      newExams.forEach(newExam => {
+        for (let i = 0; i < this.courseIds.length; i++) {
+          if (newExam.course_ID === this.courseIds[i]) {
+            if (this.examService.isExamDatePassed(newExam.date, newExam.time, newExam.duration)) {
+              this.studentExams.push(newExam);
+              break; // No need to check for other courseIds once exam is pushed
             }
           }
         }
-      }
+      });
     });
   }
+  
   startExam(examId: number): void {
     this.router.navigate(['instructions', examId]);
   }

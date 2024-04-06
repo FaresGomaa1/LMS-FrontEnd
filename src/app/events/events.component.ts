@@ -52,4 +52,20 @@ export class EventsComponent implements OnInit {
       });
     }
   }
+  openEventLink(event: IEvent): void {
+    if (!this.isEventFuture(event)) {
+      window.open(event.hyperLink, '_blank');
+    }
+  }
+  isEventFuture(event: IEvent): boolean {
+    const currentDate = new Date();
+    const startDate = new Date(event.start_Date); 
+    return startDate > currentDate;
+  }
+  
+  isEventPast(event: IEvent): boolean {
+    const currentDate = new Date();
+    const endDate = new Date(event.end_Date);
+    return endDate < currentDate;
+  }
 }

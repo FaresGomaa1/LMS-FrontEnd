@@ -31,6 +31,7 @@ import { InstructorProfileComponent } from './instructor-profile/instructor-prof
 import { NoneEnrolledCoursesComponent } from './course/none-enrolled-courses/none-enrolled-courses.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { InstructorSignUpComponent } from './log-in/instructor-sign-up/instructor-sign-up.component';
+import { ResultStyleDirective } from './exams/result-style.directive';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { InstructorSignUpComponent } from './log-in/instructor-sign-up/instructo
     NoneEnrolledCoursesComponent,
     LandingPageComponent,
     InstructorSignUpComponent,
+    ResultStyleDirective,
     
   ],
   imports: [

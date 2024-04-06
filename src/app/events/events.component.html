@@ -1,29 +1,63 @@
 <app-header></app-header>
-<div class="container" style="height: 500px;">
-  <h1 class="text-center">Upcoming Events</h1>
-  <div class="row">
-    <div *ngFor="let event of events" class="col-md-6 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{{ event.name }}</h5>
-          <p class="card-text">Start Date: {{ event.start_Date | date }}</p>
-          <p class="card-text">End Date: {{ event.end_Date | date }}</p>
-          <p class="card-text">{{ event.description }}</p>
-          <a [href]="event.hyperLink" class="btn btn-success btn-join">Join now</a>
-
+<section class="timeline_area section_padding_130">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-8 col-lg-6">
+        <!-- Section Heading-->
+        <div class="section_heading text-center">
+          <h1>Your Events</h1>
+          <h3>Our Upcoming and past Events will be Here</h3>
+          <div class="line"></div>
         </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <h3>Courses:</h3>
-            <ul class="list-unstyled">
-              <li *ngFor="let course of courses">
-                <a routerLink="/coursedetails/{{course.id}}">{{ course.name }}</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <!-- Timeline Area-->
+        <div class="apland-timeline-area">
+          <!-- Single Timeline Content-->
+          <div class="single-timeline-area" *ngFor="let event of events">
+            <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s">
+              <p>{{ event.start_Date }}</p>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-12">
+                <div
+                  class="single-timeline-content d-flex wow fadeInLeft"
+                  [attr.data-wow-delay]="event.name"
+                  style="visibility: visible; animation-delay: 3"
+                  [ngClass]="{ 'event-past': isEventPast(event) }"
+                >
+                  <div class="timeline-icon">
+                    <i class="fa {{ event.name }}" aria-hidden="true"></i>
+                  </div>
+                  <div class="timeline-text">
+                    <h6 style="font-size: 20px">{{ event.name }}</h6>
+                    <h6 style="font-size: 20px">{{ event.description }}</h6>
+                    <small>
+                      <i class="fas fa-calendar-alt"></i> Ended on
+                      {{ event.end_Date }}
+                    </small>
+                    <button
+                      class="btn m-5"
+                      style="background-color: rgb(122, 221, 122)"
+                      [disabled]="isEventFuture(event) || isEventPast(event)"
+                      (click)="openEventLink(event)"
+                    >
+                      {{ isEventPast(event) ? "Event Closed" : "Go to Event" }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="events?.length == 0" class="text-center">
+            <p>No events available.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+
 <app-footer></app-footer>

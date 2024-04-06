@@ -48,7 +48,7 @@
               <td>{{ exam.name }}</td>
               <td>{{ exam.max_Degree }}</td>
               <td>{{ exam.min_Degree }}</td>
-              <td>{{ Result[i] }}</td> 
+              <td [appResultStyle]="Result[i]">{{ Result[i] }}</td>
             </tr>
           </tbody>
         </table>

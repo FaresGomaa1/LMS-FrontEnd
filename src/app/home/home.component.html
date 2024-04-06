@@ -251,6 +251,7 @@
               class="img-fluid"
               src="{{ course?.userAttachmentPath }}"
               alt=""
+              style="width: 100%; height: 300px;"
             />
           </div>
 
@@ -300,11 +301,7 @@
                 [routerLink]="'/shared/instructorProfile/' + instructor?.id"
                 target="_blank"
               >
-                <img
-                  class="img-fluid"
-                  [src]="instructor?.userAttachmentPath"
-                  alt="Instructor Photo"
-                />
+              <img class="img-fluid" [src]="instructor?.userAttachmentPath" alt="Instructor Photo" style="width: 100%; height: 300px;">
               </a>
             </div>
             <div
