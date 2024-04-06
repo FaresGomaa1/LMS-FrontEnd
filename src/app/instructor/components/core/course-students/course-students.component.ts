@@ -16,12 +16,15 @@ export class CourseStudentsComponent {
 
   ngOnInit(): void {
     this.courseId = this.act.snapshot.params['courseId'];
+    console.log(this.courseId);
 
-    this.getCourseStudents();
+    this.getCourseStudents(this.courseId);
   }
 
-  getCourseStudents(): void {
-    this.studentService.getStudentsByCourseId(this.courseId)
+  getCourseStudents(id: number): void {
+    console.log(id);
+    (id);
+    this.studentService.getStudentsByCourseId(id) // Pass the id parameter here
       .subscribe(
         students => {
           this.courseStudents = students;
