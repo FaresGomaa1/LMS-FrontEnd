@@ -10,11 +10,11 @@
               <p class="card-title text-center mt-3 h1">Course Name : {{course.name}}</p>
           </div>
           <div class="card-bady text-center">
-            <p class="card-text mt-3 h3">
+            <p class="card-text mt-3 h5">
                 {{course.description}}
             </p>
           
-            <p class="card-text mt-3 h4">
+            <p class="card-text mt-3 h6">
              Number of students enrolled in this course : {{numberOfStudentsEnrolled}}
              <button class="btn btn-success" [routerLink]="['/instructor/shared/courseStudent', courseId]"> Students</button>
           </p>
