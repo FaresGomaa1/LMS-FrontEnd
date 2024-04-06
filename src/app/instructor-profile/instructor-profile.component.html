@@ -4,15 +4,25 @@
   <div class="row">
     <div class="col-lg-4">
       <div class="card">
-        <img src="{{ instructor.userAttachmentPath }}" class="card-img-top" alt="Instructor Image">
+        <img
+          src="{{ instructor.userAttachmentPath }}"
+          class="card-img-top customImage"
+          alt="Instructor Image"
+        />
         <div class="card-body">
           <h5 class="card-title larger-font">{{ instructor.name }}</h5>
           <p class="card-text larger-font">{{ instructor.specialization }}</p>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item larger-font"><i class="fas fa-envelope me-2"></i>{{ instructor.email }}</li>
-          <li class="list-group-item larger-font"><i class="fas fa-phone me-2"></i>{{ instructor.phone }}</li>
-          <li class="list-group-item larger-font"><i class="fas fa-map-marker-alt me-2"></i>{{ instructor.address }}</li>
+          <li class="list-group-item larger-font">
+            <i class="fas fa-envelope me-2"></i>{{ instructor.email }}
+          </li>
+          <li class="list-group-item larger-font">
+            <i class="fas fa-phone me-2"></i>{{ instructor.phone }}
+          </li>
+          <li class="list-group-item larger-font">
+            <i class="fas fa-map-marker-alt me-2"></i>{{ instructor.address }}
+          </li>
         </ul>
       </div>
     </div>
@@ -25,8 +35,13 @@
         <div class="card-body">
           <h5 class="card-title larger-font">Courses</h5>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item larger-font" *ngFor="let course of instructorCourse">
-              <span class="course-name" (click)="checkEnrollment(course.id)">{{ course.name }}</span>
+            <li
+              class="list-group-item larger-font"
+              *ngFor="let course of instructorCourse"
+            >
+              <span class="course-name" (click)="checkEnrollment(course.id)">{{
+                course.name
+              }}</span>
             </li>
           </ul>
         </div>

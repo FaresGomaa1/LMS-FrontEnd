@@ -89,8 +89,7 @@ export class ExamService {
     if (
       (currentDate.getFullYear() > examDate1.getFullYear() ||
         currentDate.getMonth() + 1 > examDate1.getMonth() + 1 ||
-        currentDate.getDay() > examDate1.getDay()) &&
-      (currentTimeInMins > examEndTime )
+        currentDate.getDate() > examDate1.getDate())
     ) {
       return false;
     }

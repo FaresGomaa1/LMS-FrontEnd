@@ -32,26 +32,23 @@ export class EventsComponent implements OnInit {
       this.events = events;
     });
   }
-  getAllCourses() {
-    this.courseService.getAllCourses().subscribe((courses) => {
-      this.courses = courses;
-    });
-  }
+
   getStudent() {
     this.getAllEvents();
-    const token = localStorage.getItem(this.tokenKey);
+    const token = localStorage.getItem(this.tokenKey); 
     if (token) {
-      const helper = new JwtHelperService();
-      const decodedToken = helper.decodeToken(token);
-      const userId = decodedToken.nameid;
-      this.studentService.getStudentById(userId).subscribe((std) => {
-        this.getAllCourses();
-        this.courses = this.courses.filter((course) =>
-          std.courseIDs.includes(course.id)
-        );
-      });
+        const helper = new JwtHelperService();
+        const decodedToken = helper.decodeToken(token);
+        const userId = decodedToken.nameid; 
+        this.studentService.getStudentById(userId).subscribe((std) => { 
+            
+            this.events = this.events.filter((event) => {
+                return std.courseIDs.some(courseId => event.coursesIDs.includes(courseId));
+               
+            });
+        });
     }
-  }
+}
   openEventLink(event: IEvent): void {
     if (!this.isEventFuture(event)) {
       window.open(event.hyperLink, '_blank');

@@ -61,7 +61,7 @@ export class ExamsComponent implements OnInit {
           if (newExam.course_ID === this.courseIds[i]) {
             if (this.examService.isExamDatePassed(newExam.date, newExam.time, newExam.duration)) {
               this.studentExams.push(newExam);
-              break; // No need to check for other courseIds once exam is pushed
+              break;
             }
           }
         }
