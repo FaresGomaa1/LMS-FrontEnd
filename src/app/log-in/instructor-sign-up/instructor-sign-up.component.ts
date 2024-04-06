@@ -35,7 +35,7 @@ export class InstructorSignUpComponent {
     ]],    
       Experience: ['', [
         Validators.required,
-        Validators.minLength(50),
+        Validators.minLength(5),
     ]],    
       phone: ['', [
         Validators.required,

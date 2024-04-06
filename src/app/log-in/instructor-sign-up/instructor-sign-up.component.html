@@ -143,7 +143,7 @@
             <input type="text" placeholder="Experience" id="Experience" class="form-control" formControlName="Experience" />
             <div *ngIf="instructorForm.get('Experience')?.invalid && (instructorForm.get('Experience')?.dirty || instructorForm.get('Experience')?.touched)" class="alert alert-danger mt-2">
               <div *ngIf="instructorForm.get('Experience')?.errors?.['required']">Experience is required</div>
-              <div *ngIf="instructorForm.get('Experience')?.errors?.['minlength']">Experience must be at least 50 characters long</div>
+              <div *ngIf="instructorForm.get('Experience')?.errors?.['minlength']">Experience must be at least 5 characters long</div>
             </div>
           </div>
       
