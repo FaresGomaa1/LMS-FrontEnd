@@ -61,12 +61,11 @@ loadCourseDetails() {
     course => {
       this.course = course;
       this.courseName = course.name;
-
-      // Call getCourseEnrolledStudentsCount after courseName is assigned
+ 
       this.getCourseEnrolledStudentsCount();
       
-      // Check if course belongs to the instructor
-      this.instructorCourseService.isInstructorCourse(this.userId, this.course?.name || '').subscribe(isInstructorCourse => {
+   
+      this.instructorCourseService.isInstructorCourse(this.userId, this.course?.id ).subscribe(isInstructorCourse => {
         if (!isInstructorCourse) {
           this.router.navigate(['instructor/shared/notfound']); 
         }

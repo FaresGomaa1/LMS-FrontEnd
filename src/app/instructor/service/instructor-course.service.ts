@@ -13,11 +13,11 @@ export class InstructorCourseService {
   constructor(private instservice: InstructorService, private courseService: CourseService , private HttpClient : HttpClient) { }
 
 
-  isInstructorCourse(instructorId: number, courseName: string): Observable<boolean> {
+  isInstructorCourse(instructorId: number, courseId: number): Observable<boolean> {
     return this.instservice.getById(instructorId)
       .pipe(
         map(instructor => {
-          if (instructor && instructor.courseName.includes(courseName)) {
+          if (instructor && instructor.courseIDs.includes(courseId)) {
             return true;
           } else {
             return false;
@@ -34,7 +34,7 @@ export class InstructorCourseService {
           if (instructor) {
             return this.courseService.getAllCourses()
               .pipe(
-                map(courses => courses.filter(course => instructor.courseName.includes(course.name)))
+                map(courses => courses.filter(course => instructor.courseIDs.includes(course.id)))
               );
           }
           return [];

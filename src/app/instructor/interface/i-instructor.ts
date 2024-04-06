@@ -13,5 +13,6 @@ export interface IInstructor {
   specialization: string;
   courseName: string[];
   experience: string,
-  ssn:string
+  ssn:string,
+  courseIDs:number[]
 }
