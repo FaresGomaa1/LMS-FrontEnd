@@ -61,7 +61,7 @@ export class InstructorSignUpComponent {
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
       ]],
       userAttachmentPath: [''],
-      imageFile: [null, Validators.required]
+      imageFile: [null, Validators.required],
     });
   }
   onFileSelected(event: any) {
@@ -88,10 +88,20 @@ export class InstructorSignUpComponent {
   }
   onSubmit() {
     const instructorFormData = new FormData();
+    
+    // Add existing form data
     Object.keys(this.instructorForm.value).forEach(key => {
       instructorFormData.append(key, this.instructorForm.get(key)?.value);
     });
-    console.log(this.instructorForm.value)
+
+    // Add empty arrays for CourseName and CourseIDs
+    instructorFormData.append('CourseName', JSON.stringify([]));
+    instructorFormData.append('CourseIDs', JSON.stringify([]));
+
+    // Debugging: Log the form data
+    console.log(instructorFormData);
+
+    // Submit the form data
     this.InstructorService.addInstructor(instructorFormData).subscribe(
       response => {
         this.snackBar.open('Registration successful', 'Dismiss', {
@@ -115,6 +125,6 @@ export class InstructorSignUpComponent {
         }
       }
     );
-  
-  }
+}
+
 }
