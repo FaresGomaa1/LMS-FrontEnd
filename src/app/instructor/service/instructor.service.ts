@@ -3,7 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { ICourse } from '../interface/i-course';
 import { IInstructor } from '../interface/i-instructor'; 
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription, switchMap } from 'rxjs';
+import { Observable, Subscription, catchError, switchMap } from 'rxjs';
 import { ICourses } from 'src/app/exams/ICourses';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ImageFileService } from './image-file.service';
@@ -49,6 +49,20 @@ export class InstructorService implements OnInit {
   }
   Update(id: number,instructor:FormData ): Observable<IInstructor> {
     return this.HttpClient.put<IInstructor>(`${this.baseURL}/${id}`, instructor);
+  }
+
+  UpdatePhoto(id: number,photo:FormData ): Observable<IInstructor> {
+    return this.HttpClient.put<IInstructor>(`${this.baseURL}/${id}/photo`, photo);
+  }
+
+  Edit(id: number, instructor: any): Observable<any> {
+    const url = `${this.baseURL}/${id}`;
+    return this.HttpClient.put(url, instructor, { headers: {'Content-Type': 'application/json'} })
+      .pipe(
+        catchError(error => { 
+          throw error;
+        })
+      );
   }
 
  

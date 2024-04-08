@@ -19,10 +19,14 @@ export class EditProfileComponent implements OnInit , OnDestroy {
  
   selectedFile!: File;
   constructor(
+    private formBuilder: FormBuilder,
       private instuctorServce : InstructorService,
       private router: Router,
       private actRoute: ActivatedRoute
   ) {
+    this.profileImage = this.formBuilder.group({
+      imageFile: ['', [Validators.required , Validators.pattern(/\.(jpg|jpeg|png|gif)$/i)]]
+    }); 
       this.profileForm = new FormGroup({
           name: new FormControl('', [
               Validators.required,
@@ -49,20 +53,23 @@ export class EditProfileComponent implements OnInit , OnDestroy {
           phone: new FormControl('', [Validators.required ,Validators.minLength(11),Validators.maxLength(11),
             Validators.pattern('^01[0152]+[0-9]{8,}$')]),
 
-          imageFile: new FormControl(null, [
-              Validators.required, Validators.pattern(/\.(jpg|jpeg|png|gif)$/i)
-              //this.validateFileType(),
-          ]),
+          // imageFile: new FormControl(null, [
+          //     Validators.required, Validators.pattern(/\.(jpg|jpeg|png|gif)$/i)
+          //     //this.validateFileType(),
+          // ]),
       });
   }
 
  
- 
+  profileImage!: FormGroup;
 
   onFileSelected(event: any) {
       this.selectedFile = <File>event.target.files[0];
       console.log(this.selectedFile);
   }
+  getFormControl2(name: string): FormControl {
+    return this.profileImage.get(name) as FormControl;
+} 
 
   getFormControl(name: string): FormControl {
       return this.profileForm.get(name) as FormControl;
@@ -100,6 +107,7 @@ export class EditProfileComponent implements OnInit , OnDestroy {
                                         this.profileForm.controls['phone'].setValue(
                                           instructor.phone
                                         );
+                                        this.image=instructor.userAttachmentPath;
                       this.selectedFile = instructor.imageFile;
                       this.courses = instructor.courseIDs;
                   }
@@ -108,7 +116,7 @@ export class EditProfileComponent implements OnInit , OnDestroy {
       } 
  
   
- 
+ image:string|undefined;
 
   courses: number[] = [];
   getInstructorById(): void {
@@ -127,15 +135,41 @@ export class EditProfileComponent implements OnInit , OnDestroy {
        //   imageFile: instructor.userAttachmentPath
         });
         // this.courses = instructor.courseName;  
-        this.selectedFile = instructor.imageFile;
+     //   this.selectedFile = instructor.imageFile;
         this.courses = instructor.courseIDs;
+       
       },
       error => {
         console.error('Error fetching instructor:', error);
       }
     );
   }
-   
+
+
+  onSubmitImage():void{
+    const formData2 = new FormData();
+    formData2.append('imageFile', this.selectedFile);
+    console.log(formData2);
+    if (this.profileImage.valid){
+    this.instuctorServce.UpdatePhoto(this.instructorId, formData2).subscribe(
+      () => {
+        console.log('Instructor profile updated successfully');
+        this.router.navigate(['/instructor/shared/profile']);
+      },
+      error => {
+        console.error('Error updating instructor profile:', error);
+      }
+    );
+  }
+
+  else { 
+    this.profileImage.markAllAsTouched();
+  }
+
+    
+  }  
+
+
 
 
 onSubmit(): void {
@@ -150,12 +184,17 @@ onSubmit(): void {
     formData.append('email', this.profileForm.value.email);
     // formData.append('courses', this.profileForm.value.courses); 
     formData.append('phone', this.profileForm.value.phone);
-    formData.append('imageFile', this.selectedFile);
+  //  formData.append('imageFile', this.selectedFile);
 
     for (const course of this.courses) {
       formData.append('courseIDs[]', course.toString());
   }
-    this.instuctorServce.Update(this.instructorId, formData).subscribe(
+
+  formData.forEach((value, key) => {
+    console.log(`${key}: ${value}`);
+  });
+  
+    this.instuctorServce.Edit(this.instructorId, this.profileForm.value).subscribe(
       () => {
         console.log('Instructor profile updated successfully');
         this.router.navigate(['/instructor/shared/profile']);

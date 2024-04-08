@@ -2,10 +2,58 @@
     <div class="row">
         <div class="col-md-4 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <!-- <img class="rounded-circle mt-5" src="{{instructor.userAttachmentPath}}"  width="90">
-                <span class="font-weight-bold">{{ instructor.name }}</span>
-                <span class="text-black-50">{{ instructor.email }}</span>
-                <span>{{ instructor.address }}</span> -->
+                <!-- <img class="rounded-circle mt-5" src="{{image}}"  width="90">
+                <span class="font-weight-bold">nn</span>
+                <span class="text-black-50">bb</span>
+                <span>aa</span> -->
+                <!-- <div class="col">
+                    <input pInputText type="file" id="imageFile" formControlName="imageFile" class="form-control"
+                           required (change)="onFileSelected($event)" 
+                        aria-label="imageFile" aria-describedby="basic-icon-default-specialization2"
+                        [ngClass]="{
+                            'is-valid': profileForm.get('imageFile')?.valid,
+                            'is-invalid': profileForm.get('imageFile')?.errors && profileForm.get('imageFile')?.touched
+                        }" />
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">
+                        <ng-container *ngIf="profileForm.get('imageFile')?.hasError('required')">
+                            image File is required
+                        </ng-container>
+                        <ng-container *ngIf="profileForm.get('imageFile')?.hasError('pattern')">
+                            Must be image
+                        </ng-container>
+                    </div> -->
+                <!-- <div class="col-md-4"> -->
+                    <form [formGroup]="profileImage" (ngSubmit)="onSubmitImage()">
+                    <div class="profile-img">
+                        <img   src="{{image}}" alt="" />
+                        <div class="file btn btn-lg ">
+                            Change Photo
+                            <input  pInputText type="file" name="file" id="imageFile" formControlName="imageFile" class="form-control"
+                            required (change)="onFileSelected($event)" 
+                         aria-label="imageFile" aria-describedby="basic-icon-default-specialization2"
+                         [ngClass]="{
+                             'is-valid': profileImage.get('imageFile')?.valid,
+                             'is-invalid': profileImage.get('imageFile')?.errors && profileImage.get('imageFile')?.touched
+                         }"/>
+                        </div>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">
+                            <ng-container *ngIf="profileImage.get('imageFile')?.hasError('required')">
+                                image File is required
+                            </ng-container>
+                            <ng-container *ngIf="profileImage.get('imageFile')?.hasError('pattern')">
+                                Must be image
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div *ngIf="profileImage.get('imageFile')?.value">
+                        Selected Image: {{ profileImage.get('imageFile')?.value }}
+                    </div>
+                    
+                    <button type="submit" class="btn"  [disabled]="profileImage.invalid">Submit</button>
+                </form>
+                <!-- </div> -->
             </div>
         </div>
         <div class="col-md-8">
@@ -175,7 +223,7 @@
    <div class="row mt-3">
  
     <!-- Specialization -->
-    <div class="col">
+    <!-- <div class="col">
         <input pInputText type="file" id="imageFile" formControlName="imageFile" class="form-control"
                required (change)="onFileSelected($event)" 
             aria-label="imageFile" aria-describedby="basic-icon-default-specialization2"
@@ -192,7 +240,7 @@
                 Must be image
             </ng-container>
         </div>
-    </div>
+    </div> -->
 </div>
 
 
