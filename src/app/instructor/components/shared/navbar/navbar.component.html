@@ -1,49 +1,20 @@
 <!-- Navbar Start -->
-<nav
-  class="navbar navbar-expand-lg bg-dark navbar-light shadow sticky-top p-0"
->
-  <a 
-    class="navbar-brand d-flex align-items-center px-4 px-lg-5"
-  >
-    <h2 class="m-0 text-white"><i class="fa fa-book me-3"></i>LMS ACADEMY</h2>
-  </a>
-  <button
-    type="button"
-    class="navbar-toggler me-4"
-    data-bs-toggle="collapse"
-    data-bs-target="#navbarCollapse"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarCollapse">
-    <div class="navbar-nav ms-auto p-4 p-lg-0">
-      
-      <a
-        routerLink="/instructor/shared/InstructorCourses"
-        class="nav-item nav-link text-white"
-        routerLinkActive="active"
-        >Courses</a
-      >
-      <a
-      routerLink="/instructor/shared/Events"
-        class="nav-item nav-link text-white"
-        routerLinkActive="active"
-        >Events</a
-      >
-      <a
-        routerLink="/instructor/shared/profile"
-        class="nav-item nav-link text-white"
-        routerLinkActive="active"
-        >Profile</a
-      >
-      
+<nav class="navbar navbar-expand-lg bg-dark navbar-light shadow sticky-top p-0">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center px-4 px-lg-5" >
+      <h2 class="m-0 text-white"><i class="fa fa-book me-3"></i>LMS ACADEMY</h2>
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto p-4 p-lg-0">
+        <a routerLink="/instructor/shared/InstructorCourses" class="nav-item nav-link text-white" routerLinkActive="active">Courses</a>
+        <a routerLink="/instructor/shared/Events" class="nav-item nav-link text-white" routerLinkActive="active">Events</a>
+        <a routerLink="/instructor/shared/profile" class="nav-item nav-link text-white" routerLinkActive="active">Profile</a>
+      </div>
+      <a (click)="deleteKey()" routerLink="/login" class="btn btn-success py-4 px-lg-5 d-none d-lg-block">Log-Out<i class="fa fa-arrow-right ms-3"></i></a>
     </div>
-    <a
-    (click)="deleteKey()"
-      routerLink="/login"
-      class="btn btn-success py-4 px-lg-5 d-none d-lg-block"
-      >Log-Out<i class="fa fa-arrow-right ms-3"></i
-    ></a>
   </div>
 </nav>
 <!-- Navbar End -->

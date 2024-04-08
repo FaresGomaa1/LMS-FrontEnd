@@ -46,9 +46,10 @@ export class ExamService {
   baseURL2: string = 'http://localhost:5050/Question';  
 
   
-   
   updateExam(id: number, exam: IExam): Observable<IExam> { 
+
     const { allQuestion, ...examWithoutQuestions } = exam;
+   console.log(examWithoutQuestions);
    
     return this.httpClient.put<IExam>(`${this.baseURL}/${id}`, {
       ...examWithoutQuestions,
@@ -56,6 +57,7 @@ export class ExamService {
     });
   }
 
+ 
   updateExamWithQuestions(id: number, exam: IExam, newQuestion: any): Observable<IExam> {
     const { allQuestion, ...examWithoutQuestions } = exam;
   

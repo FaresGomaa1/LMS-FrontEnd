@@ -1,9 +1,9 @@
-
-
-<div class="grid p-fluid">
-  <div class="col-12">
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
       <div class="card">
-        <div class="container-fluid text-center m-3">
+        <div class="card-body">
+          <div class="text-center mb-3">
           <h1>Add Question </h1>
         </div>
           <form class="row g-3" [formGroup]="QuestionForm" (ngSubmit)="onSubmit($event)">
@@ -80,9 +80,7 @@
                       *ngIf="getFormControl('correctAnswer').errors && getFormControl('correctAnswer').touched">
                       <ng-container *ngIf="getFormControl('correctAnswer').hasError('required')">correctAnswer is
                           required</ng-container>
-                      <ng-container *ngIf="getFormControl('correctAnswer').hasError('minlength')">correctAnswer must
-                          be at least 3
-                          characters</ng-container>
+                    
                           <ng-container *ngIf="getFormControl('correctAnswer').hasError('incorrectAnswer')">correctAnswer must
                             be one of the choises
                             characters</ng-container>

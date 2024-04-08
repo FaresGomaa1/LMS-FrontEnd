@@ -1,7 +1,7 @@
 import { CourseService } from 'src/app/instructor/service/course.service';
 
 import { QuestionService } from 'src/app/instructor/service/question.service';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExamService } from 'src/app/instructor/service/exam.service';
 import { IExam } from '../../interface/i-exam';
@@ -10,6 +10,8 @@ import { IStudent } from '../../interface/istudent';
 import { map, tap } from 'rxjs';
 import { PopupComponent } from '../core/popup/popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-view-exam-questions',
@@ -26,8 +28,55 @@ export class ViewExamQuestionsComponent {
     private CourseService : CourseService ,    private dialog: MatDialog
     ,private QuestionService : QuestionService) {
       this.students = [];
+      this.isLargeScreen = window.innerWidth > 992; 
      }
+
+     isLargeScreen: boolean;
+ 
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event:Event) {
+    // Update isLargeScreen when window is resized
+    this.isLargeScreen = window.innerWidth > 992; // Example breakpoint for large screen
+  }
   
+     generatePDF() {
+      const element = document.getElementById('contentToConvert');
+        
+      if (!element) {
+        console.error("Element with id 'contentToConvert' not found.");
+        return;
+      }
+      
+      
+      html2canvas(element, { scrollY: -window.scrollY }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF();
+      
+        const imgWidth = 210; // A4 size
+        const pageHeight = 295; // A4 size
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 0;
+      
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      
+        const totalPages = Math.ceil(element.scrollHeight / pageHeight);
+      
+        // Loop through each page of the exam questions
+        for (let i = 1; i < totalPages; i++) {
+          position -= pageHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        }
+      
+        pdf.save('Exam.pdf');
+      });
+    }
+    
+
+
   isExamDatePassed(): boolean {
     return this.exam.date < new Date(); 
   }  
@@ -99,7 +148,7 @@ export class ViewExamQuestionsComponent {
 
  
   currentPage = 1;
-  pageSize = 7; // Number of questions per page
+  pageSize = 20; // Number of questions per page
 
    
   getPaginatedQuestions(): any[] {
@@ -144,6 +193,40 @@ export class ViewExamQuestionsComponent {
      dialogRef.componentInstance.itemDeleted.subscribe(() => {
       this.loadQuestions();
      });
+}
+
+
+generatePDFResults() {
+  const element = document.getElementById('contentToConvertResult') ;
+
+  if (!element) {
+    console.error("Element with id 'contentToConvert' not found.");
+    return;
+  }
+  
+  html2canvas(element).then((canvas) => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jspdf.jsPDF();
+
+    const imgWidth = 210; // A4 size
+    const pageHeight = 295; // A4 size
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    let heightLeft = imgHeight;
+
+    let position = 0;
+
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    pdf.save('Results.pdf');
+  });
 }
 
   loadStudentsResults(examId: number) {
@@ -204,14 +287,14 @@ hasNextPage2(): boolean {
 
  
 prevPage2(): void {
-  if (this.hasPrevPage()) {
+  if (this.hasPrevPage2()) {
     this.currentPage2--;
   }
 }
 
  
 nextPage2(): void {
-  if (this.hasNextPage()) {
+  if (this.hasNextPage2()) {
     this.currentPage2++;
   }
 }

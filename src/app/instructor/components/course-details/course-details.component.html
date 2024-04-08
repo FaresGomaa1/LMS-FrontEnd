@@ -1,14 +1,16 @@
 <div class="container py-3">
-  <div class="title h1 text-center">{{ course.name }} Course Details</div>
+  <div class="title h1 text-center" *ngIf="course">{{ course.name }} Course Details</div>
+
   <!-- Card Start -->
   <div class="card">
     <div class="row">
-      <div class="col-md-7 px-3">
+      <!-- Course Details -->
+      <div class="col-md-7 px-md-3">
         <div class="card-block px-6">
           <div style="background-color: #f0f0f0; padding: 20px;">
             <p class="card-title text-center mt-3 h1" style="font-family: 'Arial', sans-serif; color: #333;">Course Name: {{ course.name }}</p>
           </div>
-          <div class="card-bady text-center">
+          <div class="card-body text-center">
             <p class="card-text mt-3 h5" style="font-family: 'Helvetica', sans-serif; color: #666;">
               {{ course.description }}
             </p>
@@ -27,47 +29,37 @@
           </div>
         </div>
       </div>
+
       <!-- Carousel start -->
-      <div class="col-md-5">
-        <div id="CarouselTest" class="carousel slide" data-ride="carousel">
-          <ol class="carousel-indicators">
-            <li data-target="#CarouselTest" data-slide-to="0" class="active"></li>
-            <li data-target="#CarouselTest" data-slide-to="1"></li>
-            <li data-target="#CarouselTest" data-slide-to="2"></li>
-          </ol>
+      <div class="col-md-5 mt-3 mt-md-0">
+        <div id="CarouselTest" class="carousel slide text-center"  data-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img class="d-block course-image" src="{{ course.userAttachmentPath }}" alt="">
             </div>
-            <div class="carousel-item">
-              <img class="d-block course-image" src="{{ course.userAttachmentPath }}" alt="">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block course-image" src="{{ course.userAttachmentPath }}" alt="">
-            </div>
-            <a class="carousel-control-prev" href="#CarouselTest" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#CarouselTest" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </a>
           </div>
         </div>
       </div>
       <!-- End of carousel -->
-      <button class="btn mt-3" style="background-color: rgb(66, 127, 66);" (click)="toggleExams()">
-        <span style="font-family: 'Tahoma', sans-serif; font-weight: bold; color: #333;" class="h4">Show Exams</span>
-      </button>
+    </div>
+
+    <!-- Button to Show Exams -->
+    <div class="row mt-3">
+      <div class="col-md-12 text-center">
+        <button class="btn" style="background-color: rgb(66, 127, 66);" (click)="toggleExams()">
+          <span style="font-family: 'Tahoma', sans-serif; font-weight: bold; color: #333;" class="h4">Show Exams</span>
+        </button>
+      </div>
     </div>
   </div>
   <!-- End of card -->
 </div>
 
 <!-- Exams section -->
-<div *ngIf="showExams" class="mt-3">
-  <div *ngIf="showExams" class="mt-3">
-    <app-courses-exam [courseId]="courseId"></app-courses-exam>
+<div *ngIf="showExams" class="container mt-3">
+  <div class="row">
+    <div class="col-md-12">
+      <app-courses-exam [courseId]="courseId"></app-courses-exam>
+    </div>
   </div>
 </div>

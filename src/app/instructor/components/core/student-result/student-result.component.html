@@ -1,0 +1,32 @@
+<div class="align-center text-center" *ngIf="isLargeScreen"> 
+    <button class="btn btn-success m-2" (click)="generatePDFResults()"> <i class="fas fa-download"></i> Download PDF</button>
+</div>
+  
+  <div class="table-responsive container-fluid" id="contentToConvertResult">
+    <table class="table table-striped table-bordered custom-table">
+      <thead class="thead-light text-center">
+        <tr class="h5">
+          <th>Student Name</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of getPaginatedStudents()">
+          <td>{{ student.name }}</td>
+          <td>{{ student.results }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-center">
+        <button class="btn btn-default" (click)="prevPage2()" [disabled]="!hasPrevPage2()">
+          <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <button class="btn btn-default" (click)="nextPage2()" [disabled]="!hasNextPage2()">
+          Next <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+  </div>
+
+  <div *ngIf="!students || students.length == 0">
+    <p>No students found for this exam.</p>
+  </div>

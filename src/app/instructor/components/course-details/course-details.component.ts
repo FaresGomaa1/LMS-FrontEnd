@@ -60,11 +60,11 @@ loadCourseDetails() {
   this.courseService.getCourseById(this.courseId).subscribe(
     course => {
       this.course = course;
-      this.courseName = course.name;
- 
+      if (course) {
+        this.courseName = course.name; // Add null check
+      }
       this.getCourseEnrolledStudentsCount();
       
-   
       this.instructorCourseService.isInstructorCourse(this.userId, this.course?.id ).subscribe(isInstructorCourse => {
         if (!isInstructorCourse) {
           this.router.navigate(['instructor/shared/notfound']); 
@@ -76,6 +76,7 @@ loadCourseDetails() {
     }
   );
 }
+
 
 getCourseEnrolledStudentsCount(): void {
   this.courseService.getCourseEnrolledStudentsCount(this.courseId).subscribe(

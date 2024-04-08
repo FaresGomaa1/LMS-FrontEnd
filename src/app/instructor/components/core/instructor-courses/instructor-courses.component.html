@@ -2,14 +2,18 @@
 <div class="panel">
   <div class="panel-heading">
     <div class="row">
-      <div class="col-sm-12 col-xs-12">
-        <h4 class="title pull-left">Courses</h4>
-        <button class="btn btn-sm btn-primary pull-right m-1" (click)="toggleSortOrder()">
-          {{ sortByEndDateDesc ? 'Sort Oldest First' : 'Sort Newest First' }}
-        </button>
-        <a [routerLink]="['/instructor/shared/AddCourse']" class="btn btn-sm btn-primary pull-right m-1">
-          <i class="fa fa-plus"></i> Add New
-        </a>
+      <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+        <h4 class="title">Courses</h4>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="btn-group pull-right">
+          <button class="btn btn-sm btn-primary" (click)="toggleSortOrder()">
+            {{ sortByEndDateDesc ? 'Sort Oldest First' : 'Sort Newest First' }}
+          </button>
+          <a [routerLink]="['/instructor/shared/AddCourse']" class="btn btn-sm btn-primary">
+            <i class="fa fa-plus"></i> Add New
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -80,12 +84,12 @@
   <!-- Panel footer with pagination controls -->
   <div class="panel-footer">
     <div class="row">
-      <div class="col-sm-6 col-xs-6">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         Showing <b>{{ getStartIndex() }}</b> -
         <b>{{ getEndIndex() }}</b> of
         <b>{{ instructorCourses.length }}</b> entries
       </div>
-      <div class="col-sm-6 col-xs-6">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <button class="btn btn-default" (click)="prevPage()" [disabled]="!hasPrevPage()">Previous</button>
         <button class="btn btn-default" (click)="nextPage()" [disabled]="!hasNextPage()">Next</button>
       </div>

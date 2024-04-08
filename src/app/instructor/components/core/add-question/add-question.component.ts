@@ -1,4 +1,4 @@
-import { FormBuilder, FormArray, Validators, AbstractControl, ValidatorFn, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormArray, Validators, AbstractControl, ValidatorFn, FormGroup, FormControl, ValidationErrors } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { QuestionService } from 'src/app/instructor/service/question.service';
@@ -40,29 +40,23 @@ export class AddQuestionComponent implements OnInit {
           selectNumber: ['', Validators.required],
           choosesName: this.fb.array([]),
           questionType: ['', Validators.required],
-          correctAnswer: ['', [Validators.required ]]
+          correctAnswer: ['', [Validators.required,this.correctAnswerValidator ]]
           // courseName: ['', Validators.required],
       });
-      this.QuestionForm.get('choosesName')?.valueChanges.subscribe(() => {
-        this.QuestionForm.get('correctAnswer')?.setValidators(this.correctAnswerValidator(this.choosesName));
-        this.QuestionForm.get('correctAnswer')?.updateValueAndValidity();
-      });
+   
   }
 
-  correctAnswerValidator(choosesName: FormArray): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const correctAnswer = control.value;
-      const choices = choosesName.value;
   
-      if (choices.includes('a')) {
-        return null; // valid
-      } else {
-        return { 'incorrectAnswer': true }; // invalid
-      }
-    };
-  }
+ correctAnswerValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const correctAnswer = control.value;
+    const choices = control.parent?.get('choosesName')?.value;
+    
+    if (correctAnswer && choices && !choices.includes(correctAnswer)) {
+      return { incorrectAnswer: true };
+    }
   
-
+    return null;
+  };
 
   ngOnInit(): void {
    

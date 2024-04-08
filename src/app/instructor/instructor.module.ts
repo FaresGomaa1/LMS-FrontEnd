@@ -27,6 +27,7 @@ import { AddQuestionComponent } from './components/core/add-question/add-questio
 import { AddNewQuesComponent } from './components/core/add-new-ques/add-new-ques.component';
 import { CourseStudentsComponent } from './components/core/course-students/course-students.component';
 import { PopupComponent } from './components/core/popup/popup.component';
+import { StudentResultComponent } from './components/core/student-result/student-result.component';
 
 const instructorRoutes: Routes = [
   {path: '', redirectTo: 'shared/profile', pathMatch: 'full'},
@@ -52,6 +53,7 @@ const instructorRoutes: Routes = [
     {path:'editQuestions/:questionId',component:EditQuestionComponent},
     {path:'addNewQuestion/:examId',component:AddNewQuesComponent},
     {path:'courseStudent/:courseId',component:CourseStudentsComponent},
+    {path:'StudentResult/:examId',component:StudentResultComponent},
 
 
    {path: '**', redirectTo: 'NotFound', pathMatch: 'full'},
@@ -83,6 +85,7 @@ const instructorRoutes: Routes = [
     AddNewQuesComponent,
     CourseStudentsComponent,
     PopupComponent,
+    StudentResultComponent,
   ],
   imports: [
     CommonModule,

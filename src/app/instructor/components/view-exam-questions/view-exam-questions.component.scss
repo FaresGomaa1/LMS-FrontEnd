@@ -2,3 +2,9 @@
 .custom-table td {
   font-family: 'Your Custom Font', sans-serif;  
 }
+
+@media only screen and (max-width: 992px) {
+  .align-center.text-center {
+    display: none; /* Hide the button on smaller screens */
+  }
+}

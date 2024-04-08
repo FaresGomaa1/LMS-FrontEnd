@@ -36,6 +36,7 @@ export class EditExamComponent implements OnInit, OnDestroy {
       max_Degree: new FormControl('', Validators.required),
       min_Degree: new FormControl('', Validators.required),
    //   courseName: new FormControl('', Validators.required),
+      course_ID: new FormControl(''),
       date: new FormControl('', [
         Validators.required,
         this.endValidator(new Date()),
@@ -111,8 +112,9 @@ export class EditExamComponent implements OnInit, OnDestroy {
 if (this.ExamForm.valid) {
   const examData = this.ExamForm.value;
   const examPayload = {
-    ...examData
+    ...examData 
   };
+console.log(examPayload);
 
   this.examService.updateExam(this.id, examPayload).subscribe(() => {
     this.router.navigate(['/instructor/shared/viewQuestions', this.id]);

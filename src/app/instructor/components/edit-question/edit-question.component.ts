@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { QuestionService } from 'src/app/instructor/service/question.service';
 
 @Component({
@@ -31,9 +31,20 @@ export class EditQuestionComponent implements OnInit, OnDestroy {
       selectNumber: ['', Validators.required],
       choosesName: this.fb.array([]),
       questionType: ['', Validators.required],
-      correctAnswer: ['', [Validators.required]]
+      correctAnswer: ['', [Validators.required ,this.correctAnswerValidator]]
     });
   }
+
+  correctAnswerValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const correctAnswer = control.value;
+    const choices = control.parent?.get('choosesName')?.value;
+    
+    if (correctAnswer && choices && !choices.includes(correctAnswer)) {
+      return { incorrectAnswer: true };
+    }
+  
+    return null;
+  };
 
   ngOnInit(): void {
     this.actRoute.params.subscribe(params => {

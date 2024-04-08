@@ -124,7 +124,7 @@ export class EditProfileComponent implements OnInit , OnDestroy {
           email: instructor.email,
           // courses: instructor.courseName,  
           phone: instructor.phone,
-          imageFile: instructor.userAttachmentPath
+       //   imageFile: instructor.userAttachmentPath
         });
         // this.courses = instructor.courseName;  
         this.selectedFile = instructor.imageFile;

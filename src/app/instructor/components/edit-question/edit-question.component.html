@@ -67,6 +67,7 @@ er
                       *ngIf="getFormControl('questionType').errors && getFormControl('questionType').touched">
                       <ng-container *ngIf="getFormControl('questionType').hasError('required')">questionType is
                           required</ng-container>
+                          
                   </div>
               </span>
 
@@ -79,9 +80,10 @@ er
                       *ngIf="getFormControl('correctAnswer').errors && getFormControl('correctAnswer').touched">
                       <ng-container *ngIf="getFormControl('correctAnswer').hasError('required')">correctAnswer is
                           required</ng-container>
-                      <ng-container *ngIf="getFormControl('correctAnswer').hasError('minlength')">correctAnswer must
-                          be at least 3
-                          characters</ng-container>
+                   
+                          <ng-container *ngIf="getFormControl('correctAnswer').hasError('incorrectAnswer')">correctAnswer must
+                            be one of the choises
+                            characters</ng-container>
                   </div>
               </span>
 

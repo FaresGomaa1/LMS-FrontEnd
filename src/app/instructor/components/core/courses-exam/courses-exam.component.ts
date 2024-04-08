@@ -15,18 +15,49 @@ import { MatDialog } from '@angular/material/dialog';
 export class CoursesExamComponent {
   
   @Input() courseId: number=0;
-  exams: IExam[] | undefined;
+  exams!: IExam[] ;
 
   constructor(private route: ActivatedRoute, private examService: ExamService, 
     private dialog: MatDialog,
     private router: Router , private CourseService: CourseService) { }
 
+
+    pagedExams: any[] = [];
+  currentPage: number = 1;
+  pageSize: number = 6;
+
+  
+
+  setPage(page: number): void {
+    // Calculate start and end index of exams for the current page
+    const startIndex = (page - 1) * this.pageSize;
+    const endIndex = Math.min(startIndex + this.pageSize - 1, this.exams.length - 1);
+
+    // Slice the exams array to get exams for the current page
+    this.pagedExams = this.exams.slice(startIndex, endIndex + 1);
+    this.currentPage = page;
+  }
+
+  get totalPagesArray(): number[] {
+    // Calculate total number of pages
+    const totalPages = Math.ceil(this.exams.length / this.pageSize);
+
+    // Generate an array containing page numbers
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  setCurrentPage(page: number): void {
+    this.setPage(page);
+  }
+
   ngOnInit(): void {
    // this.course_Id = this.route.snapshot.params['courseId'];
   
   //  console.log(this.course_Id);
-    this.loadExams();
+    this.loadExams(); 
+    this.setPage(1);
     this. loadCourse();
+   
   }
 course!: ICourse;
   loadCourse(): void {

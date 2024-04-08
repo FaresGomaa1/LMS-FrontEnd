@@ -1,32 +1,36 @@
+
 <app-navbar></app-navbar>
+
 <div class="container-fluid "> 
     <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
+        <div class="col-auto col-md-2 col-xl-2 px-sm-2 px-0 bg-light">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 mt-5">
                 <a class="d-flex align-items-center pb-3mb-md-0 me-md-auto bg-light text-white text-decoration-none h1">
-                    <span class="fs-3 d-none d-sm-inline bold h1"  style="color: rgb(21, 38, 32);">Welcome Back</span>
+                    <span class="fs-3 d-none d-sm-inline bold h2"  style="color: rgb(21, 38, 32);">Welcome Back</span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item w-200">
                         <a routerLink="/instructor/shared/profile" class="nav-link align-middle px-0">
                             <i class="fs-5 py-2 bi-people text-success"></i> 
-                            <span class="ms-1 d-none d-sm-inline bold h4 px-3" style="color: rgb(18, 87, 64);">Profile</span>
+                            <span class="ms-1 d-none d-sm-inline bold h5 px-3" style="color: rgb(18, 87, 64);">Profile</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                        <a href="#submenu1" routerLink="/instructor/shared/InstructorCourses" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
                             <i class="fs-5 py-2 bi-table text-success"></i>
-                            <span class="ms-1 d-none d-sm-inline bold h4 px-3" style="color: rgb(18, 87, 64);">Courses</span>
+                            <span class="ms-1 d-none d-sm-inline bold h5 px-3" style="color: rgb(18, 87, 64);">Courses</span>
                         </a>
                         <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                             <li class="w-200">
                                 <a routerLink="/instructor/shared/InstructorCourses" class="nav-link px-0"> 
-                                    <span class="d-none d-sm-inline h5" style="color: rgb(65, 96, 45); font-weight: bold;">My Course</span> 
+                                    <i class="fs-6 py-2 fas fa-book  text-success"></i>
+                                    <span class="d-none d-sm-inline h6" style="color: rgb(65, 96, 45); font-weight: bold;">My Course</span> 
                                 </a>
                             </li>
                             <li>
                                 <a routerLink="/instructor/shared/AddCourse" class="nav-link px-0"> 
-                                    <span class="d-none d-sm-inline h5" style="color: rgb(65, 96, 45); font-weight: bold;">Add Course</span> 
+                                    <i class="fs-6 py-2 fa-plus fas text-success"></i>
+                                    <span class="d-none d-sm-inline h6" style="color: rgb(65, 96, 45); font-weight: bold;">Add Course</span> 
                                 </a>
                             </li>
                         </ul>
@@ -34,7 +38,7 @@
                     <li>
                         <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
                             <i class="fs-5 py-2 bi-bootstrap text-success"></i>
-                            <span class="ms-1 d-none d-sm-inline bold h4 px-3" style="color: rgb(9, 69, 48);">Events</span>
+                            <span class="ms-1 d-none d-sm-inline bold h5 px-3" style="color: rgb(9, 69, 48);">Events</span>
                         </a>
                         <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                             <li class="w-100">
@@ -48,7 +52,7 @@
                 <hr>
             </div>
         </div>
-        <div class="col py-3">
+        <div class="col-10 col-md-10 py-3">
            <router-outlet></router-outlet>
         </div>
     </div>
