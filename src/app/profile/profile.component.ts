@@ -88,6 +88,30 @@ export class ProfileComponent implements OnInit {
   //     // Form is invalid, do something like displaying error messages or preventing submission
   //   }
   // }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0]; 
+    if (file) {
+      const formData = new FormData();
+      formData.append('ImageFile', file);
+      const studentId = this.student?.id;
+      if (studentId) {
+        this.studentService.EditPhoto(studentId, formData).subscribe(
+          (response) => {
+            console.log('Photo upload successful', response);
+            // Reload the page
+            window.location.reload();
+          },
+          (error) => {
+            console.error('Photo upload failed', error);
+            // Handle error
+          }
+        );
+      } else {
+        console.error('Student ID is missing.');
+      }
+    }
+  }
+  
   
   navigateToEditProfile() {
     // Assuming you have the student object available
