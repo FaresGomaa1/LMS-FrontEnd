@@ -33,7 +33,7 @@ const instructorRoutes: Routes = [
   {path: '', redirectTo: 'shared/profile', pathMatch: 'full'},
   {path:'shared', component: TrialComponent,
   children: [
-    { path: 'home', component: HomeComponent },
+    //{ path: 'home', component: HomeComponent },
     { path: 'addExam/:courseId', component: AddExamComponent },
     { path: 'InstructorCourses', component: InstructorCoursesComponent },
     { path: 'CoursesExam', component: CoursesExamComponent },
@@ -47,7 +47,7 @@ const instructorRoutes: Routes = [
     {path:'EditProfile/:instructorId' , component: EditProfileComponent},
     {path: 'courseDetails/:courseId' , component:CourseDetailsComponent},
     {path: 'Exams' , component:AllExamsComponent},
-    {path: 'NotFound' , component: NotFoundComponent},
+    {path: 'NotFound2' , component: NotFoundComponent},
     {path: 'addQuestion' , component: AddQuestionComponent},
 
     {path:'editQuestions/:questionId',component:EditQuestionComponent},
@@ -56,9 +56,12 @@ const instructorRoutes: Routes = [
     {path:'StudentResult/:examId',component:StudentResultComponent},
 
 
-   {path: '**', redirectTo: 'NotFound', pathMatch: 'full'},
+   {path: '**', redirectTo: 'NotFound2', pathMatch: 'full'},
     
   ]},
+
+  {path: '**', redirectTo: 'NotFound2', pathMatch: 'full'},
+  
 
  
 ];

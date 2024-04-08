@@ -7,6 +7,11 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
   tokenKey = 'auth_token';
+  isNavbarOpen: boolean = false;
+
+  toggleNavbar() {
+    this.isNavbarOpen = !this.isNavbarOpen;
+  }
   deleteKey() {
     localStorage.removeItem(this.tokenKey);
   }
