@@ -15,17 +15,17 @@ export class CourseStudentsComponent {
   courseId!: number; 
 
   constructor(private studentService: CourseService , private act : ActivatedRoute) {   
-     this.isLargeScreen = window.innerWidth > 900; 
+    //  this.isLargeScreen = window.innerWidth > 900; 
   }
 
-  isLargeScreen: boolean;
+//   isLargeScreen: boolean;
 
 
-@HostListener('window:resize', ['$event'])
-onResize(event:Event) {
+// @HostListener('window:resize', ['$event'])
+// onResize(event:Event) {
  
- this.isLargeScreen = window.innerWidth > 900;  
-}
+//  this.isLargeScreen = window.innerWidth > 900;  
+// }
   generatePDF() {
     const element = document.getElementById('contentToConvert') ;
   

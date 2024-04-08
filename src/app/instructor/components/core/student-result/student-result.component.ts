@@ -26,17 +26,17 @@ export class StudentResultComponent {
     private CourseService : CourseService ,    private dialog: MatDialog
     ,private QuestionService : QuestionService) {
       this.students = [];
-      this.isLargeScreen = window.innerWidth > 992; 
+   //   this.isLargeScreen = window.innerWidth > 992; 
     }
 
-    isLargeScreen: boolean;
+//     isLargeScreen: boolean;
 
 
- @HostListener('window:resize', ['$event'])
- onResize(event:Event) {
-   // Update isLargeScreen when window is resized
-   this.isLargeScreen = window.innerWidth > 992; // Example breakpoint for large screen
- }
+//  @HostListener('window:resize', ['$event'])
+//  onResize(event:Event) {
+//    // Update isLargeScreen when window is resized
+//    this.isLargeScreen = window.innerWidth > 992; // Example breakpoint for large screen
+//  }
   containsExamId(examIds: number[], examId: number): boolean {
     for (const id of examIds) {
       if (id == examId) {

@@ -1,5 +1,5 @@
 <div class="container py-3">
-  <div class="title h1 text-center" *ngIf="course">{{ course.name }} Course Details</div>
+  <div class="title h2 text-center" *ngIf="course">{{ course.name }} Course Details</div>
 
   <!-- Card Start -->
   <div class="card">
@@ -31,15 +31,16 @@
       </div>
 
       <!-- Carousel start -->
-      <div class="col-md-5 mt-3 mt-md-0">
-        <div id="CarouselTest" class="carousel slide text-center"  data-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img class="d-block course-image" src="{{ course.userAttachmentPath }}" alt="">
+      <div class="col-md-5 mt-3 mt-md-0 d-flex justify-content-center align-items-center">
+        <div id="CarouselTest" class="carousel slide text-center" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block course-image" src="{{ course.userAttachmentPath }}" alt="">
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+    
       <!-- End of carousel -->
     </div>
 

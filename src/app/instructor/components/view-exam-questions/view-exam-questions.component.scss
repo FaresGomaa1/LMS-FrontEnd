@@ -3,8 +3,37 @@
   font-family: 'Your Custom Font', sans-serif;  
 }
 
-@media only screen and (max-width: 992px) {
-  .align-center.text-center {
-    display: none; /* Hide the button on smaller screens */
-  }
+// @media only screen and (max-width: 992px) {
+//   .align-center.text-center {
+//     display: none; /* Hide the button on smaller screens */
+//   }
+// }
+
+.btn-transparent-border {
+  background-color: transparent;
+  border: 2px solid #28a745; /* Set border width and color */
+  color: #28a745; /* Set text color */
+  transition: background-color 0.3s, color 0.3s; /* Add transition for smooth color change */
+  padding: 5px 10px; /* Add padding to the button */
+}
+
+.btn-transparent-border:hover {
+  background-color: #28a745; /* Change background color on hover */
+  color: white; /* Change text color on hover */
+}
+.btn-transparent-border {
+  background-color: transparent;
+  border: 2px solid #28a745; /* Set border width and color */
+  color: #28a745; /* Set text color */
+  transition: background-color 0.3s, color 0.3s; /* Add transition for smooth color change */
+  padding: 5px 10px; /* Add padding to the button */
+}
+
+.btn-transparent-border:hover {
+  background-color: #28a745; /* Change background color on hover */
+  color: white; /* Change text color on hover */
+}
+
+.btn-view-results {
+  margin-top: 10px; /* Add margin to separate from the previous button */
 }

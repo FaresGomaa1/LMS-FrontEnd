@@ -1,11 +1,11 @@
-<div class="container" id="contentToConvert">
+<div class="container" >
   <h2 class="text-center">Students in the Course</h2>
 
   <div *ngIf="courseStudents.length > 0" class="table-responsive">
-    <div class="text-center mb-3" *ngIf="isLargeScreen"> 
+    <div class="text-center mb-3" > 
       <button class="btn btn-success" (click)="generatePDF()"> <i class="fas fa-download"></i> Download PDF</button>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="contentToConvert">
       <thead class="table-header">
         <tr> 
           <th>Name</th>

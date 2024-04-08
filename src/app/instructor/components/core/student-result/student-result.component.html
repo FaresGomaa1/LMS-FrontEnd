@@ -1,19 +1,21 @@
-<div class="align-center text-center" *ngIf="isLargeScreen"> 
+<div class="align-center text-center"  > 
     <button class="btn btn-success m-2" (click)="generatePDFResults()"> <i class="fas fa-download"></i> Download PDF</button>
 </div>
   
-  <div class="table-responsive container-fluid" id="contentToConvertResult">
-    <table class="table table-striped table-bordered custom-table">
+  <div class="table-responsive container-fluid" >
+    <table class="table table-striped table-bordered custom-table" id="contentToConvertResult">
       <thead class="thead-light text-center">
         <tr class="h5">
           <th>Student Name</th>
           <th>Result</th>
+          <th>Email</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let student of getPaginatedStudents()">
           <td>{{ student.name }}</td>
-          <td>{{ student.results }}</td>
+          <td>{{ student.results }}</td> 
+          <td><a href="mailto:{{ student.email }}" class="btn btn-success">Send Email</a></td>
         </tr>
       </tbody>
     </table>
