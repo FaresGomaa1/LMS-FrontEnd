@@ -62,9 +62,19 @@ export class StudentService {
       );
   }
 
-  Edit(id: number, studentFormData: FormData): Observable<any> {
+  Edit(id: number, studentData: any): Observable<any> {
     const url = `${this.domainName}/Student/${id}`;
-    return this.http.put(url, studentFormData)
+    return this.http.put(url, studentData, { headers: {'Content-Type': 'application/json'} })
+      .pipe(
+        catchError(error => {
+          this.errorHandlerService.handleError(error);
+          throw error;
+        })
+      );
+  }
+  EditPhoto(id: number, studentNewPhoto: FormData): Observable<any> {
+    const url = `${this.domainName}/Student/${id}/photo`;
+    return this.http.put(url, studentNewPhoto)
       .pipe(
         catchError(error => {
           this.errorHandlerService.handleError(error);

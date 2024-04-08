@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs';
 })
 export class StudentEditComponent implements OnInit {
   studentId!: number;
-  studentInfo: IStudent;
+  studentInfo: any;
   studentForm!: FormGroup;
   checkConfirmedPassword: boolean = true;
   constructor(
@@ -25,7 +25,6 @@ export class StudentEditComponent implements OnInit {
     private instructorService: InstructorService
   ) {
     this.studentInfo = { 
-      id: 0, 
       name: '', 
       age: 0, 
       title: '', 
@@ -53,7 +52,6 @@ export class StudentEditComponent implements OnInit {
   }
   initializeForm() {
     this.studentForm = this.formBuilder.group({
-      id: [0, Validators.required],
       name: [
         this.studentInfo.name,
         [
@@ -93,9 +91,7 @@ export class StudentEditComponent implements OnInit {
           Validators.minLength(8),
           Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/),
         ],
-      ],
-      userAttachmentPath: [this.studentInfo.userAttachmentPath],
-      imageFile: [null, Validators.required],
+      ]
     });
   }
   comparePassword() {
@@ -142,16 +138,11 @@ export class StudentEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.studentForm.value);
-    const studentFormData = new FormData();
-     Object.keys(this.studentForm.value).forEach((key) => {
-      studentFormData.append(key, this.studentForm.get(key)?.value);
-    });
   
-    // Submit FormData to studentService.Edit
-    this.studentService.Edit(this.studentId, studentFormData).subscribe(
+    // Submit JSON data to studentService.Edit
+    this.studentService.Edit(this.studentId, this.studentForm.value).subscribe(
       (response) => {
-        this.router.navigate(['/shared/profile']); // Corrected navigation
+        this.router.navigate(['/shared/profile']); 
         console.log('Edit successful', response);
       },
       (error) => {
