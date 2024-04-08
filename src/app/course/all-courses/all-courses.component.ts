@@ -84,6 +84,7 @@ export class AllCoursesComponent implements OnInit {
                   this.showSnackbar(`Successfully enrolled in ${course.name}`);
                   this.enrolledCourses.push(course);
                   this.allCourses = this.allCourses.filter((c) => c.id !== course.id);
+                  window.location.reload();
                 },
                 (error) => {
                   console.error('Error enrolling course:', error);
