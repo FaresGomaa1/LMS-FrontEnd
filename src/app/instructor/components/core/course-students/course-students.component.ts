@@ -67,7 +67,7 @@ export class CourseStudentsComponent {
   }
  
   currentPage: number = 1;
-  studentsPerPage: number = 20;
+  studentsPerPage: number = 15;
 
   get paginatedStudents() {
     const startIndex = (this.currentPage - 1) * this.studentsPerPage;

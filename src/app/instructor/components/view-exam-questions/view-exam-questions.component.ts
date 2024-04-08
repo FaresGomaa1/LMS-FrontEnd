@@ -148,7 +148,7 @@ export class ViewExamQuestionsComponent {
 
  
   currentPage = 1;
-  pageSize = 20; // Number of questions per page
+  pageSize = 15; // Number of questions per page
 
    
   getPaginatedQuestions(): any[] {

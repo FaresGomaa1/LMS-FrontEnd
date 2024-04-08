@@ -112,7 +112,7 @@ generatePDFResults() {
   }
   
   currentPage2: number = 1; 
-studentsPerPage: number = 20; 
+studentsPerPage: number = 15; 
 
  
 getStartIndex(): number {

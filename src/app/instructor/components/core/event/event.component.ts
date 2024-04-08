@@ -56,6 +56,27 @@ export class EventComponent implements OnInit {
     const startDate = new Date(event.start_Date); 
     return startDate > currentDate;
   }
+
+  currentPage: number = 1;
+  eventsPerPage: number = 5; // Number of events to display per page
+ 
+
+  // Pagination methods
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.sortedEvents.length / this.eventsPerPage);
+  }
   
   openEventLink(event: IEvent): void {
     if (!this.isEventFuture(event)) {
